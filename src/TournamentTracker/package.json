@@ -39,5 +39,9 @@
     "redux": "^3.4.0",
     "isomorphic-fetch": "^2.2.1",
     "redux-logger": "^2.6.1"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register --require ./JsTest/test_helper.js \"JsTest/**/*.@(js|jsx)\"",
+    "test:watch": "npm run test -- --watch"
   }
 }
