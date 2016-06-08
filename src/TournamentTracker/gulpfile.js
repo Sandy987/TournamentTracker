@@ -7,15 +7,14 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     gutil = require("gulp-util"),
+    sass = require("gulp-sass"),
     webpack = require("webpack");
 
 var webroot = "./wwwroot/";
 
 var paths = {
-    js: webroot + "js/**/*.js",
-    minJs: webroot + "js/**/*.min.js",
-    css: webroot + "css/**/*.css",
-    minCss: webroot + "css/**/*.min.css",
+    js: "./JsSrc/**/*.js*", //TODO: Does this work?
+    sass: "./SCSS/**/*.scss",
     concatJsDest: webroot + "js/site.min.js",
     concatCssDest: webroot + "css/site.min.css"
 };
@@ -41,18 +40,20 @@ gulp.task("webpack", function (callback) {
     });
 });
 
-gulp.task("min:js", function () {
-    return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
-        .pipe(concat(paths.concatJsDest))
-        .pipe(uglify())
-        .pipe(gulp.dest("."));
+gulp.task('webpack:watch', function () {
+    gulp.watch(paths.js, ['webpack']);
 });
 
-gulp.task("min:css", function () {
-    return gulp.src([paths.css, "!" + paths.minCss])
-        .pipe(concat(paths.concatCssDest))
-        .pipe(cssmin())
-        .pipe(gulp.dest("."));
+gulp.task('sass', function () {
+    return gulp.src(paths.sass)
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest(concatCssDest));
 });
 
-gulp.task("build", ["webpack", "min:css"]);
+gulp.task('sass:watch', function () {
+    gulp.watch(paths.sass, ['sass']);
+});
+
+gulp.task("build", ["webpack", "sass"]);
+
+gulp.task("watch", ["webpack:watch", "sass:watch"]);

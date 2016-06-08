@@ -22,9 +22,6 @@ const store = createStore(
                     loggerMiddleware) //Neat middleware that logs actions
 );
 
-//TODO: Remove. Let's start a ping!
-store.dispatch(pingActions.initiatePing());
-
 //You would typically define routes in a seperate file, for obvious reasons
 const routes = <Route component ={App}>
     <Route path="/" component={HomePageContainer} />
