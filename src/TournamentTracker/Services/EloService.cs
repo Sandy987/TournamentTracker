@@ -33,8 +33,8 @@ namespace TournamentTracker.Services
             }
             if (winner == MatchWinner.PlayerTwo)
             {
-                result.PlayerOneElo = playerOneElo - addsubint;
-                result.PlayerTwoElo = playerTwoElo + addsubint;
+                result.PlayerOneElo = playerOneElo + addsubint;
+                result.PlayerTwoElo = playerTwoElo - addsubint;
             }
             result.changeValue = addsubint;
 
