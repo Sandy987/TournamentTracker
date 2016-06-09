@@ -16,29 +16,33 @@ namespace TournamentTracker
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; set; }
+        private IHostingEnvironment _env { get; set; }
+        
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+            //     builder.AddUserSecrets();
+            // }
 
-            builder.AddEnvironmentVariables();
+            // builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+    	    var connection = Configuration.GetConnectionString("DefaultConnection");
+            
             services.AddDbContext<TournamentTrackerDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
