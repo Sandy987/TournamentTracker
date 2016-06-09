@@ -47,7 +47,7 @@ gulp.task('webpack:watch', function () {
 gulp.task('sass', function () {
     return gulp.src(paths.sass)
       .pipe(sass().on('error', sass.logError))
-      .pipe(gulp.dest(concatCssDest));
+      .pipe(gulp.dest(paths.concatCssDest));
 });
 
 gulp.task('sass:watch', function () {
