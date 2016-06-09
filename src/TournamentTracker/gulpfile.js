@@ -15,8 +15,8 @@ var webroot = "./wwwroot/";
 var paths = {
     js: "./JsSrc/**/*.js*", //TODO: Does this work?
     sass: "./SCSS/**/*.scss",
-    concatJsDest: webroot + "js/site.min.js",
-    concatCssDest: webroot + "css/site.min.css"
+    concatJsDest: webroot + "js/",
+    concatCssDest: webroot + "css/"
 };
 
 gulp.task("clean:js", function (cb) {
@@ -47,7 +47,9 @@ gulp.task('webpack:watch', function () {
 gulp.task('sass', function () {
     return gulp.src(paths.sass)
       .pipe(sass().on('error', sass.logError))
-      .pipe(gulp.dest(paths.concatCssDest));
+      .pipe(gulp.dest(paths.concatCssDest))
+      .pipe(concat(paths.concatCssDest + "/**/*.css"))
+      .pipe(gulp.dest("./styles.css"));
 });
 
 gulp.task('sass:watch', function () {
