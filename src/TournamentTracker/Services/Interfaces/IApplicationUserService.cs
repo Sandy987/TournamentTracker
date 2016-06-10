@@ -2,8 +2,9 @@ using TournamentTracker.Models;
 
 namespace TournamentTracker.Services.Interfaces
 {
-    public interface IApplicationUserService
+    public interface IApplicationUserService : IDbContextService
     {
             ApplicationUser GetUserById(string id);
+
     }
 }

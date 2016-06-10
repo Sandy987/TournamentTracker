@@ -2,6 +2,8 @@ using TournamentTracker.Models;
 using TournamentTracker.Services.Interfaces;
 using TournamentTracker.Data;
 using System.Linq;
+using System;
+using System.Threading.Tasks;
 
 namespace TournamentTracker.Services 
 {
@@ -27,6 +29,11 @@ namespace TournamentTracker.Services
         public void Save()
         {
             _db.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _db.SaveChangesAsync();
         }
     }
 }

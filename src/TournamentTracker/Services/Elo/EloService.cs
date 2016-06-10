@@ -5,7 +5,7 @@ using System.Text;
 using TournamentTracker.Services.Enumerations;
 using TournamentTracker.Services.Interfaces;
 
-namespace TournamentTracker.Services 
+namespace TournamentTracker.Services.Elo
 {
     public class EloService
     {

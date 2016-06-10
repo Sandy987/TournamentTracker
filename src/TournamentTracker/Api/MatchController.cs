@@ -7,6 +7,7 @@ using TournamentTracker.Models;
 
 namespace TournamentTracker.Api
 {
+     [Route("api/[controller]")]
     public class MatchController
     {
         private IMatchService _matchService;
@@ -18,8 +19,8 @@ namespace TournamentTracker.Api
             _applicationUserService = applicationUserService;
         }
 
-        [Route("api/[controller]/{id}")]
-        [HttpGet]
+       
+        [HttpGet("{id}")]
         public MatchModel Get(int id)
         {
             var match = _matchService.GetMatchById(id);
@@ -35,7 +36,7 @@ namespace TournamentTracker.Api
         }
 
         [HttpPost]
-        public void Post(MatchModel model)
+        public void Post([FromBody]MatchModel model)
         {
             var match = new Match()
             {
