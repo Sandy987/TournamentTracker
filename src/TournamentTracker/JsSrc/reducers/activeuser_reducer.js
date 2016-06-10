@@ -5,7 +5,7 @@ export default function(state, action) {
     if (!state)
         state = {
             isLoggingIn: false
-        }; //TODO: Figure out what the default state should be
+        }; 
 
     switch (action.type) {
         case userActions.REQUEST_LOGIN:

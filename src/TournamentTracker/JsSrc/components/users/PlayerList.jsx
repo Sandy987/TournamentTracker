@@ -2,7 +2,7 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import ProfileCard from './ProfileCard';
 
-export default PlayerList = React.createClass({
+export default React.createClass({
     mixins: [PureRenderMixin],
     propTypes = {
         players: React.PropTypes.arrayOf(React.PropTypes.object)

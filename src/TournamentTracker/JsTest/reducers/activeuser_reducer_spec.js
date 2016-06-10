@@ -7,7 +7,7 @@ describe('activeuser_reducer', () =>{
         const initialState = {};
         const action = requestLogin('username', 'password', true);
 
-        const nextState = pingReducer(initialState, action);
+        const nextState = activeuserReducer(initialState, action);
         
         expect(nextState.isLoggingIn).to.be.true;
         expect(nextState.user).to.be.null;
@@ -19,7 +19,7 @@ describe('activeuser_reducer', () =>{
 
         const action = receiveLogin(true, 'OK', user);
 
-        const nextState = pingReducer(initialState, action);
+        const nextState = activeuserReducer(initialState, action);
       
         expect(nextState.isLoggingIn).to.be.false;
         expect(nextState.user).to.equal(user);
@@ -29,7 +29,7 @@ describe('activeuser_reducer', () =>{
         const initialState = {};
         const action = receiveLogin(false, 'NOT OK', null);
 
-        const nextState = pingReducer(initialState, action);
+        const nextState = activeuserReducer(initialState, action);
       
         expect(nextState.isLoggingIn).to.be.false;
         expect(nextState.user).to.be.null;
