@@ -7,8 +7,7 @@ using TournamentTracker.Models;
 
 namespace TournamentTracker.Api
 {
-    [Route("api/[controller]"), Authorize]
-    public class MatchController : Controller
+    public class MatchController
     {
         private IMatchService _matchService;
         private IApplicationUserService _applicationUserService;
@@ -19,6 +18,7 @@ namespace TournamentTracker.Api
             _applicationUserService = applicationUserService;
         }
 
+        [Route("api/[controller]/{id}")]
         [HttpGet]
         public MatchModel Get(int id)
         {

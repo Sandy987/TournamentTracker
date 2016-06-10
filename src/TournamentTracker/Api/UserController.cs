@@ -26,17 +26,27 @@ namespace TournamentTracker.Api
             return new UserModel
             {
                 Id = user.Id,
-                PlayerName = user.PlayerName
+                PlayerName = user.PlayerName,
+                PlayerElo = user.PlayerElo,
+                PlayerWins = user.PlayerWins,
+                PlayerLoses = user.PlayerLoses,
+                Username = user.UserName,
+                Email = user.Email
             };
         }
 
         [HttpPatch]
-        public async Task Patch(string id, string playerName)
+        public async Task Patch(UserModel userModel)
         {
             var user = _db.Users
-                            .SingleOrDefault(u => u.Id == id);
+                            .SingleOrDefault(u => u.Id == userModel.Id);
 
-            user.PlayerName = playerName;
+            user.PlayerName = userModel.PlayerName;
+            user.Email = userModel.Email;
+            user.PlayerElo = userModel.PlayerElo;
+            user.PlayerLoses = userModel.PlayerLoses;
+            user.PlayerWins = userModel.PlayerWins;
+            user.UserName = userModel.Username;
 
             await _db.SaveChangesAsync();
         }
