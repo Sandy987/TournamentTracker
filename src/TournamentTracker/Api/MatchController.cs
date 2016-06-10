@@ -41,12 +41,12 @@ namespace TournamentTracker.Api
         {
             var match = new Match()
             {
-                Id = model.Id,
-                PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId.ToString()),
-                PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId.ToString()),
+                PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId??""),
+                PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId??""),
                 MatchWinnerId = model.WinnerId,
                 MatchStatus = MatchStatus.Pending
             };
+
             _matchService.AddMatch(match);
             _matchService.Save();
         }
