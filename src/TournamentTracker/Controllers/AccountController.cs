@@ -80,6 +80,7 @@ namespace TournamentTracker.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ApiLogin([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -91,11 +92,8 @@ namespace TournamentTracker.Controllers
                 {
                     _logger.LogInformation(1, "User logged in.");
 
-                    var user = await _userManager.GetUserAsync(HttpContext.User);
-                    var userModel = new UserModel(){
-                        Id = user.Id
-                    };
-                    return Ok(userModel);
+                    var user = await _userManager.GetUserAsync(HttpContext.User); //TODO: This returns null?
+                    return Ok(user.Id);
                 }
 
                 if (result.IsLockedOut)

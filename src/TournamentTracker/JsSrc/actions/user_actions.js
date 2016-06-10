@@ -1,47 +1,46 @@
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
+export const RECEIVE_ACTIVE_USER = 'RECEIVE_ACTIVE_USER';
 
-
-export function requestLogin(username, password, rememberMe){
+export function requestLogin(){
     return{
-        type: REQUEST_LOGIN,
-        username: username,
-        password: password,
-        rememberMe: rememberMe
+        type: REQUEST_LOGIN
     }
 }
 
-export function receiveLogin(status, message, user){
+export function receiveActiveUser(user){
     return{
-        type: RECEIVE_LOGIN,
-        status: status,
-        message: message,
+        type: RECEIVE_ACTIVE_USER,
         user: user
     }
 }
 
 //TODO: Update the contents of this to make sure it actually works with the api
-export function initiateLogin(username, password, rememberMe){
+export function initiateLogin(email, password, rememberMe){
     return function(dispatch){
 
         //First dispatch: app state is updated to informat that api call is starting
-        dispatch(requestLogin(username, password, rememberMe));
+        dispatch(requestLogin());
 
 
-        return fetch(`/account/login`, {
+        return fetch(`/account/apilogin`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username: username, password: password, rememberMe: rememberMe})
+            body: JSON.stringify({Email: email, Password: password, RememberMe: rememberMe})
         })
-          .then(response => response.json())
           .then(response =>
-              dispatch(receiveLogin(response.status, response.message, response.user))
+              fetch(`/api/user/${response.text()}`)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(user => {
+                        return dispatch(receiveActiveUser(user))
+                    })
           )
           .catch(err => 
-              dispatch(receiveLogin(false, 'An unexpected error occurred'), null) //TODO: Do this better
+              dispatch(receiveActiveUser(null)) //TODO: Do this better
           );
     }
 }

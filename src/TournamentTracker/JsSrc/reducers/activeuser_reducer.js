@@ -1,4 +1,4 @@
-import * as userActions from '../actions/user_actions';
+import {REQUEST_LOGIN, RECEIVE_LOGIN, RECEIVE_ACTIVE_USER} from '../actions/user_actions';
 
 
 export default function(state, action) {
@@ -8,10 +8,12 @@ export default function(state, action) {
         }; 
 
     switch (action.type) {
-        case userActions.REQUEST_LOGIN:
+        case REQUEST_LOGIN:
             return Object.assign({}, state, requestLogin(action)); 
-        case userActions.RECEIVE_LOGIN:
-            return Object.assign({}, state, receiveLogin(action))
+        case RECEIVE_LOGIN:
+            return Object.assign({}, state, receiveLogin(action));
+        case RECEIVE_ACTIVE_USER:
+            return Object.assign({}, state, receiveActiveUser(action));
     }
 
     return state;
@@ -20,22 +22,19 @@ export default function(state, action) {
 function requestLogin(action){
     return {
         user: null,
-        message: 'In progress',
         isLoggingIn: true
     }
 }
 
-function receiveLogin(action){
-    if (action.status){
+function receiveActiveUser(action){
+    if (action.user){
         return {
             user: action.user,
-            message: null,
             isLoggingIn: false
         }
     } else{
         return {
             user: null,
-            message: action.message,
             isLoggingIn: false
         }
     }

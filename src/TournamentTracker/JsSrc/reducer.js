@@ -8,5 +8,5 @@ export default combineReducers({
     default: DefaultReducer,
     form: FormReducer,
     ping: PingReducer,
-    user: ActiveUserReducer
+    activeUser: ActiveUserReducer
 })
