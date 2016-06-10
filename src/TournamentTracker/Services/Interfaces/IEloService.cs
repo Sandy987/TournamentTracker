@@ -1,3 +1,5 @@
+using TournamentTracker.Services.Enumerations;
+
 namespace TournamentTracker.Services.Interfaces
 {
     public interface IEloService
