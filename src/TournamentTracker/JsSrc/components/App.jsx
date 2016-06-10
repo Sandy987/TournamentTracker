@@ -6,11 +6,15 @@
 
 
 import React from 'react';
+import TopMenuContainer from './TopMenu';
 
 //How this works is that is renders all child components passed into the children prop
 //This is what React Router does for us
 export default React.createClass({
     render: function() {
-        return this.props.children;
+        return <div>
+            <TopMenuContainer />
+            {this.props.children}
+        </div>;
     }
 });

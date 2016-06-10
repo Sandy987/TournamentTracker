@@ -1,6 +1,7 @@
 import checkStatus from '../utils/check_http_status';
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
+export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const RECEIVE_ACTIVE_USER = 'RECEIVE_ACTIVE_USER';
 
 export function requestLogin(){
@@ -9,15 +10,20 @@ export function requestLogin(){
     }
 }
 
-export function receiveActiveUser(user, status){
-    return{
-        type: RECEIVE_ACTIVE_USER,
-        user: user,
-        status: status
+export function loginFailed(message){
+    return {
+        type: LOGIN_FAILED,
+        message: message
     }
 }
 
-//TODO: Update the contents of this to make sure it actually works with the api
+export function receiveActiveUser(user){
+    return{
+        type: RECEIVE_ACTIVE_USER,
+        user: user
+    }
+}
+
 export function initiateLogin(email, password, rememberMe){
     return function(dispatch){
 
@@ -45,11 +51,11 @@ export function initiateLogin(email, password, rememberMe){
                         return response.json();
                     })
                     .then(user => {
-                        return dispatch(receiveActiveUser(user, true))
+                        return dispatch(receiveActiveUser(user))
                     })
             )
             .catch(err => 
-                dispatch(receiveActiveUser(null, false)) //TODO: Do this better
+                dispatch(loginFailed(err.message))
             );
     }
 }

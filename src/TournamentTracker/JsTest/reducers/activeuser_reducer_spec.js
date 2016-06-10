@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import activeuserReducer from '../../JsSrc/reducers/activeuser_reducer'
-import {requestLogin, receiveActiveUser} from '../../JsSrc/actions/user_actions'
+import {requestLogin, loginFailed, receiveActiveUser} from '../../JsSrc/actions/user_actions'
 
 describe('activeuser_reducer', () =>{
     it('handles REQUEST_LOGIN', () =>{
@@ -13,7 +13,7 @@ describe('activeuser_reducer', () =>{
         expect(nextState.user).to.be.null;
     });
 
-    it('handles RECEIVE_ACTIVE_USER with success status', () =>{
+    it('handles RECEIVE_ACTIVE_USER', () =>{
         const initialState = {};
         const user = {name: 'Username'};
 
@@ -25,14 +25,15 @@ describe('activeuser_reducer', () =>{
         expect(nextState.user).to.equal(user);
     });
 
-    it('handles RECEIVE_ACTIVE_USER with fail status', () =>{
+    it('handles LOGIN_FAILED', () =>{
         const initialState = {};
-        const action = receiveActiveUser(null, false);
+        const action = loginFailed( "FAIL");
 
         const nextState = activeuserReducer(initialState, action);
       
         expect(nextState.isLoggingIn).to.be.false;
         expect(nextState.user).to.be.null;
+        expect(nextState.errorMessage).to.equal(action.message);
     });
    
 });
