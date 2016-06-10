@@ -9,11 +9,11 @@ namespace TournamentTracker.Api.Models
     {
         public int Id { get; set; }
         public string PlayerOneName { get; set; }
-        public int PlayerOneId {get; set;}
+        public string PlayerOneId {get; set;}
         public string PlayerTwoName {get; set;}
         public string PlayerTwoId {get; set;}
         public int PlayerOneScore {get; set;}
         public int PlayerTwoScore {get; set;}
-        public int WinnerId {get; set;}
+        public string WinnerId {get; set;}
     }
 }

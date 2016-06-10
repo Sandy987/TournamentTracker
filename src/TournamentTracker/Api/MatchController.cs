@@ -7,8 +7,8 @@ using TournamentTracker.Models;
 
 namespace TournamentTracker.Api
 {
-     [Route("api/[controller]")]
-    public class MatchController
+	[Route("api/[controller]")]
+    public class MatchController : Controller
     {
         private IMatchService _matchService;
         private IApplicationUserService _applicationUserService;
@@ -24,6 +24,7 @@ namespace TournamentTracker.Api
         public MatchModel Get(int id)
         {
             var match = _matchService.GetMatchById(id);
+            if (match == null) return null;
             var matchModel = new MatchModel() 
             {
                 Id = match.Id,
@@ -35,17 +36,18 @@ namespace TournamentTracker.Api
             return matchModel;
         }
 
+        [Route("api/[controller]")]
         [HttpPost]
         public void Post([FromBody]MatchModel model)
         {
             var match = new Match()
             {
-                Id = model.Id,
-                PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId.ToString()),
-                PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId.ToString()),
+                PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId??""),
+                PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId??""),
                 MatchWinnerId = model.WinnerId,
                 MatchStatus = MatchStatus.Pending
             };
+
             _matchService.AddMatch(match);
             _matchService.Save();
         }
