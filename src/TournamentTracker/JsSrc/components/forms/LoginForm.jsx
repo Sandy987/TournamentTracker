@@ -2,12 +2,20 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {reduxForm} from 'redux-form';
 import {validateLogin} from '../../validators/validateLogin';
+import * as userActions from '../../actions/user_actions';
+
+const submit = (values, dispatch) =>{
+    return new Promise((resolve, reject) => {
+        dispatch(userActions.initiateLogin(values.username, values.password, values.rememberMe));
+        resolve();
+    });
+};
 
 const LoginFormComponent = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
-        const { fields: {username, password, rememberMe}, handleSubmit} = this.props;
-        return <form onSubmit={handleSubmit}>
+        const { fields: {username, password, rememberMe}, handleSubmit, submitting} = this.props;
+        return <form onSubmit={handleSubmit(submit)}>
            <label>Username</label>
            <input type="text" {...name} />
            {username.error && username.touched && <div>{username.error}</div>} 
@@ -20,7 +28,7 @@ const LoginFormComponent = React.createClass({
            <input type="checkbox" {...rememberMe}/>
            {rememberMe.error && rememberMe.touched && <div>{rememberMe.error}</div>} 
 
-           <button onClick={handleSubmit}>Log In</button>
+           <button onClick={handleSubmit(submit)} disabled={submitting}>Log In</button>
         </form>;
     }
 });

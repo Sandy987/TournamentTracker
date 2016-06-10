@@ -4,6 +4,9 @@ import {connect} from 'react-redux';
 
 import * as actionCreators from '../actions/action_creators';
 import * as pingActions from '../actions/ping_actions';
+import * as userActions from '../actions/user_actions';
+
+import LoginForm from './forms/LoginForm';
 
 export const HomePage = React.createClass({
     mixins: [PureRenderMixin],
@@ -13,6 +16,7 @@ export const HomePage = React.createClass({
            <span>{this.props.isPinging}</span>
            <span>{this.props.pingReceived}</span>
            <button onClick={() => this.props.initiatePing()}>PING</button>
+           <LoginForm />
         </div>;
     } 
 });
