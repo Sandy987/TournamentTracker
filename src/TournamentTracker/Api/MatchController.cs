@@ -4,6 +4,7 @@ using TournamentTracker.Api.Models;
 using TournamentTracker.Services.Interfaces;
 using TournamentTracker.Models.Enumerations;
 using TournamentTracker.Models;
+using System.Threading.Tasks;
 
 namespace TournamentTracker.Api
 {
@@ -21,10 +22,11 @@ namespace TournamentTracker.Api
 
        
         [HttpGet("{id}")]
-        public MatchModel Get(int id)
+        public IActionResult Get(int id)
         {
             var match = _matchService.GetMatchById(id);
-            if (match == null) return null;
+            if (match == null) return NotFound();
+
             var matchModel = new MatchModel() 
             {
                 Id = match.Id,
@@ -33,23 +35,26 @@ namespace TournamentTracker.Api
                 PlayerOneScore = match.PlayerOneScore,
                 PlayerTwoScore = match.PlayerTwoScore,
             };
-            return matchModel;
+
+            return Ok(matchModel);
         }
 
         [Route("api/[controller]")]
         [HttpPost]
-        public void Post([FromBody]MatchModel model)
+        public async Task<IActionResult> Post([FromBody]MatchModel model)
         {
+            if(model == null) return BadRequest();
+
             var match = new Match()
             {
                 PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId??""),
                 PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId??""),
-                MatchWinnerId = model.WinnerId,
                 MatchStatus = MatchStatus.Pending
             };
 
             _matchService.AddMatch(match);
-            _matchService.Save();
+            await _matchService.SaveAsync();
+            return Ok();
         }
 
     }

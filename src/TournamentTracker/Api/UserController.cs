@@ -26,7 +26,7 @@ namespace TournamentTracker.Api
             if(user == null)
                 return NotFound();
             
-            return new ObjectResult(new UserModel
+            return Ok(new UserModel
             {
                 Id = user.Id,
                 PlayerName = user.PlayerName,

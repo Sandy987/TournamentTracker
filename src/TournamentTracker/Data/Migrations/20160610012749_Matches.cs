@@ -42,11 +42,6 @@ namespace TournamentTracker.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.AddColumn<string>(
-                name: "PlayerName",
-                table: "AspNetUsers",
-                nullable: true);
-
             migrationBuilder.CreateIndex(
                 name: "IX_Matches_PlayerOneId1",
                 table: "Matches",
@@ -60,10 +55,6 @@ namespace TournamentTracker.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "PlayerName",
-                table: "AspNetUsers");
-
             migrationBuilder.DropTable(
                 name: "Matches");
         }
