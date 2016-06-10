@@ -1,3 +1,5 @@
+import checkStatus from '../utils/check_http_status';
+
 export const REQUEST_MATCH = 'REQUEST_MATCH';
 export const RECEIVE_MATCH = 'RECEIVE_MATCH';
 
@@ -25,14 +27,17 @@ export function initiateLoadMatch(matchId){
         dispatch(requestMatch(matchId));
 
         //TODO: update so it works with the real api
-        return fetch(`/api/match/${matchId}`)
-          .then(response => response.json())
-          .then(response =>
-              dispatch(receiveMatch(response.match))
-          )
-          .catch(err => 
-              dispatch(receiveMatch(null)) //TODO: Do this better
-          );
+        return fetch(`/api/match/${matchId}`,{
+            credentials: 'same-origin'
+        })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(response =>
+                dispatch(receiveMatch(response.match))
+            )
+            .catch(err => 
+                dispatch(receiveMatch(null)) //TODO: Do this better
+            );
     }
 }
 
@@ -59,12 +64,13 @@ export function initiateLoadMatchHistory(playerId){
 
         //TODO: update so it works with the real api
         return fetch(`/api/match/${playerId}`)
-          .then(response => response.json())
-          .then(response =>
-              dispatch(receiveMatchHistory(playerId, response.matches))
-          )
-          .catch(err => 
-              dispatch(receiveMatchHistory(playerId, null)) //TODO: Do this better
-          );
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(response =>
+                dispatch(receiveMatchHistory(playerId, response.matches))
+            )
+            .catch(err => 
+                dispatch(receiveMatchHistory(playerId, null)) //TODO: Do this better
+            );
     }
 }

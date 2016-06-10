@@ -1,3 +1,5 @@
+import checkStatus from '../utils/check_http_status';
+
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const RECEIVE_ACTIVE_USER = 'RECEIVE_ACTIVE_USER';
 
@@ -7,10 +9,11 @@ export function requestLogin(){
     }
 }
 
-export function receiveActiveUser(user){
+export function receiveActiveUser(user, status){
     return{
         type: RECEIVE_ACTIVE_USER,
-        user: user
+        user: user,
+        status: status
     }
 }
 
@@ -24,23 +27,29 @@ export function initiateLogin(email, password, rememberMe){
 
         return fetch(`/account/apilogin`, {
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({Email: email, Password: password, RememberMe: rememberMe})
         })
-          .then(response =>
-              fetch(`/api/user/${response.text()}`)
+            .then(checkStatus)
+            .then(response => response.text())
+            .then(userId =>
+                fetch(`/api/user/${userId}`, {
+                    credentials: 'same-origin'
+                })
+                    .then(checkStatus)
                     .then(response => {
                         return response.json();
                     })
                     .then(user => {
-                        return dispatch(receiveActiveUser(user))
+                        return dispatch(receiveActiveUser(user, true))
                     })
-          )
-          .catch(err => 
-              dispatch(receiveActiveUser(null)) //TODO: Do this better
-          );
+            )
+            .catch(err => 
+                dispatch(receiveActiveUser(null, false)) //TODO: Do this better
+            );
     }
 }

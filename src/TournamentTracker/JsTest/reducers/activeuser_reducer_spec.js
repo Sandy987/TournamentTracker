@@ -17,7 +17,7 @@ describe('activeuser_reducer', () =>{
         const initialState = {};
         const user = {name: 'Username'};
 
-        const action = receiveActiveUser(user);
+        const action = receiveActiveUser(user, true);
 
         const nextState = activeuserReducer(initialState, action);
       
@@ -27,7 +27,7 @@ describe('activeuser_reducer', () =>{
 
     it('handles RECEIVE_ACTIVE_USER with fail status', () =>{
         const initialState = {};
-        const action = receiveActiveUser(null);
+        const action = receiveActiveUser(null, false);
 
         const nextState = activeuserReducer(initialState, action);
       

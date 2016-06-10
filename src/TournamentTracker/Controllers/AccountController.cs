@@ -93,7 +93,7 @@ namespace TournamentTracker.Controllers
                     _logger.LogInformation(1, "User logged in.");
 
                     var user = await _userManager.GetUserAsync(HttpContext.User); //TODO: This returns null?
-                    return Ok(user.Id);
+                    return Content(user.Id);
                 }
 
                 if (result.IsLockedOut)

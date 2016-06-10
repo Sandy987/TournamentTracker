@@ -27,7 +27,7 @@ function requestLogin(action){
 }
 
 function receiveActiveUser(action){
-    if (action.user){
+    if (action.status){
         return {
             user: action.user,
             isLoggingIn: false
@@ -35,6 +35,7 @@ function receiveActiveUser(action){
     } else{
         return {
             user: null,
+            errorMessage: 'Login Failed, Try Again',
             isLoggingIn: false
         }
     }

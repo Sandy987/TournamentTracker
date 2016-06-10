@@ -29,14 +29,14 @@ export function initiatePing(){
         // This is not required by thunk middleware, but it is convenient for us.
 
         return fetch(`/api/ping`)
-          //.then(response => response.json())
-          .then(response =>
+            //.then(response => response.json())
+            .then(response =>
 
-              // We can dispatch many times!
-              // Here, we update the app state with the results of the API call.
+                // We can dispatch many times!
+                // Here, we update the app state with the results of the API call.
 
-              dispatch(receivePing())
-          )
+                dispatch(receivePing())
+            )
 
         // In a real world app, you also want to
         // catch any error in the network call.
