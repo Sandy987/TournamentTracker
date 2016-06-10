@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TournamentTracker.Data;
+using TournamentTracker.Services.Interfaces;
 using TournamentTracker.Api.Models;
 
 namespace TournamentTracker.Api
@@ -10,35 +10,58 @@ namespace TournamentTracker.Api
     [Route("api/[controller]"), Authorize]
     public class UserController : Controller
     {
-        private TournamentTrackerDbContext _db;
+        private IApplicationUserService _userService;
 
-        public UserController(TournamentTrackerDbContext context)
+        public UserController(IApplicationUserService userService)
         {
-            _db = context;
+            _userService = userService;
         }
 
-        [HttpGet]
-        public UserModel Get(string id)
+        [HttpGet("{id}")]
+        public IActionResult Get(string id)
         {
-            var user = _db.Users
-                            .SingleOrDefault(u => u.Id == id);
+            if(string.IsNullOrWhiteSpace(id))
+                return BadRequest();
+            var user = _userService.GetUserById(id);
+            if(user == null)
+                return NotFound();
             
-            return new UserModel
+            return Ok(new UserModel
             {
                 Id = user.Id,
-                PlayerName = user.PlayerName
-            };
+                PlayerName = user.PlayerName,
+                PlayerElo = user.PlayerElo,
+                PlayerWins = user.PlayerWins,
+                PlayerLoses = user.PlayerLoses,
+                Username = user.UserName,
+                Email = user.Email
+            });
         }
 
-        [HttpPatch]
-        public async Task Patch(string id, string playerName)
+
+
+        [HttpPatch("{userModel}")]
+        public async Task<IActionResult> Patch([FromBody]UserModel userModel)
         {
-            var user = _db.Users
-                            .SingleOrDefault(u => u.Id == id);
+            if(userModel == null || string.IsNullOrEmpty(userModel.Id))
+            {
+                return BadRequest();
+            }
+            
+            var user = _userService.GetUserById(userModel.Id);
+            
+            if(user== null)
+                return NotFound();
 
-            user.PlayerName = playerName;
+            user.PlayerName = userModel.PlayerName ?? user.PlayerName;
+            user.Email = userModel.Email ?? user.Email;
+            user.PlayerElo = userModel.PlayerElo ?? user.PlayerElo;
+            user.PlayerLoses = userModel.PlayerLoses ?? user.PlayerLoses;
+            user.PlayerWins = userModel.PlayerWins ?? user.PlayerWins;
+            user.UserName = userModel.Username ?? user.UserName;
 
-            await _db.SaveChangesAsync();
+            await _userService.SaveAsync();
+            return Ok();
         }
     }
 }

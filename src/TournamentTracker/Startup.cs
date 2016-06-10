@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TournamentTracker.Data;
 using TournamentTracker.Models;
+using TournamentTracker.Services.Interfaces;
+using TournamentTracker.Services;
 
 namespace TournamentTracker
 {
@@ -49,7 +51,8 @@ namespace TournamentTracker
             services.AddMvc();
 
             // Add application services.
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IApplicationUserService, ApplicationUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

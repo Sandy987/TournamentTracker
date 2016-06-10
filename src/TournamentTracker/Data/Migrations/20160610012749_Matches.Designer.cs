@@ -8,9 +8,10 @@ using TournamentTracker.Data;
 namespace TournamentTracker.Data.Migrations
 {
     [DbContext(typeof(TournamentTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160610012749_Matches")]
+    partial class Matches
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20896")
@@ -153,13 +154,7 @@ namespace TournamentTracker.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<double>("PlayerElo");
-
-                    b.Property<int>("PlayerLoses");
-
                     b.Property<string>("PlayerName");
-
-                    b.Property<int>("PlayerWins");
 
                     b.Property<string>("SecurityStamp");
 

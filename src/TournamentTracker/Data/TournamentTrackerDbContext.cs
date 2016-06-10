@@ -10,6 +10,7 @@ namespace TournamentTracker.Data
 {
     public class TournamentTrackerDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Match> Matches {get; set;}
         public TournamentTrackerDbContext(DbContextOptions<TournamentTrackerDbContext> options)
             : base(options)
         {
