@@ -20,8 +20,8 @@ export const HomePage = React.createClass({
 //Makes properties from the redux state tree available to the component in the form of props
 function mapStateToProps(state){
     return{
-        isPinging: state.PingReducer.isPinging,
-        pingReceived: state.PingReducer.pingReceived
+        isPinging: state.ping.isPinging,
+        pingReceived: state.ping.pingReceived
     }
 }
 

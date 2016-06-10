@@ -10,5 +10,8 @@ namespace TournamentTracker.Models
     public class ApplicationUser : IdentityUser
     {
         public string PlayerName { get; set; }
+        public double PlayerElo {get; set;}
+        public int PlayerWins {get; set;}
+        public int PlayerLoses {get; set;}
     }
 }

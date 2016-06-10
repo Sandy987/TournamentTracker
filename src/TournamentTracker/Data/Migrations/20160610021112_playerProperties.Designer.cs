@@ -8,9 +8,10 @@ using TournamentTracker.Data;
 namespace TournamentTracker.Data.Migrations
 {
     [DbContext(typeof(TournamentTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160610021112_playerProperties")]
+    partial class playerProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20896")
@@ -179,38 +180,6 @@ namespace TournamentTracker.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TournamentTracker.Models.Match", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("MatchCompletion");
-
-                    b.Property<int>("MatchStatus");
-
-                    b.Property<int>("MatchWinnerId");
-
-                    b.Property<int>("PlayerOneId");
-
-                    b.Property<string>("PlayerOneId1");
-
-                    b.Property<int>("PlayerOneScore");
-
-                    b.Property<int>("PlayerTwoId");
-
-                    b.Property<string>("PlayerTwoId1");
-
-                    b.Property<int>("PlayerTwoScore");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerOneId1");
-
-                    b.HasIndex("PlayerTwoId1");
-
-                    b.ToTable("Matches");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -246,17 +215,6 @@ namespace TournamentTracker.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TournamentTracker.Models.Match", b =>
-                {
-                    b.HasOne("TournamentTracker.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("PlayerOneId1");
-
-                    b.HasOne("TournamentTracker.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("PlayerTwoId1");
                 });
         }
     }
