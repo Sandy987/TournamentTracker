@@ -10,14 +10,14 @@ namespace TournamentTracker.Models
     public class Match
     {
         public int Id { get; set; }
-        public int PlayerOneId {get; set;}
-        public int PlayerTwoId {get; set;}
+        public string PlayerOneId {get; set;}
+        public string PlayerTwoId {get; set;}
         public int PlayerOneScore { get; set; }
         public int PlayerTwoScore { get; set; }
-        public int MatchWinnerId{get; set;}
+        public string MatchWinnerId{get; set;}
         public ApplicationUser PlayerOne { get; set; }
         public ApplicationUser PlayerTwo { get; set; }
-        public MatchStatus MatchStatus {get; set;}
-        public DateTime MatchCompletion {get; set;}
+        public MatchStatus? MatchStatus {get; set;}
+        public DateTime? MatchCompletion {get; set;}
     }
 }

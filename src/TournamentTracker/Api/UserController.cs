@@ -20,11 +20,11 @@ namespace TournamentTracker.Api
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-            if(string.IsNullOrWhiteSpace(id))
-                return BadRequest();
+            if(string.IsNullOrWhiteSpace(id)) return BadRequest();
+
             var user = _userService.GetUserById(id);
-            if(user == null)
-                return NotFound();
+
+            if(user == null) return NotFound();
             
             return Ok(new UserModel
             {
@@ -40,18 +40,15 @@ namespace TournamentTracker.Api
 
 
 
-        [HttpPatch("{userModel}")]
+        [HttpPatch("")]
         public async Task<IActionResult> Patch([FromBody]UserModel userModel)
         {
-            if(userModel == null || string.IsNullOrEmpty(userModel.Id))
-            {
-                return BadRequest();
-            }
+            if(userModel == null || string.IsNullOrEmpty(userModel.Id)) return BadRequest();
+
             
             var user = _userService.GetUserById(userModel.Id);
             
-            if(user== null)
-                return NotFound();
+            if(user== null) return NotFound();
 
             user.PlayerName = userModel.PlayerName ?? user.PlayerName;
             user.Email = userModel.Email ?? user.Email;

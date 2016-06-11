@@ -39,21 +39,43 @@ namespace TournamentTracker.Api
             return Ok(matchModel);
         }
 
-        [Route("api/[controller]")]
-        [HttpPost]
+
+        [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]MatchModel model)
         {
             if(model == null) return BadRequest();
 
             var match = new Match()
             {
-                PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId??""),
-                PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId??""),
-                MatchStatus = MatchStatus.Pending
+                PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId ?? ""),
+                PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId ?? ""),
+                MatchStatus = model.MatchStatus ?? MatchStatus.Pending
             };
 
             _matchService.AddMatch(match);
             await _matchService.SaveAsync();
+            return Ok();
+        }
+
+        [HttpPatch("")]
+        public async Task<IActionResult> Patch([FromBody]MatchModel model)
+        {
+            if(model == null) return BadRequest();
+
+            var match = _matchService.GetMatchById(model.Id);
+            
+            if(match == null) return NotFound();
+
+            match.MatchCompletion = model.MatchCompletion ?? match.MatchCompletion;
+            match.MatchStatus = model.MatchStatus ?? match.MatchStatus;
+            match.MatchWinnerId = model.MatchWinnerId ?? match.MatchWinnerId;
+            match.PlayerOneId = model.PlayerOneId ?? match.PlayerOneId;
+            match.PlayerTwoId = model.PlayerTwoId ?? match.PlayerTwoId;
+            match.PlayerOneScore = model.PlayerOneScore ?? match.PlayerOneScore;
+            match.PlayerTwoScore = model.PlayerTwoScore ?? match.PlayerTwoScore;
+
+            await _matchService.SaveAsync();
+
             return Ok();
         }
 
