@@ -53,6 +53,7 @@ namespace TournamentTracker
             // Add application services.
             services.AddTransient<IMatchService, MatchService>();
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            services.AddTransient<INotificationService, NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

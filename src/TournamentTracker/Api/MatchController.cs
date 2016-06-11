@@ -5,9 +5,11 @@ using TournamentTracker.Services.Interfaces;
 using TournamentTracker.Models.Enumerations;
 using TournamentTracker.Models;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace TournamentTracker.Api
 {
+    //[Authorize]
 	[Route("api/[controller]")]
     public class MatchController : Controller
     {
@@ -30,13 +32,43 @@ namespace TournamentTracker.Api
             var matchModel = new MatchModel() 
             {
                 Id = match.Id,
-                PlayerOneName = match.PlayerOne.UserName,
-                PlayerTwoName = match.PlayerTwo.UserName,
+                PlayerOneName = match.PlayerOne?.UserName,
+                PlayerOneId = match.PlayerOneId,
+                PlayerTwoName = match.PlayerTwo?.UserName,
+                PlayerTwoId = match.PlayerTwoId,
                 PlayerOneScore = match.PlayerOneScore,
                 PlayerTwoScore = match.PlayerTwoScore,
+                MatchWinnerId = match.MatchWinnerId,
+                MatchStatus = match.MatchStatus,
+                MatchCompletion = match.MatchCompletion
             };
 
             return Ok(matchModel);
+        }
+
+        [HttpGet("GetByPlayer/{playerId}")]
+        public IActionResult GetByPlayerId(string playerId)
+        {
+            if(string.IsNullOrEmpty(playerId)) return BadRequest();
+
+            var player = _applicationUserService.GetUserById(playerId);
+            if(player == null) return NotFound();
+
+            var matches = player.Matches.Select(m =>
+                new MatchModel {
+                    Id = m.Id,
+                    PlayerOneName = m.PlayerOne?.UserName,
+                    PlayerOneId = m.PlayerOneId,
+                    PlayerTwoName = m.PlayerTwo?.UserName,
+                    PlayerTwoId = m.PlayerTwoId,
+                    PlayerOneScore = m.PlayerOneScore,
+                    PlayerTwoScore = m.PlayerTwoScore,
+                    MatchWinnerId = m.MatchWinnerId,
+                    MatchStatus = m.MatchStatus,
+                    MatchCompletion = m.MatchCompletion
+                }
+            );
+            return Ok(matches);
         }
 
 

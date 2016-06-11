@@ -13,5 +13,10 @@ namespace TournamentTracker.Models
         public double PlayerElo {get; set;}
         public int PlayerWins {get; set;}
         public int PlayerLoses {get; set;}
+        public List<Match> Matches {get; set;}
+
+        public ApplicationUser(){
+            Matches =  new List<Match>();
+        }
     }
 }
