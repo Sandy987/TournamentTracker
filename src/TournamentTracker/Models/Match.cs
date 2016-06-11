@@ -6,7 +6,6 @@ using TournamentTracker.Models.Enumerations;
 
 namespace TournamentTracker.Models
 {
-    //TODO: Fill this out properly later - To be corrected by someone who knows what they're doing
     public class Match
     {
         public int Id { get; set; }

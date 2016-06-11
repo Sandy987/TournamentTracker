@@ -7,7 +7,7 @@ using TournamentTracker.Services.Interfaces;
 
 namespace TournamentTracker.Services.Elo
 {
-    public class EloService
+    public class EloService : IEloService
     {
         private int factor = 32;
         private int divisor = 400;

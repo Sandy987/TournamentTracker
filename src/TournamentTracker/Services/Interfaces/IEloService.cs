@@ -2,7 +2,7 @@ using TournamentTracker.Services.Enumerations;
 
 namespace TournamentTracker.Services.Interfaces
 {
-    public interface IEloService: IDbContextService
+    public interface IEloService
     {
         EloResult CalcElo(int playerOneElo, int playerTwoElo, MatchWinner winner);
     }

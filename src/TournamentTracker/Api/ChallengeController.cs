@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TournamentTracker.Api.Models;
 using TournamentTracker.Services.Interfaces;
+using TournamentTracker.Services.Enumerations;
 using TournamentTracker.Models.Enumerations;
 using TournamentTracker.Models;
 using System.Threading.Tasks;
@@ -18,16 +19,19 @@ namespace TournamentTracker.Api
         private IApplicationUserService _applicationUserService;
 
         private IMatchService _matchService;
+        private IEloService _eloService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ChallengeController(IChallengeService challengeService, 
         IApplicationUserService applicationUserService,
         IMatchService matchService,
+        IEloService eloService,
         UserManager<ApplicationUser> userManager)
         {
             _challengeService = challengeService;
             _applicationUserService = applicationUserService;
             _matchService = matchService;
+            _eloService = eloService;
             _userManager = userManager;
         }
 
@@ -115,12 +119,33 @@ namespace TournamentTracker.Api
                 if (match == null || match.MatchStatus == null || match.MatchStatus != MatchStatus.Accepted)
                     return BadRequest("match not completable");
 
-                //todo call ELO service and update player ELOs
-
                 match.MatchStatus = MatchStatus.Completed;
                 challenge.Status = ChallengeStatus.Accepted;
+
+                var playerOne = _applicationUserService.GetUserById(match.PlayerOneId);
+                var playerTwo = _applicationUserService.GetUserById(match.PlayerTwoId);
+
+                if (match.PlayerOneScore > match.PlayerTwoScore)
+                {
+                     match.MatchWinnerId = match.PlayerOneId;
+                     playerOne.PlayerWins +=1;
+                     playerTwo.PlayerLoses +=1;
+                }
+                else if(match.PlayerTwoScore > match.PlayerOneScore)
+                {
+                    match.MatchWinnerId = match.PlayerTwoId;
+                    playerTwo.PlayerWins +=1;
+                    playerOne.PlayerLoses +=1;
+                }
+                var eloResult = _eloService.CalcElo((int)playerOne.PlayerElo, 
+                                                    (int)playerTwo.PlayerElo, 
+                                                    match.MatchWinnerId==match.PlayerOneId?MatchWinner.PlayerOne:MatchWinner.PlayerTwo);
+                
+                playerOne.PlayerElo = eloResult.PlayerOneElo;
+                playerTwo.PlayerElo = eloResult.PlayerTwoElo;              
             }
 
+            await _applicationUserService.SaveAsync();
             await _matchService.SaveAsync();
             await _challengeService.SaveAsync();
 
