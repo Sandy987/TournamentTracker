@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 const MatchCard = React.createClass({
     mixins: [PureRenderMixin],
     getPlayerView: function(id, name, score, winnerId){
-        var className = id === winnerId ? "player-winner" : "player-loser"
+        var className = id === winnerId ? "player-winner" : "";
         return <div className={className}>
                     <span className="player-name">{name}</span>
                     <span className="player-score">{score}</span>

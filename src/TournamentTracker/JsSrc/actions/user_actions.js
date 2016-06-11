@@ -4,6 +4,8 @@ export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const REQUEST_REGISTER = 'REQUEST_REGISTER';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const RECEIVE_ACTIVE_USER = 'RECEIVE_ACTIVE_USER';
+export const REQUEST_SAVE_USER = 'REQUEST_SAVE_USER';
+export const RECEIVE_SAVE_USER = 'RECEIVE_SAVE_USER';
 
 export function requestLogin(){
     return{
@@ -79,4 +81,16 @@ export function initiateRegister(email, password){
                 dispatch(loginFailed(err.message))
             );
     }
+}
+
+export function requestSaveUser(){
+
+}
+
+export function receiveSaveUser(){
+
+}
+
+export function initiateSaveUserDetails(playerId, playerName, email, userName){
+
 }

@@ -5,7 +5,7 @@ import MatchList from '../matches/MatchList';
 import {connect} from 'react-redux';
 import * as matchActions from '../../actions/match_actions';
 
-const UserProfile = React.createClass({
+const PlayerProfile = React.createClass({
     mixins: [PureRenderMixin],
     
     render: function(){
@@ -34,4 +34,4 @@ function mapStateToProps(state, ownProps){
     }
 }
 
-export default connect(mapStateToProps, matchActions)(UserProfile);
+export default connect(mapStateToProps, matchActions)(PlayerProfile);

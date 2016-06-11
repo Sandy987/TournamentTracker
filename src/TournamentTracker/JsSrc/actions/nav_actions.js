@@ -1,4 +1,4 @@
-export const NAVIGATE = 'NAVIGATE'
+export const NAVIGATE = 'NAVIGATE';
 
 export function routerDidNavigate(path){
     return {
