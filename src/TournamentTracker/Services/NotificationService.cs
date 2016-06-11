@@ -21,6 +21,11 @@ namespace TournamentTracker.Services
             _db.Notifications.Add(notification);
         }
 
+        public Notification GetNotificationById(int id)
+        {
+            return _db.Notifications.SingleOrDefault(c => c.Id == id);
+        }
+
         public void Save()
         {
             _db.SaveChanges();

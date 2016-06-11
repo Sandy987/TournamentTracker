@@ -20,7 +20,12 @@ namespace TournamentTracker.Services
         {
             _db.Challenges.Add(challenge);
         }
-     
+
+        public Challenge GetChallengeById(int id)
+        {
+            return _db.Challenges.SingleOrDefault(c => c.Id == id);
+        }
+
         public void Save()
         {
             _db.SaveChanges();

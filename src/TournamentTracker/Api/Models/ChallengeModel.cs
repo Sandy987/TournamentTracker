@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TournamentTracker.Models.Enumerations;
 
 namespace TournamentTracker.Api.Models
 {
@@ -12,5 +13,6 @@ namespace TournamentTracker.Api.Models
         public string ReceivingPlayerId {get; set;}
         public string SendingPlayerName {get; set;}
         public string ReceivingPlayerName {get; set;}
+        public ChallengeStatus? Status {get; set;}
     }
 }

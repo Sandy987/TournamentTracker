@@ -53,6 +53,22 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
+        [HttpPatch("")]
+        public async Task<IActionResult> Patch([FromBody]NotificationModel model)
+        {
+            if(model == null) return BadRequest();
+
+            var notification = _notificationService.GetNotificationById(model.Id);
+            
+            if(notification == null) return NotFound();
+
+            notification.Status = model.Status ?? notification.Status;
+
+            await _notificationService.SaveAsync();
+
+            return Ok();
+        }
+
         private IEnumerable<NotificationModel> MapToModels(IEnumerable<Notification> notifications)
         {
             return notifications.Select(n =>

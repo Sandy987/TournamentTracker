@@ -52,6 +52,22 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
+        [HttpPatch("")]
+        public async Task<IActionResult> Patch([FromBody]ChallengeModel model)
+        {
+            if(model == null) return BadRequest();
+
+            var challenge = _challengeService.GetChallengeById(model.Id);
+            
+            if(challenge == null) return NotFound();
+
+            challenge.Status = model.Status ?? challenge.Status;
+
+            await _challengeService.SaveAsync();
+
+            return Ok();
+        }
+
         private IEnumerable<ChallengeModel> MapToModels(IEnumerable<Challenge> challenges)
         {
             return challenges.Select(n =>
