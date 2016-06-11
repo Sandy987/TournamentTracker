@@ -79,7 +79,7 @@ namespace TournamentTracker.Api
         public async Task<IActionResult> Post([FromBody]MatchModel model)
         {
             var currentUserId = _userManager.GetUserId(User);
-            if (model == null || (model.PlayerOneId != currentUserId||model.PlayerTwoId != currentUserId))
+            if (model == null || (model.PlayerOneId != currentUserId && model.PlayerTwoId != currentUserId))
                 return BadRequest();
 
             var match = new Match()
