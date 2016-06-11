@@ -14,6 +14,7 @@ import authMiddleware from './middleware/auth_middleware';
 import App from './components/App';
 import HomePageContainer from './components/HomePage';
 import LoginForm from './components/forms/LoginForm';
+import RegisterForm from './components/forms/RegisterForm';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
@@ -40,6 +41,7 @@ ReactDOM.render(
     <Provider store={store}>
         <Router history={hashHistory}>
             <Route path="/login" component={LoginForm} />
+            <Route path="/register" component={RegisterForm} />
             <Route path="/" component ={App}>
                 <Route path="/home" component={HomePageContainer}/>
             </Route>

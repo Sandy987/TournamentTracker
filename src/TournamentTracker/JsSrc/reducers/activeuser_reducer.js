@@ -1,4 +1,4 @@
-import {REQUEST_LOGIN, LOGIN_FAILED, RECEIVE_ACTIVE_USER} from '../actions/user_actions';
+import {REQUEST_LOGIN, REQUEST_REGISTER, LOGIN_FAILED, RECEIVE_ACTIVE_USER} from '../actions/user_actions';
 
 
 export default function(state, action) {
@@ -10,6 +10,8 @@ export default function(state, action) {
     switch (action.type) {
         case REQUEST_LOGIN:
             return Object.assign({}, state, requestLogin(action));
+        case REQUEST_REGISTER:
+            return Object.assign({}, state, requestLogin(action));
         case LOGIN_FAILED:
             return Object.assign({}, state, loginFailed(action));
         case RECEIVE_ACTIVE_USER:
@@ -20,6 +22,13 @@ export default function(state, action) {
 }
 
 function requestLogin(action){
+    return {
+        user: null,
+        isLoggingIn: true
+    }
+}
+
+function requestRegister(action){
     return {
         user: null,
         isLoggingIn: true
