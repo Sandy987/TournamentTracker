@@ -71,7 +71,8 @@ namespace TournamentTracker.Api
             return Ok(matches);
         }
 
-
+        //this is really only for impromtu challenges.
+        //matches are normally created via challenges
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]MatchModel model)
         {

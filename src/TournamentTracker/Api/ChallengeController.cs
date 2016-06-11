@@ -38,6 +38,7 @@ namespace TournamentTracker.Api
             return Ok(challenges);
         }
 
+        //create a challenge or a challenge completion
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]ChallengeModel model)
         {
@@ -53,13 +54,14 @@ namespace TournamentTracker.Api
                 Type = model.ChallengeType,
                 Status = ChallengeStatus.Pending
             };
-
+            
+            //todo create a notification associated with challenge?
             _challengeService.AddChallenge(challenge);
             await _challengeService.SaveAsync();
             return Ok();
         }
 
-        //todo call to accept a challenge. Make sure the logged in player is the recieving player calling.
+        //todo  Make sure the logged in player is the recieving player calling.
         [HttpPost("{id}/AcceptChallenge")]
         public async Task<IActionResult> AcceptChallenge(int id)
         {
@@ -83,7 +85,7 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
-        //todo call to accept the completion of the match. Make sure the logged in player is the receiving player calling.
+        //todo Make sure the logged in player is the receiving player calling.
         [HttpPost("{id}/AcceptCompletion")]
         public async Task<IActionResult> AcceptCompletion(int id){
             var challenge = _challengeService.GetChallengeById(id);

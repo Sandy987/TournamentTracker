@@ -33,6 +33,8 @@ namespace TournamentTracker.Api
             return Ok(notifications);
         }
 
+        //for sending a notification
+        //todo  Make sure the logged in player is the sending player
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]NotificationModel model)
         {
@@ -53,6 +55,8 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
+        //todo  Make sure the logged in player is the receiving player
+        //used to chalenge the status of a notification (read, deleted)
         [HttpPatch("")]
         public async Task<IActionResult> Patch([FromBody]NotificationModel model)
         {
