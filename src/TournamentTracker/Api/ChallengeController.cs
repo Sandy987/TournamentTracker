@@ -7,6 +7,7 @@ using TournamentTracker.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace TournamentTracker.Api
 {
@@ -17,13 +18,17 @@ namespace TournamentTracker.Api
         private IApplicationUserService _applicationUserService;
 
         private IMatchService _matchService;
+        private readonly UserManager<ApplicationUser> _userManager;
+
         public ChallengeController(IChallengeService challengeService, 
         IApplicationUserService applicationUserService,
-        IMatchService matchService)
+        IMatchService matchService,
+        UserManager<ApplicationUser> userManager)
         {
             _challengeService = challengeService;
             _applicationUserService = applicationUserService;
             _matchService = matchService;
+            _userManager = userManager;
         }
 
         [HttpGet("GetAllPlayer/{playerId}")]
@@ -42,8 +47,23 @@ namespace TournamentTracker.Api
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]ChallengeModel model)
         {
-            //todo verify logged in player is one of the players of the match
-            if(model == null) return BadRequest();
+
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (model == null || 
+                string.IsNullOrEmpty(model.ReceivingPlayerId) || 
+                string.IsNullOrEmpty(model.SendingPlayerId) ||
+                model.SendingPlayerId != currentUserId) return BadRequest();
+
+            if (model.MatchId != null)
+            {
+                if (model.ChallengeType == ChallengeType.TableTennis)
+                    return BadRequest("cannot create challenge for an existing match");
+
+                var match = _matchService.GetMatchById(model.MatchId.Value);
+                if (match.PlayerOneId != currentUserId && match.PlayerTwoId != currentUserId)
+                    return BadRequest("cannot complete a challenge for a match the player is not part of");
+            }
 
             var challenge = new Challenge()
             {
@@ -52,62 +72,60 @@ namespace TournamentTracker.Api
                 SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
                 ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
                 Type = model.ChallengeType,
-                Status = ChallengeStatus.Pending
+                Status = ChallengeStatus.Pending,
+                MatchId = model.MatchId
             };
-            
+
+
             //todo create a notification associated with challenge?
             _challengeService.AddChallenge(challenge);
             await _challengeService.SaveAsync();
             return Ok();
         }
 
-        //todo  Make sure the logged in player is the recieving player calling.
-        [HttpPost("{id}/AcceptChallenge")]
+        [HttpPost("{id}/Accept")]
         public async Task<IActionResult> AcceptChallenge(int id)
         {
             var challenge = _challengeService.GetChallengeById(id);
-            if(challenge == null || challenge.Type == ChallengeType.TableTennisCompletion) return NotFound();
+            var currentUserId = _userManager.GetUserId(User);
 
-            if(challenge.Match != null) return BadRequest("match already started");
+            if (challenge == null) return NotFound();
 
-            var newMatch = new Match{
-                PlayerOneId = challenge.SendingPlayerId,
-                PlayerTwoId = challenge.ReceivingPlayerId,
-                MatchStatus = MatchStatus.Accepted
-            };
-            _matchService.AddMatch(newMatch);
+            //Make sure the logged in player is the recieving player calling.
+            if (challenge.ReceivingPlayerId != currentUserId)
+                return BadRequest("player is not the receiver of challenge");
 
-            challenge.Status = ChallengeStatus.Accepted;
+            if (challenge.Type == ChallengeType.TableTennis)
+            {
+                if (challenge.Match != null) return BadRequest("match already started");
+                var newMatch = new Match
+                {
+                    PlayerOneId = challenge.SendingPlayerId,
+                    PlayerTwoId = challenge.ReceivingPlayerId,
+                    MatchStatus = MatchStatus.Accepted
+                };
+                _matchService.AddMatch(newMatch);
 
-            await _matchService.SaveAsync();
-            await _challengeService.SaveAsync();
+                challenge.Status = ChallengeStatus.Accepted;
+            }
+            else if(challenge.Type == ChallengeType.TableTennisCompletion)
+            {
+                var match = challenge.Match;
 
-            return Ok();
-        }
+                if (match == null || match.MatchStatus == null || match.MatchStatus != MatchStatus.Accepted)
+                    return BadRequest("match not completable");
 
-        //todo Make sure the logged in player is the receiving player calling.
-        [HttpPost("{id}/AcceptCompletion")]
-        public async Task<IActionResult> AcceptCompletion(int id){
-            var challenge = _challengeService.GetChallengeById(id);
-            if(challenge == null || challenge.Type != ChallengeType.TableTennisCompletion) 
-                return NotFound();
+                //todo call ELO service and update player ELOs
 
-            var match = challenge.Match;
-
-            if(match == null || match.MatchStatus == null || match.MatchStatus != MatchStatus.Accepted)
-                return BadRequest("match not completable");
-
-            //todo call ELO service and update player ELOs
-
-            match.MatchStatus = MatchStatus.Completed;
-            challenge.Status = ChallengeStatus.Accepted;
+                match.MatchStatus = MatchStatus.Completed;
+                challenge.Status = ChallengeStatus.Accepted;
+            }
 
             await _matchService.SaveAsync();
             await _challengeService.SaveAsync();
 
             return Ok();
         }
-
 
         private IEnumerable<ChallengeModel> MapToModels(IEnumerable<Challenge> challenges)
         {
