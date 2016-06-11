@@ -4,6 +4,7 @@ using TournamentTracker.Data;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace TournamentTracker.Services 
 {
@@ -23,7 +24,10 @@ namespace TournamentTracker.Services
 
         public Challenge GetChallengeById(int id)
         {
-            return _db.Challenges.SingleOrDefault(c => c.Id == id);
+            return _db.Challenges.Include(c => c.Match)
+                                 .Include(c => c.SendingPlayer)
+                                 .Include(c => c.ReceivingPlayer)
+                                 .SingleOrDefault(c => c.Id == id);
         }
 
         public void Save()

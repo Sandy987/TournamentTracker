@@ -75,13 +75,14 @@ namespace TournamentTracker.Api
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]MatchModel model)
         {
+            //todo verify logged in player is one of the players of the match
             if(model == null) return BadRequest();
 
             var match = new Match()
             {
                 PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId ?? ""),
                 PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId ?? ""),
-                MatchStatus = model.MatchStatus ?? MatchStatus.Pending
+                MatchStatus = MatchStatus.Pending
             };
 
             _matchService.AddMatch(match);
@@ -89,27 +90,25 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
+        //this only updates score
         [HttpPatch("")]
         public async Task<IActionResult> Patch([FromBody]MatchModel model)
         {
+            //todo verify logged in player is one of the players of the match
             if(model == null) return BadRequest();
 
             var match = _matchService.GetMatchById(model.Id);
             
             if(match == null) return NotFound();
-
-            match.MatchCompletion = model.MatchCompletion ?? match.MatchCompletion;
-            match.MatchStatus = model.MatchStatus ?? match.MatchStatus;
-            match.MatchWinnerId = model.MatchWinnerId ?? match.MatchWinnerId;
-            match.PlayerOneId = model.PlayerOneId ?? match.PlayerOneId;
-            match.PlayerTwoId = model.PlayerTwoId ?? match.PlayerTwoId;
-            match.PlayerOneScore = model.PlayerOneScore ?? match.PlayerOneScore;
-            match.PlayerTwoScore = model.PlayerTwoScore ?? match.PlayerTwoScore;
+            if(match.MatchStatus == null || match.MatchStatus != MatchStatus.Completed)
+            {
+                match.PlayerOneScore = model.PlayerOneScore ?? match.PlayerOneScore;
+                match.PlayerTwoScore = model.PlayerTwoScore ?? match.PlayerTwoScore;
+            }
 
             await _matchService.SaveAsync();
 
             return Ok();
         }
-
     }
 }
