@@ -50,9 +50,9 @@ export function initiateLoadPlayers(){
 
 function getSamplePlayers(){
     return [
-        {playerName: 'Player One', playerRank: 1000},
-        {playerName: 'Player Two', playerRank: 1500},
-        {playerName: 'Player Three', playerRank: 500},
-        {playerName: 'Player Four', playerRank: 800},
+        {id: 1, playerName: 'Player One', playerRank: 1000},
+        {id: 2, playerName: 'Player Two', playerRank: 1500},
+        {id: 3, playerName: 'Player Three', playerRank: 500},
+        {id: 4, playerName: 'Player Four', playerRank: 800},
     ];
 }
