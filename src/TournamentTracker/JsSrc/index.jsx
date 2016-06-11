@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory} from 'react-router'; //Use # history instead of HTML5 history API
-import {routerMiddleware} from 'react-router-redux';
+import {routerMiddleware, syncHistoryWithStore} from 'react-router-redux';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
@@ -9,12 +9,17 @@ import createLogger from 'redux-logger';
 
 import reducer from './reducer';
 
+import * as navActions from './actions/nav_actions';
+
 import authMiddleware from './middleware/auth_middleware';
+import fetcherMiddleware from './middleware/fetcher_middleware';
 
 import App from './components/App';
 import HomePageContainer from './components/HomePage';
 import LoginForm from './components/forms/LoginForm';
 import RegisterForm from './components/forms/RegisterForm';
+
+import UserProfile from './components/users/UserProfile';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
@@ -24,26 +29,29 @@ injectTapEventPlugin();
 
 const loggerMiddleware = createLogger();
 
+
+
 const store = createStore(
     reducer,
     applyMiddleware(routerMiddleware(hashHistory),
                     thunkMiddleware, //Lets us dispatch() functions
+                    fetcherMiddleware,
                     authMiddleware, //Makes sure any failed login actions exit from the app
                     loggerMiddleware) //Neat middleware that logs actions
 );
 
-// const routes = <Route component ={App}>
-//     <Route path="/" component={VotingContainer} />
-//     <Route path="/results" component={ResultsContainer} />
-// </Route>;
+const history = syncHistoryWithStore(hashHistory, store);
+history.listen(location => store.dispatch(navActions.routerDidNavigate(location.pathname)));
+
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={hashHistory}>
+        <Router history={history}>
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/" component ={App}>
                 <Route path="/home" component={HomePageContainer}/>
+                <Route path="/player/:playerId" component={UserProfile}/>
             </Route>
         </Router>
     </Provider>,

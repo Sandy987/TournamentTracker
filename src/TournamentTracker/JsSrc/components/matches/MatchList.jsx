@@ -7,7 +7,7 @@ const MatchList = React.createClass({
     mixins: [PureRenderMixin],
     getMatchCard: function(match){
         return <MatchCard 
-            key={match.id}
+            key={match.Id}
             {...match}
         />;
     },

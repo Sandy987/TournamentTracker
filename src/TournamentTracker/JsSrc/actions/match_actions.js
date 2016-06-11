@@ -67,7 +67,7 @@ export function initiateLoadMatchHistory(playerId){
             .then(checkStatus)
             .then(response => response.json())
             .then(response =>
-                dispatch(receiveMatchHistory(playerId, response.matches))
+                dispatch(receiveMatchHistory(playerId, response))
             )
             .catch(err => 
                 dispatch(receiveMatchHistory(playerId, null)) //TODO: Do this better

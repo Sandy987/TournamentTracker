@@ -31,28 +31,17 @@ export function initiateLoadPlayers(){
         //First dispatch: app state is updated to informat that api call is starting
         dispatch(requestPlayers());
 
-        dispatch(receivePlayers(getSamplePlayers()))
-
         //TODO: Update so it works with real api
-        // return fetch(`/api/players/`,{
-        //     credentials: 'same-origin'
-        // })
-        //     .then(checkStatus)
-        //     .then(response => response.json())
-        //     .then(response =>
-        //         dispatch(receivePlayers(response.players))
-        //     )
-        //     .catch(err => 
-        //         dispatch(receiveMatch(null)) //TODO: Do this better
-        //     );
+        return fetch(`/api/user/getall`,{
+            credentials: 'same-origin'
+        })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(response =>
+                dispatch(receivePlayers(response))
+            )
+            .catch(err => 
+                dispatch(receivePlayers(null)) //TODO: Do this better
+            );
     }
-}
-
-function getSamplePlayers(){
-    return [
-        {id: 1, playerName: 'Player One', playerRank: 1000},
-        {id: 2, playerName: 'Player Two', playerRank: 1500},
-        {id: 3, playerName: 'Player Three', playerRank: 500},
-        {id: 4, playerName: 'Player Four', playerRank: 800},
-    ];
 }

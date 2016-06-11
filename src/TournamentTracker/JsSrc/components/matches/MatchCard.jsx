@@ -14,13 +14,13 @@ const MatchCard = React.createClass({
     render: function(){
         return <Paper zDepth={2}>
             <div className="tt-match-summary" >
-                {this.getPlayerView(this.props.playerOneId, this.props.playerOneName, this.props.playerOneScore, this.props.matchWinnerId)}
-                {this.getPlayerView(this.props.playerTwoId, this.props.playerTwoName, this.props.playerTwoScore, this.props.matchWinnerId)}
+                {this.getPlayerView(this.props.PlayerOneId, this.props.PlayerOneName, this.props.PlayerOneScore, this.props.MatchWinnerId)}
+                {this.getPlayerView(this.props.PlayerTwoId, this.props.PlayerTwoName, this.props.PlayerTwoScore, this.props.MatchWinnerId)}
                 <div className="match-status">
-                    {this.props.matchStatus}
+                    {this.props.MatchStatus}
                 </div>
                 <div className="match-completion">
-                    {this.props.matchCompletion}
+                    {this.props.MatchCompletion}
                 </div>
             </div>
         </Paper>;
