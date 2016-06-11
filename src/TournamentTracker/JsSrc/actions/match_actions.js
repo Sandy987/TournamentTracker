@@ -63,7 +63,7 @@ export function initiateLoadMatchHistory(playerId){
         dispatch(requestMatchHistory(playerId));
 
         //TODO: update so it works with the real api
-        return fetch(`/api/match/${playerId}`)
+        return fetch(`/api/match/GetByPlayer/${playerId}`)
             .then(checkStatus)
             .then(response => response.json())
             .then(response =>

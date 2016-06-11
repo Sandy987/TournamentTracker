@@ -4,14 +4,15 @@ import * as matchActions from '../actions/match_actions';
 export default function(state, action) {
     if (!state)
         state = {
-            isRetrievingMatchHistory: false
+            isRetrievingMatchHistory: false, //TODO: Make this better, we should have one for every player
+            matches: []
         }; 
 
     switch (action.type) {
         case matchActions.REQUEST_MATCH_HISTORY:
             return Object.assign({}, state, requestMatchHistory(action)); 
         case matchActions.RECEIVE_MATCH_HISTORY:
-            return Object.assign({}, state, receiveMatchHistory(action));
+            return Object.assign({}, state, receiveMatchHistory(state, action));
         case matchActions.REQUEST_MATCH:
             return Object.assign({}, state, requestMatch(action)); 
         case matchActions.RECEIVE_MATCH:
@@ -36,21 +37,23 @@ function receiveMatch(match){
 //TODO: Index matches by player id?
 function requestMatchHistory(action){
     return {
-        matches: null,
         isRetrievingMatchHistory: true
     }
 }
 
-function receiveMatchHistory(action){
-    if (action.status){
-        return {
-            matches: action.matches,
-            isRetrievingMatchHistory: false
-        }
-    } else{
-        return {
-            matches: actions.matches,
-            isRetrievingMatchHistory: false
-        }
+function receiveMatchHistory(state, action){
+    var newMatches;
+    if (Array.isArray(state.matches)){
+        newMatches = state.matches.splice();
+    }
+    else {
+        newMatches = [];
+    }
+
+    newMatches[action.playerId] = action.matches;
+
+    return {
+        matches: newMatches,
+        isRetrievingMatchHistory: false
     }
 }
