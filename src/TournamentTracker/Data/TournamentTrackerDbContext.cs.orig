@@ -11,8 +11,11 @@ namespace TournamentTracker.Data
     public class TournamentTrackerDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Match> Matches {get; set;}
-		public DbSet<ApplicationUser> Players {get; set;}
+<<<<<<< HEAD
         public DbSet<Notification> Notifications {get; set;}
+=======
+        public DbSet<ApplicationUser> Players {get; set;}
+>>>>>>> 1145c0d8cc340b7fcd74a6de3216dd67675bfa06
         public TournamentTrackerDbContext(DbContextOptions<TournamentTrackerDbContext> options)
             : base(options)
         {
