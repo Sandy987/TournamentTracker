@@ -19,7 +19,11 @@ namespace TournamentTracker.Services
 
         public ApplicationUser GetUserById(string id)
         {
-            return _db.Players.Include(p => p.Matches).SingleOrDefault(x => x.Id == id);
+            return _db.Players
+                    .Include(p => p.Matches)
+                    .Include(p => p.Challenges)
+                    .Include(p => p.Notifications)    
+                    .SingleOrDefault(x => x.Id == id);
         }
 
         public IQueryable<ApplicationUser> GetAll()

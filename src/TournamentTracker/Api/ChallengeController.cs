@@ -15,10 +15,15 @@ namespace TournamentTracker.Api
     {
         private IChallengeService _challengeService;
         private IApplicationUserService _applicationUserService;
-        public ChallengeController(IChallengeService challengeService, IApplicationUserService applicationUserService)
+
+        private IMatchService _matchService;
+        public ChallengeController(IChallengeService challengeService, 
+        IApplicationUserService applicationUserService,
+        IMatchService matchService)
         {
             _challengeService = challengeService;
             _applicationUserService = applicationUserService;
+            _matchService = matchService;
         }
 
         [HttpGet("GetAllPlayer/{playerId}")]
@@ -29,13 +34,15 @@ namespace TournamentTracker.Api
             var player = _applicationUserService.GetUserById(playerId);
             if(player == null) return NotFound();
 
-            var notifications =  MapToModels(player.Challenges);
-            return Ok(notifications);
+            var challenges =  MapToModels(player.Challenges);
+            return Ok(challenges);
         }
 
+        //create a challenge or a challenge completion
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]ChallengeModel model)
         {
+            //todo verify logged in player is one of the players of the match
             if(model == null) return BadRequest();
 
             var challenge = new Challenge()
@@ -44,29 +51,63 @@ namespace TournamentTracker.Api
                 ReceivingPlayerId = model.ReceivingPlayerId,
                 SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
                 ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
+                Type = model.ChallengeType,
                 Status = ChallengeStatus.Pending
             };
-
+            
+            //todo create a notification associated with challenge?
             _challengeService.AddChallenge(challenge);
             await _challengeService.SaveAsync();
             return Ok();
         }
 
-        [HttpPatch("")]
-        public async Task<IActionResult> Patch([FromBody]ChallengeModel model)
+        //todo  Make sure the logged in player is the recieving player calling.
+        [HttpPost("{id}/AcceptChallenge")]
+        public async Task<IActionResult> AcceptChallenge(int id)
         {
-            if(model == null) return BadRequest();
+            var challenge = _challengeService.GetChallengeById(id);
+            if(challenge == null || challenge.Type == ChallengeType.TableTennisCompletion) return NotFound();
 
-            var challenge = _challengeService.GetChallengeById(model.Id);
-            
-            if(challenge == null) return NotFound();
+            if(challenge.Match != null) return BadRequest("match already started");
 
-            challenge.Status = model.Status ?? challenge.Status;
+            var newMatch = new Match{
+                PlayerOneId = challenge.SendingPlayerId,
+                PlayerTwoId = challenge.ReceivingPlayerId,
+                MatchStatus = MatchStatus.Accepted
+            };
+            _matchService.AddMatch(newMatch);
 
+            challenge.Status = ChallengeStatus.Accepted;
+
+            await _matchService.SaveAsync();
             await _challengeService.SaveAsync();
 
             return Ok();
         }
+
+        //todo Make sure the logged in player is the receiving player calling.
+        [HttpPost("{id}/AcceptCompletion")]
+        public async Task<IActionResult> AcceptCompletion(int id){
+            var challenge = _challengeService.GetChallengeById(id);
+            if(challenge == null || challenge.Type != ChallengeType.TableTennisCompletion) 
+                return NotFound();
+
+            var match = challenge.Match;
+
+            if(match == null || match.MatchStatus == null || match.MatchStatus != MatchStatus.Accepted)
+                return BadRequest("match not completable");
+
+            //todo call ELO service and update player ELOs
+
+            match.MatchStatus = MatchStatus.Completed;
+            challenge.Status = ChallengeStatus.Accepted;
+
+            await _matchService.SaveAsync();
+            await _challengeService.SaveAsync();
+
+            return Ok();
+        }
+
 
         private IEnumerable<ChallengeModel> MapToModels(IEnumerable<Challenge> challenges)
         {
@@ -76,7 +117,8 @@ namespace TournamentTracker.Api
                     SendingPlayerId = n.SendingPlayerId,
                     SendingPlayerName = n.SendingPlayer.UserName,
                     ReceivingPlayerId = n.ReceivingPlayerId,
-                    ReceivingPlayerName = n.ReceivingPlayer.UserName              
+                    ReceivingPlayerName = n.ReceivingPlayer.UserName,
+                    MatchId = n.MatchId
                 }
             );
         }
