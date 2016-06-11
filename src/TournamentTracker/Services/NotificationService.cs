@@ -15,5 +15,16 @@ namespace TournamentTracker.Services
         {
             _db = context;
         }
+
+        
+        public void Save()
+        {
+            _db.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _db.SaveChangesAsync();
+        }
     }
 }
