@@ -7,7 +7,8 @@ using TournamentTracker.Api.Models;
 
 namespace TournamentTracker.Api
 {
-    [Route("api/[controller]"), Authorize]
+    //[Authorize]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private IApplicationUserService _userService;
@@ -38,6 +39,22 @@ namespace TournamentTracker.Api
             });
         }
 
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            var users = _userService.GetAll().Select(
+                user => new UserModel{
+                     Id = user.Id,
+                    PlayerName = user.PlayerName,
+                    PlayerElo = user.PlayerElo,
+                    PlayerWins = user.PlayerWins,
+                    PlayerLoses = user.PlayerLoses,
+                    Username = user.UserName,
+                }
+            ).ToList();
+            
+            return Ok(users);
+        }
 
 
         [HttpPatch("")]

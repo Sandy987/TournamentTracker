@@ -9,6 +9,7 @@ using System.Linq;
 
 namespace TournamentTracker.Api
 {
+    //[Authorize]
 	[Route("api/[controller]")]
     public class MatchController : Controller
     {
