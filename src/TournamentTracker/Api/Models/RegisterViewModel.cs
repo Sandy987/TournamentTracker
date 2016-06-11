@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TournamentTracker.Models.AccountViewModels
+namespace TournamentTracker.Api.Models
 {
-    public class RegisterViewModel
+    public class RegisterUserViewModel
     {
         [Required]
         [EmailAddress]

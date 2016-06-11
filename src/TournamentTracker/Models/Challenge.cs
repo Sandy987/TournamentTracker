@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using TournamentTracker.Models.Enumerations;
 
-namespace TournamentTracker.Api.Models
+namespace TournamentTracker.Models
 {
-    public class NotificationModel
+    public class Challenge
     {
         public int Id {get; set;}
         public string SendingPlayerId {get; set;}
         public string ReceivingPlayerId {get; set;}
-        public string SendingPlayerName {get; set;}
-        public string ReceivingPlayerName {get; set;}
-        public string Message {get; set;}
-        public NotificationStatus? Status {get; set;}
+        public ApplicationUser SendingPlayer {get; set;}
+        public ApplicationUser ReceivingPlayer {get; set;}
+        public ChallengeStatus Status {get; set;}
+        public ChallengeType Type {get; set;}
     }
 }

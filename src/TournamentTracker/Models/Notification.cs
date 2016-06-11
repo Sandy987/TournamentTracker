@@ -8,12 +8,12 @@ namespace TournamentTracker.Models
 {
     public class Notification
     {
+        public int Id {get; set;}
         public string SendingPlayerId {get; set;}
         public string ReceivingPlayerId {get; set;}
         public string Message {get; set;}
         public ApplicationUser SendingPlayer {get; set;}
         public ApplicationUser ReceivingPlayer {get; set;}
         public NotificationStatus Status {get; set;}
-        public NotificationType Type {get; set;}
     }
 }

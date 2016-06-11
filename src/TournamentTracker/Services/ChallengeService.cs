@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace TournamentTracker.Services 
 {
-    public class NotificationService : INotificationService
+    public class ChallengeService : IChallengeService
     {
         private TournamentTrackerDbContext _db; 
 
-        public NotificationService(TournamentTrackerDbContext context)
+        public ChallengeService(TournamentTrackerDbContext context)
         {
             _db = context;
         }
 
-        public void AddNotification(Notification notification)
+        public void AddChallenge(Challenge challenge)
         {
-            _db.Notifications.Add(notification);
+            _db.Challenges.Add(challenge);
         }
 
-        public Notification GetNotificationById(int id)
+        public Challenge GetChallengeById(int id)
         {
-            return _db.Notifications.SingleOrDefault(c => c.Id == id);
+            return _db.Challenges.SingleOrDefault(c => c.Id == id);
         }
 
         public void Save()

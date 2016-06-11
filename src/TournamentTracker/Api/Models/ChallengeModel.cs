@@ -6,14 +6,13 @@ using TournamentTracker.Models.Enumerations;
 
 namespace TournamentTracker.Api.Models
 {
-    public class NotificationModel
+    public class ChallengeModel
     {
         public int Id {get; set;}
         public string SendingPlayerId {get; set;}
         public string ReceivingPlayerId {get; set;}
         public string SendingPlayerName {get; set;}
         public string ReceivingPlayerName {get; set;}
-        public string Message {get; set;}
-        public NotificationStatus? Status {get; set;}
+        public ChallengeStatus? Status {get; set;}
     }
 }
