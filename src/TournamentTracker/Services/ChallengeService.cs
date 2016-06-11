@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace TournamentTracker.Services 
 {
-    public class NotificationService : INotificationService
+    public class ChallengeService : INotificationService
     {
         private TournamentTrackerDbContext _db; 
 
-        public NotificationService(TournamentTrackerDbContext context)
+        public ChallengeService(TournamentTrackerDbContext context)
         {
             _db = context;
         }

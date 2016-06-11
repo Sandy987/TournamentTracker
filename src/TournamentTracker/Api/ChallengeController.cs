@@ -11,13 +11,13 @@ using System.Linq;
 namespace TournamentTracker.Api
 {
 	[Route("api/[controller]")]
-    public class NotificationController : Controller
+    public class ChallengeController : Controller
     {
-        private INotificationService _notificationService;
+        private IChallengeService _challengeService;
         private IApplicationUserService _applicationUserService;
-        public NotificationController(INotificationService notificationService, IApplicationUserService applicationUserService)
+        public ChallengeController(IChallengeService challengeService, IApplicationUserService applicationUserService)
         {
-            _notificationService = notificationService;
+            _challengeService = challengeService;
             _applicationUserService = applicationUserService;
         }
 
@@ -29,20 +29,19 @@ namespace TournamentTracker.Api
             var player = _applicationUserService.GetUserById(playerId);
             if(player == null) return NotFound();
 
-            var notifications =  MapToModels(player.Notifications);
+            var notifications =  MapToModels(player.Challenges);
             return Ok(notifications);
         }
 
-        private IEnumerable<NotificationModel> MapToModels(IEnumerable<Notification> notifications)
+        private IEnumerable<ChallengeModel> MapToModels(IEnumerable<Challenge> challenges)
         {
-            return notifications.Select(n =>
-                new NotificationModel {
+            return challenges.Select(n =>
+                new ChallengeModel {
                     Id = n.Id,
                     SendingPlayerId = n.SendingPlayerId,
                     SendingPlayerName = n.SendingPlayer.UserName,
                     ReceivingPlayerId = n.ReceivingPlayerId,
-                    ReceivingPlayerName = n.ReceivingPlayer.UserName,
-                    Message = n.Message                
+                    ReceivingPlayerName = n.ReceivingPlayer.UserName              
                 }
             );
         }
