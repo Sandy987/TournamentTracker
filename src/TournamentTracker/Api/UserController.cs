@@ -29,6 +29,7 @@ namespace TournamentTracker.Api
              _signInManager = signInManager;
              _userManager = userManager;
             _logger = loggerFactory.CreateLogger<UserController>();
+            
         }
 
         [HttpPost("Login")]
@@ -46,7 +47,7 @@ namespace TournamentTracker.Api
 
                     var user = await _userManager.FindByNameAsync(model.Email);
                     return Ok(new UserModel {
-                         Id = user.Id,
+                        Id = user.Id,
                         PlayerName = user.PlayerName,
                         PlayerElo = user.PlayerElo,
                         PlayerWins = user.PlayerWins,
@@ -59,15 +60,50 @@ namespace TournamentTracker.Api
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning(2, "User account locked out.");
-                    return Content("Lockout");
+                    return BadRequest("Lockout");
                 }
             } 
-            else
-            {
-                return Content("ModelState validation error");
-            }
-            return NotFound();
+            return BadRequest(ModelState);
         }
+
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] RegisterUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(3, "User created a new account with password.");
+                    return Ok(
+                        new UserModel{
+                            Id = user.Id,
+                            PlayerName = user.PlayerName,
+                            PlayerElo = user.PlayerElo,
+                            PlayerWins = user.PlayerWins,
+                            PlayerLoses = user.PlayerLoses,
+                            Username = user.UserName,
+                            Email = user.Email
+                        }
+                    );
+                }
+                AddErrors(result);
+            }
+      
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost("logoff")]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
+
+
 
         [HttpGet("{id}")]
         public IActionResult Get(string id)
@@ -127,6 +163,13 @@ namespace TournamentTracker.Api
 
             await _userService.SaveAsync();
             return Ok();
+        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
     }
 }
