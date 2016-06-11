@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace TournamentTracker.Services 
 {
-    public class ChallengeService : INotificationService
+    public class ChallengeService : IChallengeService
     {
         private TournamentTrackerDbContext _db; 
 
         public ChallengeService(TournamentTrackerDbContext context)
         {
             _db = context;
+        }
+
+        public void AddChallenge(Challenge challenge)
+        {
+            _db.Challenges.Add(challenge);
         }
      
         public void Save()

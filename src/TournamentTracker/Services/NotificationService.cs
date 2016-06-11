@@ -15,7 +15,12 @@ namespace TournamentTracker.Services
         {
             _db = context;
         }
-     
+
+        public void AddNotification(Notification notification)
+        {
+            _db.Notifications.Add(notification);
+        }
+
         public void Save()
         {
             _db.SaveChanges();

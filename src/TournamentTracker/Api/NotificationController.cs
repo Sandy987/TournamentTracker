@@ -33,6 +33,26 @@ namespace TournamentTracker.Api
             return Ok(notifications);
         }
 
+        [HttpPost("")]
+        public async Task<IActionResult> Post([FromBody]NotificationModel model)
+        {
+            if(model == null) return BadRequest();
+
+            var notification = new Notification()
+            {
+                SendingPlayerId = model.SendingPlayerId,
+                ReceivingPlayerId = model.ReceivingPlayerId,
+                SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
+                ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
+                Message = model.Message,
+                Status = NotificationStatus.Unread
+            };
+
+            _notificationService.AddNotification(notification);
+            await _notificationService.SaveAsync();
+            return Ok();
+        }
+
         private IEnumerable<NotificationModel> MapToModels(IEnumerable<Notification> notifications)
         {
             return notifications.Select(n =>

@@ -33,6 +33,25 @@ namespace TournamentTracker.Api
             return Ok(notifications);
         }
 
+        [HttpPost("")]
+        public async Task<IActionResult> Post([FromBody]ChallengeModel model)
+        {
+            if(model == null) return BadRequest();
+
+            var challenge = new Challenge()
+            {
+                SendingPlayerId = model.SendingPlayerId,
+                ReceivingPlayerId = model.ReceivingPlayerId,
+                SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
+                ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
+                Status = ChallengeStatus.Pending
+            };
+
+            _challengeService.AddChallenge(challenge);
+            await _challengeService.SaveAsync();
+            return Ok();
+        }
+
         private IEnumerable<ChallengeModel> MapToModels(IEnumerable<Challenge> challenges)
         {
             return challenges.Select(n =>
