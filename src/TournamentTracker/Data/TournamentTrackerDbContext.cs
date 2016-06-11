@@ -13,6 +13,7 @@ namespace TournamentTracker.Data
         public DbSet<Match> Matches {get; set;}
 		public DbSet<ApplicationUser> Players {get; set;}
         public DbSet<Notification> Notifications {get; set;}
+        public DbSet<Challenge> Challenges {get; set;}
         public TournamentTrackerDbContext(DbContextOptions<TournamentTrackerDbContext> options)
             : base(options)
         {
@@ -24,6 +25,12 @@ namespace TournamentTracker.Data
 
             builder.Entity<ApplicationUser>().
             HasMany(p => p.Matches).WithOne(m => m.PlayerOne);
+
+            builder.Entity<ApplicationUser>().
+            HasMany(p => p.Notifications).WithOne(m => m.ReceivingPlayer);
+
+            builder.Entity<ApplicationUser>().
+            HasMany(p => p.Challenges).WithOne(m => m.ReceivingPlayer);
 
             // builder.Entity<ApplicationUser>().
             // HasMany(p => p.Matches).WithOne(m => m.PlayerTwo);

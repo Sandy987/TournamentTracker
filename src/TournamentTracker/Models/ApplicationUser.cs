@@ -14,9 +14,13 @@ namespace TournamentTracker.Models
         public int PlayerWins {get; set;}
         public int PlayerLoses {get; set;}
         public List<Match> Matches {get; set;}
+        public List<Notification> Notifications {get; set;}
+        public List<Challenge> Challenges {get; set;}
 
         public ApplicationUser(){
             Matches =  new List<Match>();
+            Notifications = new List<Notification>();
+            Challenges = new List<Challenge>();
         }
     }
 }
