@@ -1,4 +1,4 @@
-import {userActions} from '../actions/user_actions';
+import * as userActions from '../actions/user_actions';
 import {push} from 'react-router-redux'
 
 export default store => next => action => {

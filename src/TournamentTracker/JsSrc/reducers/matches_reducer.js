@@ -21,13 +21,13 @@ export default function(state, action) {
     return state;
 }
 
-export function requestMatch(matchId){
+function requestMatch(matchId){
     return{
         activeMatch: null
     }
 }
 
-export function receiveMatch(match){
+function receiveMatch(match){
     return{
         activeMatch: match
     }

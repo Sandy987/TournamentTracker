@@ -1,15 +1,8 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-export default React.createClass({
+const MatchCard = React.createClass({
     mixins: [PureRenderMixin],
-
-    propTypes:{
-        winningPlayer: React.PropTypes.object.isRequired,
-        losingPlayer: React.PropTypes.object.isRequired,
-        matchTime: React.PropTypes.any.isRequired //TODO: This should be a date?
-    },
-
     render: function(){
         return <div class="match-card">
            <span className="player-name">{this.props.playerName}</span>
@@ -17,3 +10,6 @@ export default React.createClass({
         </div>;
     }
 });
+
+
+export default MatchCard;

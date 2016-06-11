@@ -1,13 +1,14 @@
 ﻿import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
+import FilteredPlayerList from './users/FilteredPlayerList';
 
 
 export const HomePage = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
         return <div>
-           <LoginForm />
+           <FilteredPlayerList />
         </div>;
     } 
 });
@@ -20,4 +21,4 @@ function mapStateToProps(state){
 }
 
 //Hook up the home page container with redux connect.
-export const HomePageContainer = connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps)(HomePage);

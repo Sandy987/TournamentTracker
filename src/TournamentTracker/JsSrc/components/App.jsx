@@ -6,15 +6,19 @@
 
 
 import React from 'react';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TopMenuContainer from './TopMenu';
 
 //How this works is that is renders all child components passed into the children prop
 //This is what React Router does for us
 export default React.createClass({
     render: function() {
-        return <div>
+        return <MuiThemeProvider muiTheme={getMuiTheme()}> 
+        <div>
             <TopMenuContainer />
             {this.props.children}
-        </div>;
+        </div>
+        </MuiThemeProvider>;
     }
 });

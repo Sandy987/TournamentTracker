@@ -11,10 +11,15 @@ import reducer from './reducer';
 
 import authMiddleware from './middleware/auth_middleware';
 
-import {setState} from './actions/action_creators';
-import * as pingActions from './actions/ping_actions';
+import App from './components/App';
+import HomePageContainer from './components/HomePage';
+import LoginForm from './components/forms/LoginForm';
 
-import routes from './routes';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+// Needed for onTouchTap
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
 
 const loggerMiddleware = createLogger();
 
@@ -26,11 +31,18 @@ const store = createStore(
                     loggerMiddleware) //Neat middleware that logs actions
 );
 
+// const routes = <Route component ={App}>
+//     <Route path="/" component={VotingContainer} />
+//     <Route path="/results" component={ResultsContainer} />
+// </Route>;
+
 ReactDOM.render(
     <Provider store={store}>
         <Router history={hashHistory}>
             <Route path="/login" component={LoginForm} />
-            {routes}
+            <Route path="/" component ={App}>
+                <Route path="/home" component={HomePageContainer}/>
+            </Route>
         </Router>
     </Provider>,
 document.getElementById('app')

@@ -1,12 +1,12 @@
 ﻿import {combineReducers} from 'redux';
 import {reducer as FormReducer} from 'redux-form';
-import DefaultReducer from './reducers/default_reducer';
-import PingReducer from './reducers/ping_reducer';
 import ActiveUserReducer from './reducers/activeuser_reducer';
+import MatchesReducer from './reducers/matches_reducer';
+import PlayersReducer from './reducers/player_reducer';
 
 export default combineReducers({
-    default: DefaultReducer,
     form: FormReducer,
-    ping: PingReducer,
-    activeUser: ActiveUserReducer
+    activeUser: ActiveUserReducer,
+    matches: MatchesReducer,
+    players: PlayersReducer
 })
