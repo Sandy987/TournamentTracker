@@ -16,11 +16,14 @@ namespace TournamentTracker.Api
     {
         private IMatchService _matchService;
         private IApplicationUserService _applicationUserService;
+        private IChallengeService _challengeService;
         private readonly UserManager<ApplicationUser> _userManager; 
-        public MatchController(IMatchService matchService, IApplicationUserService applicationUserService, UserManager<ApplicationUser> userManager)
+        public MatchController(IMatchService matchService, IApplicationUserService applicationUserService, 
+                               IChallengeService challengeService, UserManager<ApplicationUser> userManager)
         {
             _matchService = matchService;
             _applicationUserService = applicationUserService;
+            _challengeService = challengeService;
             _userManager = userManager;
         }
 
@@ -107,6 +110,15 @@ namespace TournamentTracker.Api
             if(match == null) return NotFound();
             if(match.MatchStatus == null || match.MatchStatus != MatchStatus.Completed)
             {
+                //set the status of the players back to not completed on the challenge when score is patched
+                var challenge = _challengeService.GetChallengeByMatchId(match.Id);
+                if (challenge != null && (match.PlayerOneScore != (model.PlayerOneScore ?? match.PlayerOneScore) 
+                || match.PlayerTwoScore != (model.PlayerTwoScore ?? match.PlayerTwoScore)))
+                {
+                    challenge.SendingPlayerStatus = ChallengeStatus.Accepted;
+                    challenge.ReceivingPlayerStatus = ChallengeStatus.Accepted;
+                }    
+
                 match.PlayerOneScore = model.PlayerOneScore ?? match.PlayerOneScore;
                 match.PlayerTwoScore = model.PlayerTwoScore ?? match.PlayerTwoScore;
             }
