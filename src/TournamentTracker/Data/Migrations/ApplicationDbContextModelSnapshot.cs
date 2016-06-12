@@ -212,9 +212,7 @@ namespace TournamentTracker.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("MatchCompletion");
-
-                    b.Property<int?>("MatchStatus");
+                    b.Property<DateTime?>("CompletionDate");
 
                     b.Property<string>("MatchWinnerId");
 
@@ -225,6 +223,8 @@ namespace TournamentTracker.Data.Migrations
                     b.Property<string>("PlayerTwoId");
 
                     b.Property<int>("PlayerTwoScore");
+
+                    b.Property<int?>("Status");
 
                     b.HasKey("Id");
 
