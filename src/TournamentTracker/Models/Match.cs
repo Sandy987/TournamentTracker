@@ -16,7 +16,7 @@ namespace TournamentTracker.Models
         public string MatchWinnerId{get; set;}
         public ApplicationUser PlayerOne { get; set; }
         public ApplicationUser PlayerTwo { get; set; }
-        public MatchStatus? MatchStatus {get; set;}
-        public DateTime? MatchCompletion {get; set;}
+        public MatchStatus? Status {get; set;}
+        public DateTime? CompletionDate {get; set;}
     }
 }

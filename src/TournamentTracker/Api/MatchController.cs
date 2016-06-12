@@ -44,8 +44,8 @@ namespace TournamentTracker.Api
                 PlayerOneScore = match.PlayerOneScore,
                 PlayerTwoScore = match.PlayerTwoScore,
                 MatchWinnerId = match.MatchWinnerId,
-                MatchStatus = match.MatchStatus,
-                MatchCompletion = match.MatchCompletion
+                MatchStatus = match.Status,
+                MatchCompletion = match.CompletionDate
             };
 
             return Ok(matchModel);
@@ -69,8 +69,8 @@ namespace TournamentTracker.Api
                     PlayerOneScore = m.PlayerOneScore,
                     PlayerTwoScore = m.PlayerTwoScore,
                     MatchWinnerId = m.MatchWinnerId,
-                    MatchStatus = m.MatchStatus,
-                    MatchCompletion = m.MatchCompletion
+                    MatchStatus = m.Status,
+                    MatchCompletion = m.CompletionDate
                 }
             );
             return Ok(matches);
@@ -89,7 +89,7 @@ namespace TournamentTracker.Api
             {
                 PlayerOne = _applicationUserService.GetUserById(model.PlayerOneId ?? ""),
                 PlayerTwo = _applicationUserService.GetUserById(model.PlayerTwoId ?? ""),
-                MatchStatus = MatchStatus.Pending
+                Status = MatchStatus.Pending
             };
 
             _matchService.AddMatch(match);
@@ -102,13 +102,13 @@ namespace TournamentTracker.Api
         public async Task<IActionResult> Patch([FromBody]MatchModel model)
         {
             var currentUserId = _userManager.GetUserId(User);
-            if (model == null || (model.PlayerOneId != currentUserId||model.PlayerTwoId != currentUserId))
+            if (model == null || (model.PlayerOneId != currentUserId && model.PlayerTwoId != currentUserId))
                 return BadRequest();
 
             var match = _matchService.GetMatchById(model.Id);
             
             if(match == null) return NotFound();
-            if(match.MatchStatus == null || match.MatchStatus != MatchStatus.Completed)
+            if(match.Status == null || match.Status != MatchStatus.Completed)
             {
                 //set the status of the players back to not completed on the challenge when score is patched
                 var challenge = _challengeService.GetChallengeByMatchId(match.Id);
