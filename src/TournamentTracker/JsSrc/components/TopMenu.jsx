@@ -7,6 +7,8 @@ export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
         return <div>
+            <Link to="/">Home</Link>
+            <Link to="/account">Account</Link>
         </div>;
     } 
 });

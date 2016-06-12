@@ -62,7 +62,6 @@ export function initiateLoadMatchHistory(playerId){
         //First dispatch: app state is updated to informat that api call is starting
         dispatch(requestMatchHistory(playerId));
 
-        //TODO: update so it works with the real api
         return fetch(`/api/match/GetByPlayer/${playerId}`)
             .then(checkStatus)
             .then(response => response.json())

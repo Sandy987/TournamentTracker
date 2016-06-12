@@ -84,13 +84,39 @@ export function initiateRegister(email, password){
 }
 
 export function requestSaveUser(){
-
+    return {
+        type: REQUEST_SAVE_USER
+    }
 }
 
-export function receiveSaveUser(){
-
+//TODO: fill this out? maybe with a status or with the user details
+export function receiveSaveUser(status){
+    return {
+        type: RECEIVE_SAVE_USER 
+    }
 }
 
 export function initiateSaveUserDetails(playerId, playerName, email, userName){
+    return function(dispatch){
 
+        //First dispatch: app state is updated to informat that api call is starting
+        dispatch(requestSaveUser());
+
+
+        return fetch(`/api/user/`, {
+            method: 'PATCH',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({Id: playerId, PlayerName: playerName, Email: email, UserName: userName})
+        })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(user =>  dispatch(receiveSaveUser(true)))
+            .catch(err => 
+                dispatch(receiveSaveUser(false))
+            );
+    }
 }

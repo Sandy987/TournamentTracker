@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import {reduxForm} from 'redux-form';
-import {validateLogin} from '../../validators/validateLogin';
+import validateUserProfile from '../../validators/validateUserProfile';
 import {initiateSaveUserDetails} from '../../actions/user_actions';
 
 const submit = (values, dispatch) =>{
@@ -20,12 +20,16 @@ const UserProfileForm = React.createClass({
     render: function(){
         const { fields: {playerId, playerName, email, userName}, handleSubmit, submitting} = this.props;
 
-        const loadingSpinner = submitting ? <div>Loading Spinner</div> : null;
+        // var loadingSpinner;
+        // if (submitting){
+        //     loadingSpinner = <div>Loading Spinner</div>;
+        // } else{
+        //     loadingSpinner = null;
+        // }
 
-        return  
-            <Paper className="tt-user-profile-form">
+        return <Paper className="tt-user-profile-form">
                 <form onSubmit={handleSubmit(submit)}>
-                    <input type="hidden" {...playerId} />
+                    <input type="hidden" {...playerId}></input>
                     <div>
                         <TextField hintText="Player Name" {...playerName} />
                         {playerName.error && playerName.touched && <div>{playerName.error}</div>} 
@@ -42,24 +46,29 @@ const UserProfileForm = React.createClass({
                     </div>
 
                     <RaisedButton onClick={handleSubmit(submit)} disabled={submitting}>Save</RaisedButton>
-                    {loadingSpinner}
                 </form>
             </Paper>;
     }
 });
 
+function mapStateToProps(state){
+    if (!state.activeUser.user){
+        return {};
+    }
+
+    return {
+        initialValues: { //will pull state into form's initialValues
+            playerId: state.activeUser.user.Id,
+            playerName: state.activeUser.user.PlayerName,
+            email: state.activeUser.user.Email,
+            userName: state.activeUser.user.UserName
+        }
+    }
+}
+
 //Wire up the redux form
 export default reduxForm({
-    form: 'login',
+    form: 'userProfile',
     fields: ['playerId','playerName', 'email', 'userName'],
     validate: validateUserProfile
-},
-state => ({ // mapStateToProps
-  initialValues: { //will pull state into form's initialValues
-      playerId: state.activeUser.user.Id,
-      playerName: state.activeUser.user.PlayerName,
-      email: state.activeUser.user.Email,
-      userName: state.activeUser.user.UserName
-    }
-}),
-)(UserProfileForm);
+}, mapStateToProps)(UserProfileForm);

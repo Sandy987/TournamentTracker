@@ -6,6 +6,7 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as playerActions from '../../actions/player_actions';
+import * as challengeActions from '../../actions/challenge_actions';
 import {push} from 'react-router-redux';
 
 const FilteredPlayerList = React.createClass({
@@ -27,6 +28,7 @@ const FilteredPlayerList = React.createClass({
 const mapDispatchToProps = {
     initiateLoadPlayers: playerActions.initiateLoadPlayers,
     updatePlayerFilter: playerActions.updatePlayerFilter,
+    initiateChallengePlayer: challengeActions.initiateChallengePlayer,
     push: push
 };
 

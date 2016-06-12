@@ -1,4 +1,4 @@
-import {REQUEST_LOGIN, REQUEST_REGISTER, LOGIN_FAILED, RECEIVE_ACTIVE_USER} from '../actions/user_actions';
+import * as userActions from '../actions/user_actions';
 
 
 export default function(state, action) {
@@ -8,14 +8,18 @@ export default function(state, action) {
         }; 
 
     switch (action.type) {
-        case REQUEST_LOGIN:
+        case userActions.REQUEST_LOGIN:
             return Object.assign({}, state, requestLogin(action));
-        case REQUEST_REGISTER:
+        case userActions.REQUEST_REGISTER:
             return Object.assign({}, state, requestLogin(action));
-        case LOGIN_FAILED:
+        case userActions.LOGIN_FAILED:
             return Object.assign({}, state, loginFailed(action));
-        case RECEIVE_ACTIVE_USER:
+        case userActions.RECEIVE_ACTIVE_USER:
             return Object.assign({}, state, receiveActiveUser(action));
+        case userActions.REQUEST_SAVE_USER:
+            return Object.assign({}, state, {isSavingUser: true});
+        case userActions.RECEIVE_SAVE_USER: //TODO: Maybe we need to do mroe stuff if we received a failed status?
+            return Object.assign({}, state, {isSavingUser: false});
     }
 
     return state;

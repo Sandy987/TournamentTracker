@@ -20,6 +20,7 @@ import LoginForm from './components/forms/LoginForm';
 import RegisterForm from './components/forms/RegisterForm';
 
 import PlayerProfile from './components/users/PlayerProfile';
+import UserProfileForm from './components/users/UserProfileForm';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
@@ -51,6 +52,7 @@ ReactDOM.render(
             <Route path="/register" component={RegisterForm} />
             <Route path="/" component ={App}>
                 <Route path="/" component={HomePageContainer}/>
+                <Route path="/account" component={UserProfileForm} />
                 <Route path="/player/:playerId" component={PlayerProfile}/>
             </Route>
         </Router>

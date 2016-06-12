@@ -34,7 +34,6 @@ function receiveMatch(match){
     }
 }
 
-//TODO: Index matches by player id?
 function requestMatchHistory(action){
     return {
         isRetrievingMatchHistory: true

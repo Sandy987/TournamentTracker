@@ -9,6 +9,7 @@ import {validateLogin} from '../../validators/validateLogin';
 import {initiateLogin} from '../../actions/user_actions';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Link} from 'react-router';
 
 const submit = (values, dispatch) =>{
     return new Promise((resolve, reject) => {
@@ -41,6 +42,7 @@ const LoginFormComponent = React.createClass({
 
                     <RaisedButton onClick={handleSubmit(submit)} disabled={submitting}>Log In</RaisedButton>
                 </form>
+                <Link to="/register">Register</Link>
             </Paper>
         </MuiThemeProvider>;
     }

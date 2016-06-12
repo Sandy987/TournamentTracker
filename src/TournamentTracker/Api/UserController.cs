@@ -159,9 +159,11 @@ namespace TournamentTracker.Api
 
             user.PlayerName = userModel.PlayerName ?? user.PlayerName;
             user.Email = userModel.Email ?? user.Email;
-            user.PlayerElo = userModel.PlayerElo ?? user.PlayerElo;
-            user.PlayerLoses = userModel.PlayerLoses ?? user.PlayerLoses;
-            user.PlayerWins = userModel.PlayerWins ?? user.PlayerWins;
+
+            //Client shouldn't be able to update these... lol
+            // user.PlayerElo = userModel.PlayerElo ?? user.PlayerElo;
+            // user.PlayerLoses = userModel.PlayerLoses ?? user.PlayerLoses;
+            // user.PlayerWins = userModel.PlayerWins ?? user.PlayerWins;
             user.UserName = userModel.Username ?? user.UserName;
 
             await _userService.SaveAsync();
