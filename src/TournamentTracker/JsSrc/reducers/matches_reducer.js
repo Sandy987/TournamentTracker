@@ -18,7 +18,9 @@ export default function(state, action) {
         case matchActions.RECEIVE_MATCH:
             return Object.assign({}, state, receiveMatch(action)); 
         case matchActions.REQUEST_MATCH_SCORE_UPDATE:
-            
+            return Object.assign({}, state, requestMatchScoreUpdate(action)); 
+        case matchActions.RECEIVE_MATCH_SCORE_UPDATE:
+            return Object.assign({}, state, receiveMatchScoreUpdate(action)); 
     }
 
     return state;
@@ -56,5 +58,18 @@ function receiveMatchHistory(state, action){
     return {
         matches: newMatches,
         isRetrievingMatchHistory: false
+    }
+}
+
+function requestMatchScoreUpdate(action){
+    return{
+       //TODO: do something here?
+    }
+}
+
+//TODO: Do something smart here about updating the match?
+function receiveMatchScoreUpdate(action){
+    return {
+
     }
 }
