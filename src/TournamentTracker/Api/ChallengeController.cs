@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace TournamentTracker.Api
 {
@@ -166,6 +167,7 @@ namespace TournamentTracker.Api
                     return BadRequest("match not completable");
 
                 match.MatchStatus = MatchStatus.Completed;
+                match.MatchCompletion = DateTime.UtcNow;
                 var playerOne = _applicationUserService.GetUserById(match.PlayerOneId);
                 var playerTwo = _applicationUserService.GetUserById(match.PlayerTwoId);
 
