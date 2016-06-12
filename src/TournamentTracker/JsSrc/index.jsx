@@ -22,6 +22,7 @@ import RegisterForm from './components/forms/RegisterForm';
 import PlayerProfile from './components/users/PlayerProfile';
 import UserProfileForm from './components/users/UserProfileForm';
 
+import NotificationList from './components/notifications/NotificationList';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
 // Check this repo:
@@ -54,6 +55,7 @@ ReactDOM.render(
                 <Route path="/" component={HomePageContainer}/>
                 <Route path="/account" component={UserProfileForm} />
                 <Route path="/player/:playerId" component={PlayerProfile}/>
+                <Route path="/notifications/:playerId" component={NotificationList}/>
             </Route>
         </Router>
     </Provider>,

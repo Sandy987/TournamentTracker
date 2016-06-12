@@ -22,7 +22,10 @@ namespace TournamentTracker.Services
             return _db.Players
                     .Include(p => p.Matches)
                     .Include(p => p.Challenges)
-                    .Include(p => p.Notifications)    
+                    .Include(p => p.Notifications)
+                    .ThenInclude(p => p.ReceivingPlayer)
+                    .Include(p => p.Notifications)
+                    .ThenInclude(p => p.SendingPlayer)
                     .SingleOrDefault(x => x.Id == id);
         }
 
