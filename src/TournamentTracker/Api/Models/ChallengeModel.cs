@@ -14,7 +14,8 @@ namespace TournamentTracker.Api.Models
         public string SendingPlayerName {get; set;}
         public string ReceivingPlayerName {get; set;}
         public ChallengeType ChallengeType {get; set;}
-        public ChallengeStatus? Status {get; set;}
+        public ChallengeStatus? SendingPlayerStatus {get; set;}
+        public ChallengeStatus? ReceivingPlayerStatus {get; set;}
         public int? MatchId {get; set;}
     }
 }

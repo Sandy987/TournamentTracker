@@ -205,8 +205,10 @@ namespace TournamentTracker.Api
                     Id = n.Id,
                     SendingPlayerId = n.SendingPlayerId,
                     SendingPlayerName = n.SendingPlayer.UserName,
+                    SendingPlayerStatus = n.SendingPlayerStatus,
                     ReceivingPlayerId = n.ReceivingPlayerId,
                     ReceivingPlayerName = n.ReceivingPlayer.UserName,
+                    ReceivingPlayerStatus = n.ReceivingPlayerStatus,
                     MatchId = n.MatchId
                 }
             );
