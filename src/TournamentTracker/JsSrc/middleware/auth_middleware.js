@@ -5,7 +5,7 @@ export default store => next => action => {
     if (action.type === userActions.LOGIN_FAILED){
         store.dispatch(push('/login'));
     } else if (action.type === userActions.RECEIVE_ACTIVE_USER){
-        store.dispatch(push('/'));
+        store.dispatch(push('/home'));
     // } else if ((!store.activeUser || !store.activeUser.user) 
     //             && action.type != userActions.RECEIVE_ACTIVE_USER 
     //             && action.type != userActions.REQUEST_LOGIN

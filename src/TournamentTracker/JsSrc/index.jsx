@@ -13,6 +13,7 @@ import * as navActions from './actions/nav_actions';
 
 import authMiddleware from './middleware/auth_middleware';
 import fetcherMiddleware from './middleware/fetcher_middleware';
+import redirectMiddleware from './middleware/redirect_middleware';
 
 import App from './components/App';
 import HomePageContainer from './components/HomePage';
@@ -21,6 +22,8 @@ import RegisterForm from './components/forms/RegisterForm';
 
 import PlayerProfile from './components/users/PlayerProfile';
 import UserProfileForm from './components/users/UserProfileForm';
+
+import ChallengesContainer from './components/challenges/ChallengesContainer';
 
 import NotificationList from './components/notifications/NotificationList';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -39,6 +42,7 @@ const store = createStore(
                     thunkMiddleware, //Lets us dispatch() functions
                     fetcherMiddleware,
                     authMiddleware, //Makes sure any failed login actions exit from the app
+                    redirectMiddleware,
                     loggerMiddleware) //Neat middleware that logs actions
 );
 
@@ -54,6 +58,7 @@ ReactDOM.render(
             <Route path="/" component ={App}>
                 <Route path="/home" component={HomePageContainer}/>
                 <Route path="/account" component={UserProfileForm} />
+                <Route path="/challenges" component={ChallengesContainer} />
                 <Route path="/player/:playerId" component={PlayerProfile}/>
                 <Route path="/notifications/:playerId" component={NotificationList}/>
             </Route>

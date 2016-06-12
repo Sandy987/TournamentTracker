@@ -17,7 +17,8 @@ export const TopMenu = React.createClass({
             <Drawer
             open={this.props.isMenuOpen}
             docked={false}
-            onRequestClose={(e) => this.props.routerCloseMenu()}>
+            onRequestClose={(e) => this.props.routerCloseMenu()}
+            onRequestChange={(open) => open ? this.props.routerOpenMenu() : this.props.routerCloseMenu()}>
             <Menu>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/">Home</Link></MenuItem>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/account">Account</Link></MenuItem>

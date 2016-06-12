@@ -2,7 +2,9 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
 import * as matchActions from '../../actions/match_actions';
+import {reduxForm} from 'redux-form';
 
 const submit = (values, dispatch) =>{
     return new Promise((resolve, reject) => {
@@ -20,7 +22,7 @@ const submit = (values, dispatch) =>{
 const MatchCardEditable = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
-        return  <div className="tt-match-summary" >
+        return  <Paper className="tt-match-summary" >
                     <input type="hidden" {...matchId}></input>
                     <div>
                         <input type="hidden" {...playerOneId}></input>
@@ -40,7 +42,7 @@ const MatchCardEditable = React.createClass({
                     </div>
 
                     <FlatButton onClick={handleSubmit(submit)} disabled={submitting}>Save</FlatButton>
-                </div>;
+                </Paper>;
     }
 });
 

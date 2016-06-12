@@ -1,4 +1,5 @@
 import * as challengeActions from '../actions/challenge_actions';
+import _ from 'lodash';
 
 //TODO: write tests
 export default function(state, action) {
@@ -10,9 +11,9 @@ export default function(state, action) {
 
     switch (action.type) {
         case matchActions.REQUEST_CHALLENGE_PLAYER:
-            return Object.assign({}, state, {isRetrievingChallenges : true}); //TODO: Do something
+            return Object.assign({}, state, {isRetrievingChallenges : true}); 
         case matchActions.RECEIVE_CHALLENGE_PLAYER:
-            return Object.assign({}, state, receiveChallengePlayer(state, action)); //TODO: Do something
+            return Object.assign({}, state, receiveChallengePlayer(state, action)); 
         case matchActions.REQUEST_CHALLENGES:
             return Object.assign({}, state, requestChallenges(action)); 
         case matchActions.RECEIVE_CHALLENGES:
@@ -34,8 +35,10 @@ function receiveChallengePlayer(state, action){
         newChallenges = [];
     }
 
+    newChallenges = _.unionWith(newChallenges, [action.challenge], (x,y) => x.Id === y.Id);
+
     return {
-        challenges: newChallenges.concat([action.challenge]),
+        challenges: newChallenges,
         isRetrievingChallenges: false
     }
 }
