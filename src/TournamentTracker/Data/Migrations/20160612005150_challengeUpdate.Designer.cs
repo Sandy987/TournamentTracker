@@ -8,9 +8,10 @@ using TournamentTracker.Data;
 namespace TournamentTracker.Data.Migrations
 {
     [DbContext(typeof(TournamentTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160612005150_challengeUpdate")]
+    partial class challengeUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20896")

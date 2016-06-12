@@ -13,7 +13,8 @@ namespace TournamentTracker.Models
         public string ReceivingPlayerId {get; set;}
         public ApplicationUser SendingPlayer {get; set;}
         public ApplicationUser ReceivingPlayer {get; set;}
-        public ChallengeStatus Status {get; set;}
+        public ChallengeStatus SendingPlayerStatus {get; set;}
+        public ChallengeStatus ReceivingPlayerStatus{get; set;}
         public ChallengeType Type {get; set;}
         public int? MatchId {get; set;}
         public Match Match {get; set;}

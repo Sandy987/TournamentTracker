@@ -4,6 +4,7 @@ namespace TournamentTracker.Models.Enumerations
     {
         Pending,
         Accepted,
-        Declined
+        Declined,
+        Completed
     }
 }
