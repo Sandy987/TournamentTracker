@@ -3,24 +3,37 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import Drawer from 'material-ui/Drawer';
+import * as NavActions from '../actions/nav_actions';
 
 export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
-        return <AppBar title='T-Ts Tournament Tracker'>
-            <FlatButton><Link to="/">Home</Link></FlatButton>
-            <FlatButton><Link to="/account">Account</Link></FlatButton>
-        </AppBar>;
-    } 
+        return (<div>
+            <AppBar title="T-Ts Tournament Tracker" onLeftIconButtonTouchTap={(e) => this.props.routerOpenMenu()}></AppBar>
+            <Drawer
+            open={this.props.isMenuOpen}
+            docked={false}
+            onRequestClose={(e) => this.props.routerCloseMenu()}>
+            <Menu>
+                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/">Home</Link></MenuItem>
+                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/account">Account</Link></MenuItem>
+            </Menu>
+            </Drawer> 
+        </div>);
+    }   
 });
 
 //Makes properties from the redux state tree available to the component in the form of props
 function mapStateToProps(state){
     return{
-        
-    }
+        isMenuOpen : state.nav.isMenuOpen,
+        anchorElement : state.nav.anchorElement
+    };
 }
 
 //Hook up the home page container with redux connect.
-export default connect(mapStateToProps)(TopMenu);
+export default connect(mapStateToProps, NavActions)(TopMenu);
