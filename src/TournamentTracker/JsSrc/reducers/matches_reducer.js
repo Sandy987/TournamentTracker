@@ -17,6 +17,8 @@ export default function(state, action) {
             return Object.assign({}, state, requestMatch(action)); 
         case matchActions.RECEIVE_MATCH:
             return Object.assign({}, state, receiveMatch(action)); 
+        case matchActions.REQUEST_MATCH_SCORE_UPDATE:
+            
     }
 
     return state;

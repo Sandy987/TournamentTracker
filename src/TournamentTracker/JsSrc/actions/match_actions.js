@@ -6,6 +6,9 @@ export const RECEIVE_MATCH = 'RECEIVE_MATCH';
 export const REQUEST_MATCH_HISTORY = 'REQUEST_MATCH_HISTORY';
 export const RECEIVE_MATCH_HISTORY = 'RECEIVE_MATCH_HISTORY';
 
+export const REQUEST_MATCH_SCORE_UPDATE = 'REQUEST_MATCH_SCORE_UPDATE';
+export const RECEIVE_MATCH_SCORE_UPDATE = 'RECEIVE_MATCH_SCORE_UPDATE';
+
 export function requestMatch(matchId){
     return{
         type: REQUEST_MATCH,
@@ -70,6 +73,51 @@ export function initiateLoadMatchHistory(playerId){
             )
             .catch(err => 
                 dispatch(receiveMatchHistory(playerId, null)) //TODO: Do this better
+            );
+    }
+}
+
+export function requestMatchScoreUpdate(matchId){
+    return{
+        type: REQUEST_MATCH_SCORE_UPDATE,
+        matchId: matchId
+    }
+}
+
+export function receiveMatchScoreUpdate(status, matchId, playerOneScore, playerTwoScore){
+    return{
+        type: RECEIVE_MATCH_SCORE_UPDATE,
+        matchId: matchId,
+        playerOneScore: playerOneScore,
+        playerTwoScore: playerTwoScore
+    }
+}
+
+export function initiateMatchScoreUpdate(matchId, playerOneId, playerOneScore, playerTwoId, playerTwoScore){
+    return function(dispatch){
+
+        //First dispatch: app state is updated to informat that api call is starting
+        dispatch(requestMatchScoreUpdate(matchId));
+
+        //TODO: update so it works with the real api
+        return fetch(`/api/match/`,{
+            method: 'PATCH',
+            credentials: 'same-origin',
+            body: {
+                Id: matchId,
+                PlayerOneId: playerOneId,
+                PlayerOneScore: playerOneScore,
+                PlayerTwoId: playerTwoId,
+                PlayerTwoScore: playerTwoScore
+            }
+        })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(response =>
+                dispatch(receiveMatchScoreUpdate(true, matchId, playerOneScore, playerTwoScore))
+            )
+            .catch(err => 
+                dispatch(receiveMatchScoreUpdate(false)) //TODO: Do this better
             );
     }
 }
