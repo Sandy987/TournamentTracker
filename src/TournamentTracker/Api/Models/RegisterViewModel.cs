@@ -14,5 +14,8 @@ namespace TournamentTracker.Api.Models
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string PlayerName {get; set;}
     }
 }

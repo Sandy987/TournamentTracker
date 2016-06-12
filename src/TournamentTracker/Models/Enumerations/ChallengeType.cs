@@ -2,7 +2,6 @@ namespace TournamentTracker.Models.Enumerations
 {
     public enum ChallengeType
     {
-        TableTennis,
-        TableTennisCompletion
+        TableTennis
     }
 }

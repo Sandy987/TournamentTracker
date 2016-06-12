@@ -6,5 +6,6 @@ namespace TournamentTracker.Services.Interfaces
     {
         void AddChallenge(Challenge challenge);
         Challenge GetChallengeById(int id);
+        Challenge GetChallengeByMatchId(int id);
     }
 }

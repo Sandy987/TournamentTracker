@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace TournamentTracker.Api
 {
@@ -76,7 +77,8 @@ namespace TournamentTracker.Api
                 SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
                 ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
                 Type = model.ChallengeType,
-                Status = ChallengeStatus.Pending,
+                SendingPlayerStatus = ChallengeStatus.Accepted,
+                ReceivingPlayerStatus = ChallengeStatus.Pending,
                 MatchId = model.MatchId
             };
 
@@ -101,27 +103,71 @@ namespace TournamentTracker.Api
 
             if (challenge.Type == ChallengeType.TableTennis)
             {
-                if (challenge.Match != null) return BadRequest("match already started");
-                var newMatch = new Match
+                if (challenge.Match == null)
                 {
-                    PlayerOneId = challenge.SendingPlayerId,
-                    PlayerTwoId = challenge.ReceivingPlayerId,
-                    MatchStatus = MatchStatus.Accepted
-                };
-                _matchService.AddMatch(newMatch);
-
-                challenge.Status = ChallengeStatus.Accepted;
+                    var newMatch = new Match
+                    {
+                        PlayerOneId = challenge.SendingPlayerId,
+                        PlayerTwoId = challenge.ReceivingPlayerId,
+                        MatchStatus = MatchStatus.Accepted
+                    };
+                    _matchService.AddMatch(newMatch);
+                }
+                
+                challenge.ReceivingPlayerStatus = ChallengeStatus.Accepted;
             }
-            else if(challenge.Type == ChallengeType.TableTennisCompletion)
-            {
-                var match = challenge.Match;
+            await _matchService.SaveAsync();
+            await _challengeService.SaveAsync();
 
+            return Ok();
+        }
+
+        [HttpPost("{id}/Decline")]
+        public async Task<IActionResult> DeclineChallenge(int id)
+        {
+            var challenge = _challengeService.GetChallengeById(id);
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (challenge == null) return NotFound();
+
+            //Make sure the logged in player is the recieving player calling.
+            if (challenge.ReceivingPlayerId != currentUserId)
+                return BadRequest("player is not the receiver of challenge");
+
+            if (challenge.Type == ChallengeType.TableTennis)
+            {               
+                challenge.ReceivingPlayerStatus = ChallengeStatus.Declined;
+            }
+            await _challengeService.SaveAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/Complete")]
+        public async Task<IActionResult> CompleteChallenge(int id)
+        {
+            var challenge = _challengeService.GetChallengeById(id);
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (challenge == null) return NotFound();
+
+            if (challenge.ReceivingPlayerId != currentUserId && challenge.SendingPlayerId != currentUserId)
+                return BadRequest("player is not a member of the challenge");
+            
+            var match = challenge.Match;
+            
+            if (currentUserId == challenge.SendingPlayerId)
+                challenge.SendingPlayerStatus = ChallengeStatus.Completed;
+            if (currentUserId == challenge.ReceivingPlayerId)
+                challenge.ReceivingPlayerStatus = ChallengeStatus.Completed;
+
+            if (challenge.SendingPlayerStatus == ChallengeStatus.Completed && challenge.ReceivingPlayerStatus == ChallengeStatus.Completed)
+            {
                 if (match == null || match.MatchStatus == null || match.MatchStatus != MatchStatus.Accepted)
                     return BadRequest("match not completable");
 
                 match.MatchStatus = MatchStatus.Completed;
-                challenge.Status = ChallengeStatus.Accepted;
-
+                match.MatchCompletion = DateTime.UtcNow;
                 var playerOne = _applicationUserService.GetUserById(match.PlayerOneId);
                 var playerTwo = _applicationUserService.GetUserById(match.PlayerTwoId);
 
@@ -137,12 +183,14 @@ namespace TournamentTracker.Api
                     playerTwo.PlayerWins +=1;
                     playerOne.PlayerLoses +=1;
                 }
-                var eloResult = _eloService.CalcElo((int)playerOne.PlayerElo, 
-                                                    (int)playerTwo.PlayerElo, 
-                                                    match.MatchWinnerId==match.PlayerOneId?MatchWinner.PlayerOne:MatchWinner.PlayerTwo);
-                
-                playerOne.PlayerElo = eloResult.PlayerOneElo;
-                playerTwo.PlayerElo = eloResult.PlayerTwoElo;              
+                if (match.MatchWinnerId != null)
+                {
+                    var eloResult = _eloService.CalcElo((int)playerOne.PlayerElo, 
+                                                        (int)playerTwo.PlayerElo, 
+                                                        match.MatchWinnerId==match.PlayerOneId?MatchWinner.PlayerOne:MatchWinner.PlayerTwo);
+                    playerOne.PlayerElo = eloResult.PlayerOneElo;
+                    playerTwo.PlayerElo = eloResult.PlayerTwoElo; 
+                }             
             }
 
             await _applicationUserService.SaveAsync();
@@ -159,8 +207,10 @@ namespace TournamentTracker.Api
                     Id = n.Id,
                     SendingPlayerId = n.SendingPlayerId,
                     SendingPlayerName = n.SendingPlayer.UserName,
+                    SendingPlayerStatus = n.SendingPlayerStatus,
                     ReceivingPlayerId = n.ReceivingPlayerId,
                     ReceivingPlayerName = n.ReceivingPlayer.UserName,
+                    ReceivingPlayerStatus = n.ReceivingPlayerStatus,
                     MatchId = n.MatchId
                 }
             );

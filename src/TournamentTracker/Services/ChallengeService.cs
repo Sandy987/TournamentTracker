@@ -30,6 +30,14 @@ namespace TournamentTracker.Services
                                  .SingleOrDefault(c => c.Id == id);
         }
 
+        public Challenge GetChallengeByMatchId(int id)
+        {
+            return _db.Challenges.Include(c => c.Match)
+                                 .Include(c => c.SendingPlayer)
+                                 .Include(c => c.ReceivingPlayer)
+                                 .SingleOrDefault(c => c.MatchId == id);
+        }
+
         public void Save()
         {
             _db.SaveChanges();

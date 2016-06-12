@@ -18,25 +18,25 @@ namespace TournamentTracker.Services.Elo
             float G = 0;
             float A1 = System.Convert.ToSingle(playerOneElo);
             float B1 = System.Convert.ToSingle(playerTwoElo);
-            if (winner == MatchWinner.PlayerOne) { G = 0; }
-            if (winner == MatchWinner.PlayerTwo) { G = 1; }
-
-            double addsub = factor * (G - (1 / (1 + System.Math.Pow(10, ((B1 - A1) / divisor)))));
-            int addsubint = System.Convert.ToInt32(addsub);
+            if (winner == MatchWinner.PlayerOne) { G = 1; }
+            if (winner == MatchWinner.PlayerTwo) { G = 0; }
+            
+            double changeValue = factor * (G - (1 / (1 + System.Math.Pow(10, ((B1 - A1) / divisor)))));
+            int changeValueInt = System.Convert.ToInt32(changeValue);
 
             EloResult result = new EloResult();
 
             if (winner == MatchWinner.PlayerOne)
             {
-                result.PlayerOneElo = playerOneElo - addsubint;
-                result.PlayerTwoElo = playerTwoElo + addsubint;
+                result.PlayerOneElo = playerOneElo + changeValueInt;
+                result.PlayerTwoElo = playerTwoElo - changeValueInt;
             }
             if (winner == MatchWinner.PlayerTwo)
             {
-                result.PlayerOneElo = playerOneElo - addsubint;
-                result.PlayerTwoElo = playerTwoElo + addsubint;
+                result.PlayerOneElo = playerOneElo + changeValueInt;
+                result.PlayerTwoElo = playerTwoElo - changeValueInt;
             }
-            result.changeValue = addsubint;
+            result.changeValue = changeValueInt;
 
             return result;
         }

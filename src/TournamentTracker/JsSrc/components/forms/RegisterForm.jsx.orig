@@ -48,7 +48,12 @@ const LoginFormComponent = React.createClass({
 
 //Wire up the redux form
 export default reduxForm({
+<<<<<<< HEAD
     form: 'register',
+    fields: ['email', 'password'],
+=======
+    form: 'login',
     fields: ['playername', 'email', 'password', 'rememberMe'],
+>>>>>>> 2b56ff2eb90231a44a8a382458be5976c66dbc23
     validate: validateLogin
 })(LoginFormComponent);
