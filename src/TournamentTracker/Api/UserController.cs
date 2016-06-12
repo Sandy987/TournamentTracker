@@ -110,11 +110,11 @@ namespace TournamentTracker.Api
         }
 
 
-        //todo  consider restricting returning user email to only if it is being called for the currently logged on user
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
             if(string.IsNullOrWhiteSpace(id)) return BadRequest();
+            var currentUserId = _userManager.GetUserId(User);
 
             var user = _userService.GetUserById(id);
 
@@ -128,7 +128,7 @@ namespace TournamentTracker.Api
                 PlayerWins = user.PlayerWins,
                 PlayerLoses = user.PlayerLoses,
                 Username = user.UserName,
-                Email = user.Email
+                Email = user.Id==currentUserId?user.Email:string.Empty
             });
         }
 
@@ -149,11 +149,12 @@ namespace TournamentTracker.Api
             return Ok(users);
         }
 
-        //todo  make sure this only updates the currently logged on user
         [HttpPatch("")]
         public async Task<IActionResult> Patch([FromBody]UserModel userModel)
         {
             if(userModel == null || string.IsNullOrEmpty(userModel.Id)) return BadRequest();
+            var currentUserId = _userManager.GetUserId(User);
+            if (currentUserId == null || currentUserId != userModel.Id) return BadRequest();
 
             var user = _userService.GetUserById(userModel.Id);
             
