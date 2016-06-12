@@ -3,7 +3,6 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Paper from 'material-ui/Paper';
 import MatchList from '../matches/MatchList';
 import {connect} from 'react-redux';
-import * as matchActions from '../../actions/match_actions';
 
 const PlayerProfile = React.createClass({
     mixins: [PureRenderMixin],
@@ -39,4 +38,4 @@ function mapStateToProps(state, ownProps){
     }
 }
 
-export default connect(mapStateToProps, matchActions)(PlayerProfile);
+export default connect(mapStateToProps)(PlayerProfile);

@@ -17,15 +17,6 @@ export default store => next => action => {
                 store.dispatch(push('/home'));
             }
         }
-
-        if (action.path.includes('/player/')){
-            var playerId = action.path.replace('/player/', '');
-            store.dispatch(matchActions.initiateLoadMatchHistory(playerId));
-        }
-        else if(action.path.includes('/notifications/')){
-            var playerId = action.path.replace('/notifications/', '');
-            store.dispatch(notificationActions.initiateLoadNotifications(playerId));
-        }
     } 
     return next(action); //This sends the action to the store after middleware is complete
 }
