@@ -17,21 +17,25 @@ export const TopMenu = React.createClass({
             <Drawer
             open={this.props.isMenuOpen}
             docked={false}
-            onRequestClose={(e) => this.props.routerCloseMenu()}>
+            onRequestClose={(e) => this.props.routerCloseMenu()}
+            onRequestChange={(open) => open ? this.props.routerOpenMenu() : this.props.routerCloseMenu()}>
             <Menu>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/">Home</Link></MenuItem>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/account">Account</Link></MenuItem>
+                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to={/notifications/`${this.props.activeUser.Id}`}>Notifications</Link></MenuItem>
             </Menu>
             </Drawer> 
         </div>);
     }   
 });
 
+
 //Makes properties from the redux state tree available to the component in the form of props
 function mapStateToProps(state){
     return{
         isMenuOpen : state.nav.isMenuOpen,
-        anchorElement : state.nav.anchorElement
+        anchorElement : state.nav.anchorElement,
+        activeUser : state.activeUser.user
     };
 }
 
