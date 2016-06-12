@@ -28,13 +28,13 @@ namespace TournamentTracker.Services.Elo
 
             if (winner == MatchWinner.PlayerOne)
             {
-                result.PlayerOneElo = playerOneElo + addsubint;
-                result.PlayerTwoElo = playerTwoElo - addsubint;
+                result.PlayerOneElo = playerOneElo - addsubint;
+                result.PlayerTwoElo = playerTwoElo + addsubint;
             }
             if (winner == MatchWinner.PlayerTwo)
             {
-                result.PlayerOneElo = playerOneElo + addsubint;
-                result.PlayerTwoElo = playerTwoElo - addsubint;
+                result.PlayerOneElo = playerOneElo - addsubint;
+                result.PlayerTwoElo = playerTwoElo + addsubint;
             }
             result.changeValue = addsubint;
 
