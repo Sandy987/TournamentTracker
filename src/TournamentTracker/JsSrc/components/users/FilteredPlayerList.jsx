@@ -38,7 +38,10 @@ function mapStateToProps(state){
             filterText: state.players.filter,
             filteredPlayers: state.players.players.filter((p) => {
                 if (state.players.filter && state.players.filter.length > 0){
-                    return p.playerName.includes(state.players.filter);
+                    if (p.playerName)
+                        return p.playerName.includes(state.players.filter);
+                    else
+                        return false;
                 } else {
                     return true;
                 }
