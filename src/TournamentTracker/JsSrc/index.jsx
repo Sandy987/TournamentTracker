@@ -52,7 +52,7 @@ ReactDOM.render(
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/" component ={App}>
-                <Route path="/" component={HomePageContainer}/>
+                <Route path="/home" component={HomePageContainer}/>
                 <Route path="/account" component={UserProfileForm} />
                 <Route path="/player/:playerId" component={PlayerProfile}/>
                 <Route path="/notifications/:playerId" component={NotificationList}/>

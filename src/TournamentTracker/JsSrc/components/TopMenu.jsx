@@ -2,14 +2,16 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
+import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 
 export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
-        return <div>
-            <Link to="/">Home</Link>
-            <Link to="/account">Account</Link>
-        </div>;
+        return <AppBar title='T-Ts Tournament Tracker'>
+            <FlatButton><Link to="/">Home</Link></FlatButton>
+            <FlatButton><Link to="/account">Account</Link></FlatButton>
+        </AppBar>;
     } 
 });
 
