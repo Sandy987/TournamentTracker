@@ -1,4 +1,5 @@
 import * as matchActions from '../actions/match_actions';
+import _ from 'lodash';
 
 //TODO: write tests
 export default function(state, action) {
@@ -53,7 +54,7 @@ function receiveMatchHistory(state, action){
         newMatches = [];
     }
 
-    newMatches[action.playerId] = action.matches;
+    newMatches = _.unionWith(newMatches, action.matches, (x,y) => x.Id === y.Id);
 
     return {
         matches: newMatches,

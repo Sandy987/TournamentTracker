@@ -27,10 +27,11 @@ const PlayerProfile = React.createClass({
 });
 
 function mapStateToProps(state, ownProps){
+    const pId = ownProps.params.playerId;
     return{
-        playerId: ownProps.params.playerId,
-        player: !state.players.isPlayersLoading ? state.players.players.find((p) => p.Id === ownProps.params.playerId) : null,
-        matches: !state.matches.isRetrievingMatchHistory ? state.matches.matches[ownProps.params.playerId] : null
+        playerId: pId,
+        player: !state.players.isPlayersLoading ? state.players.players.find((p) => p.Id === pId) : null,
+        matches: !state.matches.isRetrievingMatchHistory ? state.matches.matches.find((x) => x.PlayerOneId === pId || x.PlayerTwoId === pId) : null
     }
 }
 
