@@ -7,7 +7,7 @@ using TournamentTracker.Services.Interfaces;
 
 namespace TournamentTracker.Services.Elo
 {
-    public class EloService
+    public class EloService : IEloService
     {
         private int factor = 32;
         private int divisor = 400;
@@ -28,13 +28,13 @@ namespace TournamentTracker.Services.Elo
 
             if (winner == MatchWinner.PlayerOne)
             {
-                result.PlayerOneElo = playerOneElo + addsubint;
-                result.PlayerTwoElo = playerTwoElo - addsubint;
+                result.PlayerOneElo = playerOneElo - addsubint;
+                result.PlayerTwoElo = playerTwoElo + addsubint;
             }
             if (winner == MatchWinner.PlayerTwo)
             {
-                result.PlayerOneElo = playerOneElo + addsubint;
-                result.PlayerTwoElo = playerTwoElo - addsubint;
+                result.PlayerOneElo = playerOneElo - addsubint;
+                result.PlayerTwoElo = playerTwoElo + addsubint;
             }
             result.changeValue = addsubint;
 

@@ -7,6 +7,7 @@ using TournamentTracker.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace TournamentTracker.Api
 {
@@ -15,10 +16,12 @@ namespace TournamentTracker.Api
     {
         private INotificationService _notificationService;
         private IApplicationUserService _applicationUserService;
-        public NotificationController(INotificationService notificationService, IApplicationUserService applicationUserService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public NotificationController(INotificationService notificationService, IApplicationUserService applicationUserService, UserManager<ApplicationUser> userManager)
         {
             _notificationService = notificationService;
             _applicationUserService = applicationUserService;
+            _userManager = userManager;
         }
 
         [HttpGet("GetAllPlayer/{playerId}")]
@@ -34,11 +37,12 @@ namespace TournamentTracker.Api
         }
 
         //for sending a notification
-        //todo  Make sure the logged in player is the sending player
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]NotificationModel model)
         {
-            if(model == null) return BadRequest();
+            var currentUserId = _userManager.GetUserId(User);
+            if (model == null || model.SendingPlayerId != currentUserId)
+                return BadRequest();
 
             var notification = new Notification()
             {
@@ -55,12 +59,13 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
-        //todo  Make sure the logged in player is the receiving player
-        //used to chalenge the status of a notification (read, deleted)
+        //used to change the status of a notification (read, deleted)
         [HttpPatch("")]
         public async Task<IActionResult> Patch([FromBody]NotificationModel model)
         {
-            if(model == null) return BadRequest();
+            var currentUserId = _userManager.GetUserId(User);
+            if (model == null || model.ReceivingPlayerId != currentUserId)
+                return BadRequest();
 
             var notification = _notificationService.GetNotificationById(model.Id);
             

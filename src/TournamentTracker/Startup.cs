@@ -13,6 +13,7 @@ using TournamentTracker.Data;
 using TournamentTracker.Models;
 using TournamentTracker.Services.Interfaces;
 using TournamentTracker.Services;
+using TournamentTracker.Services.Elo;
 
 namespace TournamentTracker
 {
@@ -55,6 +56,7 @@ namespace TournamentTracker
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IChallengeService, ChallengeService>();
+            services.AddTransient<IEloService, EloService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

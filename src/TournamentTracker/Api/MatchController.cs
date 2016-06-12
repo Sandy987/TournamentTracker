@@ -6,6 +6,7 @@ using TournamentTracker.Models.Enumerations;
 using TournamentTracker.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace TournamentTracker.Api
 {
@@ -15,11 +16,12 @@ namespace TournamentTracker.Api
     {
         private IMatchService _matchService;
         private IApplicationUserService _applicationUserService;
-
-        public MatchController(IMatchService matchService, IApplicationUserService applicationUserService)
+        private readonly UserManager<ApplicationUser> _userManager; 
+        public MatchController(IMatchService matchService, IApplicationUserService applicationUserService, UserManager<ApplicationUser> userManager)
         {
             _matchService = matchService;
             _applicationUserService = applicationUserService;
+            _userManager = userManager;
         }
 
        
@@ -76,8 +78,9 @@ namespace TournamentTracker.Api
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]MatchModel model)
         {
-            //todo verify logged in player is one of the players of the match
-            if(model == null) return BadRequest();
+            var currentUserId = _userManager.GetUserId(User);
+            if (model == null || (model.PlayerOneId != currentUserId && model.PlayerTwoId != currentUserId))
+                return BadRequest();
 
             var match = new Match()
             {
@@ -95,8 +98,9 @@ namespace TournamentTracker.Api
         [HttpPatch("")]
         public async Task<IActionResult> Patch([FromBody]MatchModel model)
         {
-            //todo verify logged in player is one of the players of the match
-            if(model == null) return BadRequest();
+            var currentUserId = _userManager.GetUserId(User);
+            if (model == null || (model.PlayerOneId != currentUserId||model.PlayerTwoId != currentUserId))
+                return BadRequest();
 
             var match = _matchService.GetMatchById(model.Id);
             
