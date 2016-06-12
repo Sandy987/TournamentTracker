@@ -75,8 +75,10 @@ namespace TournamentTracker.Api
                 var user = new ApplicationUser {
                     UserName = model.Email,
                     Email = model.Email,
-
+                    PlayerName = model.PlayerName,
+                    PlayerElo = 1000,
                 };
+                
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -12,7 +12,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const submit = (values, dispatch) =>{
     return new Promise((resolve, reject) => {
-        dispatch(initiateRegister(values.email, values.password));
+        dispatch(initiateRegister(values.playername, values.email, values.password));
         resolve();
     });
 };
@@ -20,10 +20,15 @@ const submit = (values, dispatch) =>{
 const LoginFormComponent = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
-        const { fields: {email, password}, handleSubmit, submitting} = this.props;
+        const { fields: {playername, email, password}, handleSubmit, submitting} = this.props;
         return <MuiThemeProvider muiTheme={getMuiTheme()}>  
             <Paper className="tt-register-form">
                 <form onSubmit={handleSubmit(submit)}>
+                    <div>
+                        <TextField hintText="Player Name" {...playername} />
+                        {playername.error && playername.touched && <div>{playername.error}</div>} 
+                    </div>
+
                     <div>
                         <TextField hintText="Email Address" {...email} />
                         {email.error && email.touched && <div>{email.error}</div>} 
@@ -44,6 +49,6 @@ const LoginFormComponent = React.createClass({
 //Wire up the redux form
 export default reduxForm({
     form: 'login',
-    fields: ['email', 'password', 'rememberMe'],
+    fields: ['playername', 'email', 'password', 'rememberMe'],
     validate: validateLogin
 })(LoginFormComponent);

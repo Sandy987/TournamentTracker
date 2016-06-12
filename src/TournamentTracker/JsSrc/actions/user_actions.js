@@ -58,7 +58,7 @@ export function initiateLogin(email, password, rememberMe){
     }
 }
 
-export function initiateRegister(email, password){
+export function initiateRegister(playername, email, password){
     return function(dispatch){
 
         //First dispatch: app state is updated to informat that api call is starting
@@ -72,7 +72,7 @@ export function initiateRegister(email, password){
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({Email: email, Password: password})
+            body: JSON.stringify({PlayerName: playername, Email: email, Password: password})
         })
             .then(checkStatus)
             .then(response => response.json())
