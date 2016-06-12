@@ -21,18 +21,21 @@ namespace TournamentTracker.Api
 
         private IMatchService _matchService;
         private IEloService _eloService;
+        private INotificationService _notifactionService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ChallengeController(IChallengeService challengeService, 
         IApplicationUserService applicationUserService,
         IMatchService matchService,
         IEloService eloService,
+        INotificationService notificationService,
         UserManager<ApplicationUser> userManager)
         {
             _challengeService = challengeService;
             _applicationUserService = applicationUserService;
             _matchService = matchService;
             _eloService = eloService;
+            _notifactionService = notificationService;
             _userManager = userManager;
         }
 
@@ -48,7 +51,7 @@ namespace TournamentTracker.Api
             return Ok(challenges);
         }
 
-        //create a challenge or a challenge completion
+        //create a challenge
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]ChallengeModel model)
         {
@@ -60,32 +63,33 @@ namespace TournamentTracker.Api
                 string.IsNullOrEmpty(model.SendingPlayerId) ||
                 model.SendingPlayerId != currentUserId) return BadRequest();
 
-            if (model.MatchId != null)
-            {
-                if (model.ChallengeType == ChallengeType.TableTennis)
-                    return BadRequest("cannot create challenge for an existing match");
+            var sendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? "");
+            var receivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? "");
 
-                var match = _matchService.GetMatchById(model.MatchId.Value);
-                if (match.PlayerOneId != currentUserId && match.PlayerTwoId != currentUserId)
-                    return BadRequest("cannot complete a challenge for a match the player is not part of");
-            }
-
-            var challenge = new Challenge()
+            var challenge = new Challenge
             {
                 SendingPlayerId = model.SendingPlayerId,
                 ReceivingPlayerId = model.ReceivingPlayerId,
-                SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
-                ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
+                SendingPlayer = sendingPlayer,
+                ReceivingPlayer = receivingPlayer,
                 Type = model.ChallengeType,
                 SendingPlayerStatus = ChallengeStatus.Accepted,
                 ReceivingPlayerStatus = ChallengeStatus.Pending,
                 MatchId = model.MatchId
             };
 
+            var notification = new Notification
+            {
+                SendingPlayerId = model.SendingPlayerId,
+                ReceivingPlayerId = model.ReceivingPlayerId,
+                Status = NotificationStatus.Unread,
+                Message = string.Format("{0} has challenged you to a match", sendingPlayer.PlayerName)
+            };
 
-            //todo create a notification associated with challenge?
             _challengeService.AddChallenge(challenge);
+            _notifactionService.AddNotification(notification);
             await _challengeService.SaveAsync();
+            await _notifactionService.SaveAsync();
             return Ok();
         }
 
@@ -109,13 +113,26 @@ namespace TournamentTracker.Api
                     {
                         PlayerOneId = challenge.SendingPlayerId,
                         PlayerTwoId = challenge.ReceivingPlayerId,
-                        MatchStatus = MatchStatus.Accepted
+                        Status = MatchStatus.Accepted
                     };
+                    challenge.Match = newMatch;
                     _matchService.AddMatch(newMatch);
                 }
                 
                 challenge.ReceivingPlayerStatus = ChallengeStatus.Accepted;
+
+                var notification = new Notification
+                {
+                    SendingPlayerId = challenge.ReceivingPlayerId,
+                    ReceivingPlayerId = challenge.SendingPlayerId,
+                    Status = NotificationStatus.Unread,
+                    Message = string.Format("{0} has accepted your challenge", challenge.ReceivingPlayer.PlayerName)
+                };
+
+                _notifactionService.AddNotification(notification);
             }
+
+            await _notifactionService.SaveAsync();
             await _matchService.SaveAsync();
             await _challengeService.SaveAsync();
 
@@ -137,7 +154,18 @@ namespace TournamentTracker.Api
             if (challenge.Type == ChallengeType.TableTennis)
             {               
                 challenge.ReceivingPlayerStatus = ChallengeStatus.Declined;
+
+                var notification = new Notification
+                {
+                    SendingPlayerId = challenge.ReceivingPlayerId,
+                    ReceivingPlayerId = challenge.SendingPlayerId,
+                    Status = NotificationStatus.Unread,
+                    Message = string.Format("{0} has declined your challenge", challenge.ReceivingPlayer.PlayerName)
+                };
+
+                _notifactionService.AddNotification(notification);
             }
+            await _notifactionService.SaveAsync();
             await _challengeService.SaveAsync();
 
             return Ok();
@@ -156,33 +184,38 @@ namespace TournamentTracker.Api
             
             var match = challenge.Match;
             
+            var matchWinner = match.PlayerOneScore>match.PlayerTwoScore?match.PlayerOne:match.PlayerTwo;
+            var matchLoser = match.PlayerOneScore>match.PlayerTwoScore?match.PlayerTwo:match.PlayerOne;
+
             if (currentUserId == challenge.SendingPlayerId)
+            {
                 challenge.SendingPlayerStatus = ChallengeStatus.Completed;
+                CreateOneSidedMatchCompletionNotification(challenge.SendingPlayer, challenge.ReceivingPlayer, matchWinner.Id, match);
+            }               
             if (currentUserId == challenge.ReceivingPlayerId)
+            {
                 challenge.ReceivingPlayerStatus = ChallengeStatus.Completed;
+                CreateOneSidedMatchCompletionNotification(challenge.ReceivingPlayer, challenge.SendingPlayer, matchWinner.Id, match);
+            }
 
             if (challenge.SendingPlayerStatus == ChallengeStatus.Completed && challenge.ReceivingPlayerStatus == ChallengeStatus.Completed)
             {
-                if (match == null || match.MatchStatus == null || match.MatchStatus != MatchStatus.Accepted)
+                if (match == null || match.Status == null || match.Status != MatchStatus.Accepted)
                     return BadRequest("match not completable");
 
-                match.MatchStatus = MatchStatus.Completed;
-                match.MatchCompletion = DateTime.UtcNow;
+                if (currentUserId == challenge.SendingPlayerId)
+                    CreateMatchFinaliseNotification(challenge.SendingPlayer, challenge.ReceivingPlayer);
+                if (currentUserId == challenge.ReceivingPlayerId)
+                    CreateMatchFinaliseNotification(challenge.ReceivingPlayer, challenge.SendingPlayer);
+
+                match.Status = MatchStatus.Completed;
+                match.CompletionDate = DateTime.UtcNow;
                 var playerOne = _applicationUserService.GetUserById(match.PlayerOneId);
                 var playerTwo = _applicationUserService.GetUserById(match.PlayerTwoId);
 
-                if (match.PlayerOneScore > match.PlayerTwoScore)
-                {
-                     match.MatchWinnerId = match.PlayerOneId;
-                     playerOne.PlayerWins +=1;
-                     playerTwo.PlayerLoses +=1;
-                }
-                else if(match.PlayerTwoScore > match.PlayerOneScore)
-                {
-                    match.MatchWinnerId = match.PlayerTwoId;
-                    playerTwo.PlayerWins +=1;
-                    playerOne.PlayerLoses +=1;
-                }
+                match.MatchWinnerId = matchWinner.Id;
+                matchWinner.PlayerWins +=1;
+                matchLoser.PlayerLoses -=1;
                 if (match.MatchWinnerId != null)
                 {
                     var eloResult = _eloService.CalcElo((int)playerOne.PlayerElo, 
@@ -193,11 +226,38 @@ namespace TournamentTracker.Api
                 }             
             }
 
+            await _notifactionService.SaveAsync();
             await _applicationUserService.SaveAsync();
             await _matchService.SaveAsync();
             await _challengeService.SaveAsync();
 
             return Ok();
+        }
+
+        private void CreateOneSidedMatchCompletionNotification(ApplicationUser sendingPlayer, ApplicationUser receivingPlayer, string winnerId, Match match)
+        {  
+                var notification = new Notification
+                {
+                    SendingPlayerId = sendingPlayer.Id,
+                    ReceivingPlayerId = receivingPlayer.Id,
+                    Status = NotificationStatus.Unread,
+                    Message = string.Format("{0} wants to finalise the match with a score of {1}-{2} ({3} as winner)", 
+                                            sendingPlayer.PlayerName, match.PlayerOneScore, match.PlayerTwoScore, 
+                                            sendingPlayer.Id==winnerId?sendingPlayer.PlayerName:receivingPlayer.PlayerName)
+                };
+                _notifactionService.AddNotification(notification);
+        }
+
+        private void CreateMatchFinaliseNotification(ApplicationUser sendingPlayer, ApplicationUser receivingPlayer)
+        {  
+                var notification = new Notification
+                {
+                    SendingPlayerId = sendingPlayer.Id,
+                    ReceivingPlayerId = receivingPlayer.Id,
+                    Status = NotificationStatus.Unread,
+                    Message = string.Format("{0} accepted your submited score and the match has been finalised", sendingPlayer.PlayerName)
+                };
+                _notifactionService.AddNotification(notification);
         }
 
         private IEnumerable<ChallengeModel> MapToModels(IEnumerable<Challenge> challenges)
