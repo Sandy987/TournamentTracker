@@ -12,7 +12,7 @@ export default function(state, action) {
         case notificationActions.REQUEST_NOTIFICATIONS:
             return Object.assign({}, state, requestNotifications(action)); 
         case notificationActions.RECEIVE_NOTIFICATIONS:
-            return Object.assign({}, state, requestNotifications(action)); 
+            return Object.assign({}, state, receiveNotifications(action)); 
     }
 
     return state;

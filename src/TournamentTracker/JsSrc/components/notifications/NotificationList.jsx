@@ -2,15 +2,25 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {List, ListItem} from 'material-ui/List';
 import {connect} from 'react-redux';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
 
 const NotificationList = React.createClass({
     mixins: [PureRenderMixin],
     getListItem: function(notification){
-        const {from, message, status} = notification;
-        return <div className={status}>
-                    <span className="notification-from">{from}</span>
-                    <span className="notification-message">{message}</span>
-                </div>
+        const {Id, Message, SendingPlayerName, Status} = notification;
+        
+        return <ListItem
+        key={Id}
+         primaryText={SendingPlayerName}
+          secondaryText={
+            <p>
+              <span style={{color: darkBlack}}> {Message}</span>
+             
+            </p>
+          }
+          secondaryTextLines={2}
+
+        />
     },
     render: function(){
         return <List>
