@@ -98,9 +98,10 @@ export function requestSaveUser(){
 }
 
 //TODO: fill this out? maybe with a status or with the user details
-export function receiveSaveUser(status){
+export function receiveSaveUser(status, newDetails){
     return {
-        type: RECEIVE_SAVE_USER 
+        type: RECEIVE_SAVE_USER,
+        newUserDetails: newDetails 
     }
 }
 
@@ -121,10 +122,13 @@ export function initiateSaveUserDetails(playerId, playerName, email, userName){
             body: JSON.stringify({Id: playerId, PlayerName: playerName, Email: email, UserName: userName})
         })
             .then(checkStatus)
-            .then(response => response.json())
-            .then(user =>  dispatch(receiveSaveUser(true)))
+            .then(user =>  {
+                return dispatch(receiveSaveUser(true, {Id: playerId, PlayerName: playerName, Email: email, UserName: userName})); 
+            })
             .catch(err => 
-                dispatch(receiveSaveUser(false))
+            {
+               return dispatch(receiveSaveUser(false));
+            }
             );
     }
 }
