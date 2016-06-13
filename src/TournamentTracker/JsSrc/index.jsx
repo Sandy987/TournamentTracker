@@ -22,6 +22,7 @@ import RegisterForm from './components/forms/RegisterForm';
 
 import PlayerProfile from './components/users/PlayerProfile';
 import UserProfileForm from './components/users/UserProfileForm';
+import AccountForm from './components/users/AccountForm';
 
 import ChallengesContainer from './components/challenges/ChallengesContainer';
 
@@ -57,7 +58,7 @@ ReactDOM.render(
             <Route path="/register" component={RegisterForm} />
             <Route path="/" component ={App}>
                 <Route path="/home" component={HomePageContainer}/>
-                <Route path="/account" component={UserProfileForm} />
+                <Route path="/account" component={AccountForm} />
                 <Route path="/challenges" component={ChallengesContainer} />
                 <Route path="/player/:playerId" component={PlayerProfile}/>
                 <Route path="/notifications/:playerId" component={NotificationList}/>

@@ -21,6 +21,7 @@ namespace TournamentTracker.Services
         {
             return _db.Players
                     .Include(p => p.Matches)
+                    .ThenInclude(m => m.PlayerTwo)
                     .Include(p => p.Challenges)
                     .Include(p => p.Notifications)
                     .ThenInclude(p => p.ReceivingPlayer)

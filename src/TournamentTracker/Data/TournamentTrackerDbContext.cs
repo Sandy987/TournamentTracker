@@ -32,8 +32,8 @@ namespace TournamentTracker.Data
             builder.Entity<ApplicationUser>().
             HasMany(p => p.Challenges).WithOne(m => m.ReceivingPlayer);
 
-            // builder.Entity<ApplicationUser>().
-            // HasMany(p => p.Matches).WithOne(m => m.PlayerTwo);
+             builder.Entity<ApplicationUser>().
+             HasMany(p => p.Matches).WithOne(m => m.PlayerTwo);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
