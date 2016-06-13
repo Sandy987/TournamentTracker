@@ -8,6 +8,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 import * as NavActions from '../actions/nav_actions';
+import { push } from 'react-router-redux';
 
 export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
@@ -22,16 +23,20 @@ export const TopMenu = React.createClass({
             onRequestClose={(e) => this.props.routerCloseMenu()}
             onRequestChange={(open) => open ? this.props.routerOpenMenu() : this.props.routerCloseMenu()}>
             <Menu>
-                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/">Home</Link></MenuItem>
-                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/account">Account</Link></MenuItem>
-                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to={notificationPath}>Notifications</Link></MenuItem>
+                <MenuItem onTouchTap={(e) => onMenuItemTouch('/home', this.props)}>Home</MenuItem>
+                <MenuItem onTouchTap={(e) => onMenuItemTouch('/account', this.props)} >Account</MenuItem>
+                <MenuItem onTouchTap={(e) => onMenuItemTouch(notificationPath, this.props)} >Notifications</MenuItem>
             </Menu>
             </Drawer> 
         </div>);
     }   
 });
 
+function onMenuItemTouch(path, props){
 
+    props.routerCloseMenu();
+    props.push(path);
+}
 //Makes properties from the redux state tree available to the component in the form of props
 function mapStateToProps(state){
     return{
@@ -41,5 +46,8 @@ function mapStateToProps(state){
     };
 }
 
+var compiledFunctions = Object.assign({}, NavActions);
+compiledFunctions.push = push
+
 //Hook up the home page container with redux connect.
-export default connect(mapStateToProps, NavActions)(TopMenu);
+export default connect(mapStateToProps, compiledFunctions)(TopMenu);
