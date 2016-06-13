@@ -10,16 +10,16 @@ const PlayerProfile = React.createClass({
     render: function(){
         if (this.props.playerLoading || this.props.matchesLoading){
             return <div>Loading Spinner</div>;
-        } else if(!this.props.player){
-            return <div>Player not found</div>;
+        } else if(!this.props.player || !this.props.matches){
+            return <div>Player or matches not found</div>;
         } else {
             const player = this.props.player;
             return <Paper zDepth={2}>
                 <div className="tt-player-profile" >
-                    <div>{this.props.player.PlayerName}</div>
-                    <div>{this.props.player.PlayerElo}</div>
-                    <div>{this.props.player.PlayerWins}</div>
-                    <div>{this.props.player.PlayerLoses}</div>
+                    <div>Player Name: </div><div>{this.props.player.PlayerName}</div>
+                    <div>Player ELO: </div><div>{this.props.player.PlayerElo}</div>
+                    <div>Wins: </div><div>{this.props.player.PlayerWins}</div>
+                    <div>Losses: </div><div>{this.props.player.PlayerLoses}</div>
                 </div>
                 <MatchList matches={this.props.matches}/>
             </Paper>;
@@ -34,7 +34,7 @@ function mapStateToProps(state, ownProps){
         playerLoading: state.players.isPlayersLoading,
         player: !state.players.isPlayersLoading ? state.players.players.find((p) => p.Id === pId) : null,
         matchesLoading: state.matches.isRetrievingMatchHistory,
-        matches: !state.matches.isRetrievingMatchHistory ? state.matches.matches.find((x) => x.PlayerOneId === pId || x.PlayerTwoId === pId) : null
+        matches: !state.matches.isRetrievingMatchHistory ? state.matches.matches.filter((x) => x.PlayerOneId === pId || x.PlayerTwoId === pId) : null
     }
 }
 

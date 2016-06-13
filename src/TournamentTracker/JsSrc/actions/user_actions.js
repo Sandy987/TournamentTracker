@@ -37,7 +37,7 @@ export function receiveActiveUser(user){
 export function receiveActiveUserComplete(){
     return{
         type: RECEIVE_ACTIVE_USER_COMPLETE
-    }
+    };
 }
 
 export function initiateLogin(email, password, rememberMe){
