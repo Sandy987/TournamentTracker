@@ -7,7 +7,14 @@ import ChallengeMatchCard from './ChallengeMatchCard';
 const ChallengeMatchList = React.createClass({
     mixins: [PureRenderMixin],
     getListItem: function(challengeMatch){
-        return <ChallengeMatchCard key={challengeMatch.challenge.Id} challenge={challengeMatch.challenge} match={challengeMatch.match} activeUser={this.props.activeUser} />
+        return <ChallengeMatchCard 
+                    key={challengeMatch.challenge.Id} 
+                    challenge={challengeMatch.challenge} 
+                    match={challengeMatch.match} 
+                    activeUser={this.props.activeUser}
+                    onAcceptClicked={this.props.onAcceptChallenge}
+                    onDeclineClicked={this.props.onDeclineChallenge}
+                    onCompleteClicked={this.props.onCompleteChallenge}/>
     },
     render: function(){
         return <div>

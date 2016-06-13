@@ -3,11 +3,12 @@ import _ from 'lodash';
 
 //TODO: write tests
 export default function(state, action) {
-    if (!state)
+    if (!state){
         state = {
             isRetrievingChallenges: false, //TODO: Make this better, we should have one for every player
             challenges: []
         }; 
+    }
 
     switch (action.type) {
         case challengeActions.REQUEST_CHALLENGE_PLAYER:
@@ -18,6 +19,18 @@ export default function(state, action) {
             return Object.assign({}, state, requestChallenges(action)); 
         case challengeActions.RECEIVE_CHALLENGES:
             return Object.assign({}, state, receiveChallenges(action)); 
+        case challengeActions.REQUEST_CHALLENGE_ACCEPT :
+        	return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+		case challengeActions.RECEIVE_CHALLENGE_ACCEPT :
+			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+		case challengeActions.REQUEST_CHALLENGE_DECLINE :
+			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+		case challengeActions.RECEIVE_CHALLENGE_DECLINE :
+			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+		case challengeActions.REQUEST_CHALLENGE_COMPLETE:
+			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+		case challengeActions.RECEIVE_CHALLENGE_COMPLETE:
+			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
     }
 
     return state;

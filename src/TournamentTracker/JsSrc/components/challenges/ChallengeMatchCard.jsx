@@ -13,10 +13,35 @@ const ChallengeMatchCard = React.createClass({
         const match = this.props.match;
         const cardTitle = `${challenge.SendingPlayerName} -> ${challenge.ReceivingPlayerName}`;
         const subTitle = `${challenge.SendingPlayerName}: ${challenge.SendingPlayerStatus} - ${challenge.ReceivingPlayerName}: ${challenge.ReceivingPlayerStatus}`;
+        const acceptChallengeButton = <FlatButton label="Accept" onTouchTap={() => this.props.onAcceptClicked(challenge.Id)} />;
+        const declineChallengeButton = <FlatButton label="Decline" onTouchTap={() => this.props.onDeclineClicked(challenge.Id)} />;
+        const completeChallengeButton = <FlatButton label="Complete" onTouchTap={() => this.props.onCompleteClicked(challenge.Id)} />;
+
+        var challengeStatus;
+        if (this.props.activeUser.user.Id === challenge.SendingPlayerId){
+            challengeStatus = challenge.SendingPlayerStatus;
+        } else {
+            challengeStatus = challenge.ReceivingPlayerStatus;
+        }
+ 
+        //TODO: Figure out what buttons we need to display based on challenge status
+        var buttons = [];
+        var isScoreEditable = false;
+        switch (challengeStatus){
+            case 0: //Pending?
+            isScoreEditable = false;
+            buttons = [acceptChallengeButton, declineChallengeButton];
+            case 1: //Accepted
+            isScoreEditable = true;
+            buttons = [completeChallengeButton];
+            case 2: //Completed
+            isScoreEditable = false;
+            buttons = [];
+        }
+
 
         var cardText;
         if (match){
-            const isScoreEditable = true; //TODO figure out when score should be editable
             var initialValues = { //We need to pass in 'initial values' to the form version
                 matchId : match.Id,
                 playerOneId : match.PlayerOneId,
@@ -30,13 +55,10 @@ const ChallengeMatchCard = React.createClass({
         } else {
             cardText = "No Match Available";
         }
+        
 
-        const acceptChallengeButton = <FlatButton label="Accept" onTouchTap={() => console.log(challenge)} />;
-        const declineChallengeButton = <FlatButton label="Decline" onTouchTap={() => console.log(challenge)} />;
-        const completeChallengeButton = <FlatButton label="Complete" onTouchTap={() => console.log(challenge)} />;
-
-        //TODO: Figure out what buttons we need to display based on challenge status
-        const buttons = [acceptChallengeButton, declineChallengeButton, completeChallengeButton];
+        
+        
 
         return <Card key={this.props.challenge.Id} >
             <CardTitle title={cardTitle} subtitle={subTitle} actAsExpander={true} showExpandableButton={true} ></CardTitle>

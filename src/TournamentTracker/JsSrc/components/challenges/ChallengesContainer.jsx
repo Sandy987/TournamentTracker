@@ -19,7 +19,10 @@ const ChallengesContainer = React.createClass({
                 <RaisedButton label="Refresh Challenges" onTouchTap={(e) => this.props.initiateLoadChallenges(this.props.activePlayerId)} />
             </Paper>
             <ChallengeMatchList 
-                challengeMatches={this.props.challengeMatches}/>
+                challengeMatches={this.props.challengeMatches}
+                onAcceptChallenge={(x) => this.props.initiateAcceptChallenge(x)}
+                onDeclineChallenge={(x) => this.props.initiateDeclineChallenge(x)}
+                onCompleteChallenge={(x) => this.props.initiateCompleteChallenge(x)}/>
         </Paper>;
     }
 });

@@ -1,5 +1,4 @@
 import checkStatus from '../utils/check_http_status';
-import initiateLoadNotifications from './notification_actions'
 export const REQUEST_CHALLENGE_PLAYER = 'REQUEST_CHALLENGE_PLAYER';
 export const RECEIVE_CHALLENGE_PLAYER = 'RECEIVE_CHALLENGE_PLAYER';
 export const REQUEST_CHALLENGES = 'REQUEST_CHALLENGES';
@@ -11,12 +10,8 @@ export const RECEIVE_CHALLENGE_ACCEPT = 'RECEIVE_CHALLENGE_ACCEPT';
 export const REQUEST_CHALLENGE_DECLINE = 'REQUEST_CHALLENGE_DECLINE';
 export const RECEIVE_CHALLENGE_DECLINE = 'RECEIVE_CHALLENGE_DECLINE';
 
-export const REQUEST_CHALLENGE_COMPLETION_ACCEPT = 'REQUEST_CHALLENGE_COMPLETION_ACCEPT';
-export const RECEIVE_CHALLENGE_COMPLETION_ACCEPT = 'RECEIVE_CHALLENGE_COMPLETION_ACCEPT';
-
-export const REQUEST_CHALLENGE_COMPLETION_DECLINE = 'REQUEST_CHALLENGE_COMPLETION_DECLINE';
-export const RECEIVE_CHALLENGE_COMPLETION_DECLINE = 'RECEIVE_CHALLENGE_COMPLETION_DECLINE';
-
+export const REQUEST_CHALLENGE_COMPLETE = 'REQUEST_CHALLENGE_COMPLETE';
+export const RECEIVE_CHALLENGE_COMPLETE = 'RECEIVE_CHALLENGE_COMPLETE';
 
 
 //request a challenge against a player
@@ -54,10 +49,9 @@ export function requestChallengeAccept(){
     }
 }
 
-export function receiveChallengeAccept(challenge){
+export function receiveChallengeAccept(){
     return{
-        type: REQUEST_CHALLENGE_ACCEPT,
-        challenge: challenge
+        type: RECEIVE_CHALLENGE_ACCEPT
     }
 }
 
@@ -68,10 +62,22 @@ export function requestChallengeDecline(){
     }
 }
 
-export function receiveChallengeDecline(challenge){
+export function receiveChallengeDecline(){
     return{
-        type: REQUEST_CHALLENGE_DECLINE,
-        challenge: challenge
+        type: RECEIVE_CHALLENGE_DECLINE
+    }
+}
+
+//request to complete a challenge
+export function requestChallengeComplete(){
+    return{
+        type: REQUEST_CHALLENGE_COMPLETE
+    }
+}
+
+export function receiveChallengeComplete(){
+    return{
+        type: RECEIVE_CHALLENGE_COMPLETE
     }
 }
 
@@ -85,9 +91,8 @@ export function initiateAcceptChallenge(challengeId) {
                 credentials: 'same-origin'
             })
             .then(checkStatus)
-            .then(response => response.json())
-            .then(challenge =>
-                dispatch(receiveChallengeAccept(challenge))
+            .then(r =>
+                dispatch(receiveChallengeAccept())
             )
             .then(dispatch())
             .catch(err => 
@@ -105,12 +110,30 @@ export function initiateDeclineChallenge(challengeId) {
                 credentials: 'same-origin'
             })
             .then(checkStatus)
-            .then(response => response.json())
-            .then(challenge =>
-                dispatch(receiveChallengeDecline(challenge))
+            .then(r =>
+                dispatch(receiveChallengeDecline())
             )
             .catch(err => 
                 dispatch(receiveChallengeDecline(null)) //TODO: Do this better
+            );
+     }
+}
+
+
+export function initiateCompleteChallenge(challengeId) {
+     return function(dispatch){
+            dispatch(requestChallengeComplete());
+            //TODO: update so it works with the real api
+            return fetch(`/api/challenge/${challengeId}/complete`,{
+                method: 'POST',
+                credentials: 'same-origin'
+            })
+            .then(checkStatus)
+            .then(r =>
+                dispatch(receiveChallengeComplete())
+            )
+            .catch(err => 
+                dispatch(receiveChallengeComplete(null)) //TODO: Do this better
             );
      }
 }
