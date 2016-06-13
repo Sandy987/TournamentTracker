@@ -62,9 +62,9 @@ namespace TournamentTracker.Api
             var matches = player.Matches.Select(m =>
                 new MatchModel {
                     Id = m.Id,
-                    PlayerOneName = m.PlayerOne?.UserName,
+                    PlayerOneName = m.PlayerOne?.PlayerName,
                     PlayerOneId = m.PlayerOneId,
-                    PlayerTwoName = m.PlayerTwo?.UserName,
+                    PlayerTwoName = m.PlayerTwo?.PlayerName,
                     PlayerTwoId = m.PlayerTwoId,
                     PlayerOneScore = m.PlayerOneScore,
                     PlayerTwoScore = m.PlayerTwoScore,

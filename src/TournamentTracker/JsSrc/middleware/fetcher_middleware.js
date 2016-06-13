@@ -19,6 +19,11 @@ export default store => next => action => {
             store.dispatch(challengeActions.initiateLoadChallenges(playerId));
             store.dispatch(matchActions.initiateLoadMatchHistory(playerId));
         }
+         else if (action.path.includes('/account')){
+            var playerId = store.getState().activeUser ? store.getState().activeUser.user.Id : null;
+            store.dispatch(playerActions.initiateLoadPlayers());
+            store.dispatch(matchActions.initiateLoadMatchHistory(playerId));
+        }
     } 
     return next(action); //This sends the action to the store after middleware is complete
 }
