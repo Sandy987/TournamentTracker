@@ -4,7 +4,7 @@ import {push} from 'react-router-redux';
 export default store => next => action => {
     if (action.type === userActions.LOGIN_FAILED){
         store.dispatch(push('/login'));
-    } else if (action.type === userActions.RECEIVE_ACTIVE_USER){
+    } else if (action.type === userActions.RECEIVE_ACTIVE_USER_COMPLETE && !store.getState().activeUser.isLoggingIn){
         store.dispatch(push('/home'));
     // } else if ((!store.activeUser || !store.activeUser.user) 
     //             && action.type != userActions.RECEIVE_ACTIVE_USER 

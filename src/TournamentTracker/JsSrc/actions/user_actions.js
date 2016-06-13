@@ -6,6 +6,7 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const RECEIVE_ACTIVE_USER = 'RECEIVE_ACTIVE_USER';
 export const REQUEST_SAVE_USER = 'REQUEST_SAVE_USER';
 export const RECEIVE_SAVE_USER = 'RECEIVE_SAVE_USER';
+export const RECEIVE_ACTIVE_USER_COMPLETE = 'RECEIVE_ACTIVE_USER_COMPLETE';
 
 export function requestLogin(){
     return{
@@ -33,6 +34,12 @@ export function receiveActiveUser(user){
     }
 }
 
+export function receiveActiveUserComplete(){
+    return{
+        type: RECEIVE_ACTIVE_USER_COMPLETE
+    }
+}
+
 export function initiateLogin(email, password, rememberMe){
     return function(dispatch){
 
@@ -52,6 +59,7 @@ export function initiateLogin(email, password, rememberMe){
             .then(checkStatus)
             .then(response => response.json())
             .then(user =>  dispatch(receiveActiveUser(user)))
+            .then(r => dispatch(receiveActiveUserComplete()))
             .catch(err => 
                 dispatch(loginFailed(err.message))
             );

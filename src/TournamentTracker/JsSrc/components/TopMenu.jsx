@@ -12,7 +12,7 @@ import * as NavActions from '../actions/nav_actions';
 export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
-        var notificationPath = `/notifications/${this.props.activeUser.Id}`
+        var notificationPath = `/notifications/${this.props.activeUser.Id}`;
 
         return (<div>
             <AppBar title="T-Ts Tournament Tracker" onLeftIconButtonTouchTap={(e) => this.props.routerOpenMenu()}></AppBar>
