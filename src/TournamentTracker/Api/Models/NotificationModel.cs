@@ -14,6 +14,8 @@ namespace TournamentTracker.Api.Models
         public string SendingPlayerName {get; set;}
         public string ReceivingPlayerName {get; set;}
         public string Message {get; set;}
+        public string Subject {get; set;}
         public NotificationStatus? Status {get; set;}
+        public bool HasOptions { get; set;}
     }
 }
