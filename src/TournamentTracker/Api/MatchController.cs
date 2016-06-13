@@ -59,7 +59,7 @@ namespace TournamentTracker.Api
             var player = _applicationUserService.GetUserById(playerId);
             if(player == null) return NotFound();
 
-            var matches = player.Matches.Select(m =>
+            var matches = _matchService.GetMatchesByPlayerId(playerId).Select(m =>
                 new MatchModel {
                     Id = m.Id,
                     PlayerOneName = m.PlayerOne?.PlayerName,
