@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace TournamentTracker.Services 
 {
@@ -36,6 +37,14 @@ namespace TournamentTracker.Services
                                  .Include(c => c.SendingPlayer)
                                  .Include(c => c.ReceivingPlayer)
                                  .SingleOrDefault(c => c.MatchId == id);
+        }
+
+        public IEnumerable<Challenge> GetChallengesByPlayerId(string playerId)
+        {
+            return _db.Challenges.Include(c => c.Match)
+                                 .Include(c => c.SendingPlayer)
+                                 .Include(c => c.ReceivingPlayer)
+                                 .Where(c => c.SendingPlayerId == playerId || c.ReceivingPlayerId == playerId);
         }
 
         public void Save()

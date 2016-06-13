@@ -16,7 +16,7 @@ const ChallengesContainer = React.createClass({
         
         return <Paper zDepth={1}>
             <Paper zDepth={2}>
-                <RaisedButton label="Refresh Challenges" onTouchTap={(e) => this.props.initiateLoadChallenges()} />
+                <RaisedButton label="Refresh Challenges" onTouchTap={(e) => this.props.initiateLoadChallenges(this.props.activePlayerId)} />
             </Paper>
             <ChallengeMatchList 
                 challengeMatches={this.props.challengeMatches}/>
@@ -27,7 +27,7 @@ const ChallengesContainer = React.createClass({
 function mapStateToProps(state){
     if (state.challenges.challenges){
         const mappedChallenges = state.challenges.challenges.map((c) => {
-            var match = state.matches.matches.find((x) => x.PlayerOneId === pId || x.PlayerTwoId === pId);
+            var match = state.matches.matches.find((x) => x.Id === c.Id);
             return {
                 challenge: c,
                 match: match
@@ -35,12 +35,14 @@ function mapStateToProps(state){
         }); //TODO: do this mapping correctly
         return {
             isRetrievingChallenges: state.challenges.isRetrievingChallenges,
-            challengeMatches: mappedChallenges
+            challengeMatches: mappedChallenges,
+            activePlayerId: state.activeUser.user.Id
         }
     } else{
         return {
             isRetrievingChallenges: state.challenges.isRetrievingChallenges,
-            challengeMatches: []
+            challengeMatches: [],
+            activePlayerId: state.activeUser.user.Id
         }
     }
 }
