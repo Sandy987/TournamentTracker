@@ -18,5 +18,12 @@ namespace TournamentTracker.Models
         public ChallengeType Type {get; set;}
         public int? MatchId {get; set;}
         public Match Match {get; set;}
+        
+        public ICollection<Notification> Notifications { get; set; }
+
+        public Challenge()
+        {
+            Notifications = new List<Notification>();
+        }
     }
 }

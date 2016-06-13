@@ -4,6 +4,7 @@ using TournamentTracker.Data;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace TournamentTracker.Services 
 {
@@ -23,7 +24,7 @@ namespace TournamentTracker.Services
 
         public Notification GetNotificationById(int id)
         {
-            return _db.Notifications.SingleOrDefault(c => c.Id == id);
+            return _db.Notifications.Include(n => n.ChallengeId).SingleOrDefault(c => c.Id == id);
         }
 
         public void Save()

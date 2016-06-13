@@ -2,20 +2,30 @@ import checkStatus from '../utils/check_http_status';
 
 export const REQUEST_CHALLENGE_PLAYER = 'REQUEST_CHALLENGE_PLAYER';
 export const RECEIVE_CHALLENGE_PLAYER = 'RECEIVE_CHALLENGE_PLAYER';
-
-
-
 export const REQUEST_CHALLENGES = 'REQUEST_CHALLENGES';
 export const RECEIVE_CHALLENGES = 'RECEIVE_CHALLENGES';
 
-//TODO: Do these properly
+export const REQUEST_CHALLENGE_ACCEPT = 'REQUEST_CHALLENGE_ACCEPT';
+export const RECEIVE_CHALLENGE_ACCEPT = 'RECEIVE_CHALLENGE_ACCEPT';
+
+export const REQUEST_CHALLENGE_DECLINE = 'REQUEST_CHALLENGE_DECLINE';
+export const RECEIVE_CHALLENGE_DECLINE = 'RECEIVE_CHALLENGE_DECLINE';
+
+export const REQUEST_CHALLENGE_COMPLETION_ACCEPT = 'REQUEST_CHALLENGE_COMPLETION_ACCEPT';
+export const RECEIVE_CHALLENGE_COMPLETION_ACCEPT = 'RECEIVE_CHALLENGE_COMPLETION_ACCEPT';
+
+export const REQUEST_CHALLENGE_COMPLETION_DECLINE = 'REQUEST_CHALLENGE_COMPLETION_DECLINE';
+export const RECEIVE_CHALLENGE_COMPLETION_DECLINE = 'RECEIVE_CHALLENGE_COMPLETION_DECLINE';
+
+
+
+//request a challenge against a player
 export function requestChallengePlayer(){
     return{
         type: REQUEST_CHALLENGE_PLAYER
     }
 }
 
-//TODO: Do these properly
 export function receiveChallengePlayer(challenge){
     return{
         type: RECEIVE_CHALLENGE_PLAYER,
@@ -23,6 +33,7 @@ export function receiveChallengePlayer(challenge){
     }
 }
 
+//request list of all current challenges
 export function requestChallenges(){
     return{
         type: REQUEST_CHALLENGES
@@ -32,9 +43,78 @@ export function requestChallenges(){
 export function receiveChallenges(challenges){
     return{
         type: RECEIVE_CHALLENGES,
-        challenges: challenges
+        challenge: challenge
     }
 }
+
+//request to accept a challenge
+export function requestChallengeAccept(){
+    return{
+        type: REQUEST_CHALLENGE_ACCEPT
+    }
+}
+
+export function receiveChallengeAccept(challenge){
+    return{
+        type: REQUEST_CHALLENGE_ACCEPT,
+        challenge: challenge
+    }
+}
+
+//request to decline a challenge
+export function requestChallengeDecline(){
+    return{
+        type: REQUEST_CHALLENGE_DECLINE
+    }
+}
+
+export function receiveChallengeDecline(challenge){
+    return{
+        type: REQUEST_CHALLENGE_DECLINE,
+        challenge: challenge
+    }
+}
+
+
+export function initiateAcceptChallenge(challengeId) {
+     return function(dispatch){
+            dispatch(requestChallengeAccept());
+            //TODO: update so it works with the real api
+            return fetch(`/api/challenge/${challengeId}/accept`,{
+                method: 'POST',
+                credentials: 'same-origin'
+            })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(challenge =>
+                dispatch(receiveChallengeAccept(challenge))
+            )
+            .catch(err => 
+                dispatch(receiveChallengeAccept(null)) //TODO: Do this better
+            );
+     }
+}
+
+export function initiateDeclineChallenge(challengeId) {
+     return function(dispatch){
+            dispatch(requestChallengeDecline());
+            //TODO: update so it works with the real api
+            return fetch(`/api/challenge/${challengeId}/decline`,{
+                method: 'POST',
+                credentials: 'same-origin'
+            })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(challenge =>
+                dispatch(receiveChallengeDecline(challenge))
+            )
+            .catch(err => 
+                dispatch(receiveChallengeDecline(null)) //TODO: Do this better
+            );
+     }
+}
+
+
 
 export function initiateChallengePlayer(challengerId, challangeeId){
     return function(dispatch){

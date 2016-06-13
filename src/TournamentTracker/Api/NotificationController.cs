@@ -91,7 +91,9 @@ namespace TournamentTracker.Api
                     ReceivingPlayerName = n.ReceivingPlayer.UserName,
                     Message = n.Message,
                     Subject = n.Subject,
-                    HasOptions = n.HasOptions
+                    HasOptions = n.HasOptions,
+                    ChallengeId = n.ChallengeId
+
                 }
             );
         }

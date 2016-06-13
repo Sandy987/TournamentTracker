@@ -5,14 +5,24 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import {connect} from 'react-redux';
 import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
+import {initiateAcceptChallenge} from '../../actions/challenge_actions';
+import {initiateDeclineChallenge} from '../../actions/challenge_actions';
 
 const NotificationList = React.createClass({
+    onOptionClick: function(e, option, challengeId) {
+        if(option === "accept")
+            this.props.dispatch(initiateAcceptChallenge(challengeId));
+        else
+             this.props.dispatch(initiateDeclineChallenge(challengeId));
+    },
     mixins: [PureRenderMixin],
     getListItem: function(notification){
-        const {Id, Message, SendingPlayerName, Status, Subject, HasOptions} = notification;
+        const {Id, Message, SendingPlayerName, Status, Subject, HasOptions, ChallengeId} = notification;
         var optionButtons = [];
         if(HasOptions){
-            optionButtons = [<FlatButton label="Accept" /> , <FlatButton label="Decline" />]
+            optionButtons = [
+                <FlatButton label="Accept" onTouchTap={(e) => onOptionClick(e, "accept", ChallengeId)}/> , 
+                <FlatButton label="Decline" onTouchTap={(e) => onOptionClick(e, "decline", ChallengeId)}/>]
         }
         var status = Status ? Status : "";
 

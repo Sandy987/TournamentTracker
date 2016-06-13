@@ -85,7 +85,8 @@ namespace TournamentTracker.Api
                 Status = NotificationStatus.Unread,
                 Message = string.Format("{0} has challenged you to a match", sendingPlayer.PlayerName),
                 Subject = "Challenge Request",
-                HasOptions = true
+                HasOptions = true,
+                Challenge =  challenge
             };
 
             _challengeService.AddChallenge(challenge);
@@ -129,7 +130,8 @@ namespace TournamentTracker.Api
                     ReceivingPlayerId = challenge.SendingPlayerId,
                     Status = NotificationStatus.Unread,
                     Message = string.Format("{0} has accepted your challenge", challenge.ReceivingPlayer.PlayerName),
-                    Subject = "Challenge Accepted"
+                    Subject = "Challenge Accepted",
+                    Challenge = challenge
                 };
 
                 _notifactionService.AddNotification(notification);
@@ -164,7 +166,8 @@ namespace TournamentTracker.Api
                     ReceivingPlayerId = challenge.SendingPlayerId,
                     Status = NotificationStatus.Unread,
                     Message = string.Format("{0} has declined your challenge", challenge.ReceivingPlayer.PlayerName),
-                    Subject = "Challenge Declined"
+                    Subject = "Challenge Declined",
+                    Challenge = challenge
                 };
 
                 _notifactionService.AddNotification(notification);
@@ -194,12 +197,12 @@ namespace TournamentTracker.Api
             if (currentUserId == challenge.SendingPlayerId)
             {
                 challenge.SendingPlayerStatus = ChallengeStatus.Completed;
-                CreateOneSidedMatchCompletionNotification(challenge.SendingPlayer, challenge.ReceivingPlayer, matchWinner.Id, match);
+                CreateOneSidedMatchCompletionNotification(challenge, matchWinner.Id, match);
             }               
             if (currentUserId == challenge.ReceivingPlayerId)
             {
                 challenge.ReceivingPlayerStatus = ChallengeStatus.Completed;
-                CreateOneSidedMatchCompletionNotification(challenge.ReceivingPlayer, challenge.SendingPlayer, matchWinner.Id, match);
+                CreateOneSidedMatchCompletionNotification(challenge, matchWinner.Id, match);
             }
 
             if (challenge.SendingPlayerStatus == ChallengeStatus.Completed && challenge.ReceivingPlayerStatus == ChallengeStatus.Completed)
@@ -208,9 +211,9 @@ namespace TournamentTracker.Api
                     return BadRequest("match not completable");
 
                 if (currentUserId == challenge.SendingPlayerId)
-                    CreateMatchFinaliseNotification(challenge.SendingPlayer, challenge.ReceivingPlayer);
+                    CreateMatchFinaliseNotification(challenge);
                 if (currentUserId == challenge.ReceivingPlayerId)
-                    CreateMatchFinaliseNotification(challenge.ReceivingPlayer, challenge.SendingPlayer);
+                    CreateMatchFinaliseNotification(challenge);
 
                 match.Status = MatchStatus.Completed;
                 match.CompletionDate = DateTime.UtcNow;
@@ -238,9 +241,11 @@ namespace TournamentTracker.Api
             return Ok();
         }
 
-        private void CreateOneSidedMatchCompletionNotification(ApplicationUser sendingPlayer, ApplicationUser receivingPlayer, string winnerId, Match match)
-        {  
-                var notification = new Notification
+        private void CreateOneSidedMatchCompletionNotification(Challenge challenge, string winnerId, Match match)
+        {
+            var sendingPlayer = challenge.SendingPlayer;
+            var receivingPlayer = challenge.ReceivingPlayer;
+            var notification = new Notification
                 {
                     SendingPlayerId = sendingPlayer.Id,
                     ReceivingPlayerId = receivingPlayer.Id,
@@ -249,22 +254,26 @@ namespace TournamentTracker.Api
                                             sendingPlayer.PlayerName, match.PlayerOneScore, match.PlayerTwoScore, 
                                             sendingPlayer.Id==winnerId?sendingPlayer.PlayerName:receivingPlayer.PlayerName),
                     Subject = "Match Finalization Request",
-                    HasOptions = true
+                    HasOptions = true,
+                    Challenge = challenge
 
-                };
+            };
                 _notifactionService.AddNotification(notification);
         }
 
-        private void CreateMatchFinaliseNotification(ApplicationUser sendingPlayer, ApplicationUser receivingPlayer)
-        {  
-                var notification = new Notification
+        private void CreateMatchFinaliseNotification(Challenge challenge)
+        {
+            var sendingPlayer = challenge.SendingPlayer;
+            var receivingPlayer = challenge.ReceivingPlayer;
+            var notification = new Notification
                 {
                     SendingPlayerId = sendingPlayer.Id,
                     ReceivingPlayerId = receivingPlayer.Id,
                     Status = NotificationStatus.Unread,
                     Message = string.Format("{0} accepted your submited score and the match has been finalised", sendingPlayer.PlayerName),
-                    Subject = "Match Finalization Complete"
-                };
+                    Subject = "Match Finalization Complete",
+                    Challenge = challenge
+            };
                 _notifactionService.AddNotification(notification);
         }
 

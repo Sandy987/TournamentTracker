@@ -17,6 +17,8 @@ namespace TournamentTracker.Models
         public ApplicationUser ReceivingPlayer {get; set;}
         public NotificationStatus Status {get; set;}
         public bool HasOptions {get; set;}
+        public int? ChallengeId { get; set; }
+        public Challenge Challenge { get; set; }
 
         
     }
