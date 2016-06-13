@@ -16,7 +16,7 @@ const ChallengeMatchCard = React.createClass({
 
         var cardText;
         if (match){
-            const isScoreEditable = false; //TODO figure out when score should be editable
+            const isScoreEditable = true; //TODO figure out when score should be editable
             var initialValues = { //We need to pass in 'initial values' to the form version
                 matchId : match.Id,
                 playerOneId : match.PlayerOneId,
@@ -25,7 +25,7 @@ const ChallengeMatchCard = React.createClass({
                 playerTwoScore : match.PlayerTwoScore
             };
             cardText = isScoreEditable 
-                        ? <MatchCardEditable initialValues={initialValues} onScoreUpdate={() => console.log(match)} /> 
+                        ? <MatchCardEditable initialValues={initialValues} /> 
                         : <MatchCard {...match} />; 
         } else {
             cardText = "No Match Available";

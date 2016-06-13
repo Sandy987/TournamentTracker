@@ -22,26 +22,29 @@ const submit = (values, dispatch) =>{
 const MatchCardEditable = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
+        const { fields: {matchId, playerOneId, playerOneScore, playerTwoId, playerTwoScore}, handleSubmit, submitting} = this.props;
         return  <Paper className="tt-match-summary" >
-                    <input type="hidden" {...matchId}></input>
-                    <div>
-                        <input type="hidden" {...playerOneId}></input>
-                        <label>{this.props.playerOneName}</label>
-                        <TextField hintText="Score" {...playerOneScore} />
-                    </div>
-                    <div>
-                        <input type="hidden" {...playerTwoId}></input>
-                        <label>{this.props.playerTwoName}</label>
-                        <TextField hintText="Score" {...playerTwoScore} />
-                    </div>
-                    <div className="match-status">
-                        {this.props.MatchStatus}
-                    </div>
-                    <div className="match-completion">
-                        {this.props.MatchCompletion}
-                    </div>
+                    <form onSubmit={handleSubmit(submit)}>
+                        <input type="hidden" {...matchId}></input>
+                        <div>
+                            <input type="hidden" {...playerOneId}></input>
+                            <label>{this.props.PlayerOneName}</label>
+                            <TextField hintText="Score" {...playerOneScore} />
+                        </div>
+                        <div>
+                            <input type="hidden" {...playerTwoId}></input>
+                            <label>{this.props.PlayerTwoName}</label>
+                            <TextField hintText="Score" {...playerTwoScore} />
+                        </div>
+                        <div className="match-status">
+                            {this.props.MatchStatus}
+                        </div>
+                        <div className="match-completion">
+                            {this.props.MatchCompletion}
+                        </div>
 
-                    <FlatButton onClick={handleSubmit(submit)} disabled={submitting}>Save</FlatButton>
+                        <FlatButton onClick={handleSubmit(submit)} disabled={submitting}>Save</FlatButton>
+                    </form>
                 </Paper>;
     }
 });

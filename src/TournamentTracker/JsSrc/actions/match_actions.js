@@ -106,6 +106,10 @@ export function initiateMatchScoreUpdate(matchId, playerOneId, playerOneScore, p
         //TODO: update so it works with the real api
         return fetch(`/api/match/`,{
             method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             credentials: 'same-origin',
             body: {
                 Id: matchId,

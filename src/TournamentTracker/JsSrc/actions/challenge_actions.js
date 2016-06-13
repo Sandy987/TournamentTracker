@@ -43,7 +43,7 @@ export function requestChallenges(){
 export function receiveChallenges(challenges){
     return{
         type: RECEIVE_CHALLENGES,
-        challenge: challenge
+        challenges: challenges
     }
 }
 
