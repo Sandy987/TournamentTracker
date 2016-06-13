@@ -111,13 +111,13 @@ export function initiateMatchScoreUpdate(matchId, playerOneId, playerOneScore, p
                 'Content-Type': 'application/json'
             },
             credentials: 'same-origin',
-            body: {
+            body: JSON.stringify({
                 Id: matchId,
                 PlayerOneId: playerOneId,
                 PlayerOneScore: playerOneScore,
                 PlayerTwoId: playerTwoId,
                 PlayerTwoScore: playerTwoScore
-            }
+            })
         })
             .then(checkStatus)
             .then(response => response.json())
