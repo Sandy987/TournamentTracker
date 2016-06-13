@@ -18,8 +18,15 @@ const submit = (values, dispatch) =>{
     });
 };
 
+
 const LoginFormComponent = React.createClass({
     mixins: [PureRenderMixin],
+    handleKeyDown : function(e, handleSubmit){
+        if (e.keyCode == 13) { 
+            handleSubmit();
+            return false; 
+        }
+    },
     render: function(){
         const { fields: {email, password, rememberMe}, handleSubmit, submitting} = this.props;
         return <MuiThemeProvider muiTheme={getMuiTheme()}>  
@@ -33,7 +40,7 @@ const LoginFormComponent = React.createClass({
                         </div>
 
                         <div className="login-form-component">
-                            <TextField type="password" hintText="Password" {...password} />
+                            <TextField onKeyDown={(e) => this.handleKeyDown(e,handleSubmit(submit))} type="password" hintText="Password on" {...password} />
                             {password.error && password.touched && <div>{password.error}</div>} 
                         </div>
 

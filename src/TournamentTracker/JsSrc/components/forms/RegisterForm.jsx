@@ -19,6 +19,12 @@ const submit = (values, dispatch) =>{
 };
 
 const LoginFormComponent = React.createClass({
+    handleKeyDown : function(e, handleSubmit){
+        if (e.keyCode == 13) { 
+            handleSubmit();
+            return false; 
+        }
+    },
     mixins: [PureRenderMixin],
     render: function(){
         const { fields: {playername, email, password}, handleSubmit, submitting} = this.props;
@@ -38,7 +44,7 @@ const LoginFormComponent = React.createClass({
                         </div>
 
                         <div className="login-form-component">
-                            <TextField type="password" hintText="Password" {...password} />
+                            <TextField onKeyDown={(e) => this.handleKeyDown(e,handleSubmit(submit))} type="password" hintText="Password" {...password} />
                             {password.error && password.touched && <div>{password.error}</div>} 
                         </div>
 
@@ -58,6 +64,6 @@ const LoginFormComponent = React.createClass({
 //Wire up the redux form
 export default reduxForm({
     form: 'register',
-    fields: ['playername', 'email', 'password', 'rememberMe'],
+    fields: ['playername', 'email', 'password'],
     validate: validateLogin
 })(LoginFormComponent);

@@ -85,6 +85,7 @@ export function initiateRegister(playername, email, password){
             .then(checkStatus)
             .then(response => response.json())
             .then(user =>  dispatch(receiveActiveUser(user)))
+            .then(r => dispatch(receiveActiveUserComplete()))
             .catch(err => 
                 dispatch(loginFailed(err.message))
             );
