@@ -63,6 +63,8 @@ namespace TournamentTracker.Api
                 string.IsNullOrEmpty(model.SendingPlayerId) ||
                 model.SendingPlayerId != currentUserId) return BadRequest();
 
+            if (model.SendingPlayerId == model.ReceivingPlayerId) return BadRequest();
+
             var sendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? "");
             var receivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? "");
 
