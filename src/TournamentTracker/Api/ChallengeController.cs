@@ -44,10 +44,7 @@ namespace TournamentTracker.Api
         {
             if(string.IsNullOrEmpty(playerId)) return BadRequest();
 
-            var player = _applicationUserService.GetUserById(playerId);
-            if(player == null) return NotFound();
-
-            var challenges =  MapToModels(player.Challenges);
+            var challenges =  MapToModels(_challengeService.GetChallengesByPlayerId(playerId));
             return Ok(challenges);
         }
 

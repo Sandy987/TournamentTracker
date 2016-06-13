@@ -38,7 +38,7 @@ const ChallengeMatchCard = React.createClass({
         //TODO: Figure out what buttons we need to display based on challenge status
         const buttons = [acceptChallengeButton, declineChallengeButton, completeChallengeButton];
 
-        return <Card>
+        return <Card key={this.props.challenge.Id} >
             <CardTitle title={cardTitle} subtitle={subTitle} actAsExpander={true} showExpandableButton={true} ></CardTitle>
             <CardText expandable={true}>{cardText}</CardText>
             <CardActions>{buttons}</CardActions>
