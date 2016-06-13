@@ -1,4 +1,5 @@
 using TournamentTracker.Models;
+using System.Collections.Generic;
 
 namespace TournamentTracker.Services.Interfaces
 {
@@ -6,5 +7,6 @@ namespace TournamentTracker.Services.Interfaces
     {
         Match GetMatchById(int id);
         void AddMatch(Match match);
+        IEnumerable<Match> GetMatchesByPlayerId(string playerId);
     }
 }

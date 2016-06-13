@@ -16,8 +16,8 @@ const AccountForm = React.createClass({
         } else {
             const player = this.props.player;
             return <Paper zDepth={2}>
-                <UserProfileForm/>
-                <MatchList matches={this.props.matches}/>
+                <div className="user-profile-form"><UserProfileForm/></div>
+                <div className="account-match-list-form"><MatchList matches={this.props.matches}/></div>
             </Paper>;
         }
     }
