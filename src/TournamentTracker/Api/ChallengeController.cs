@@ -83,7 +83,9 @@ namespace TournamentTracker.Api
                 SendingPlayerId = model.SendingPlayerId,
                 ReceivingPlayerId = model.ReceivingPlayerId,
                 Status = NotificationStatus.Unread,
-                Message = string.Format("{0} has challenged you to a match", sendingPlayer.PlayerName)
+                Message = string.Format("{0} has challenged you to a match", sendingPlayer.PlayerName),
+                Subject = "Challenge Request",
+                HasOptions = true
             };
 
             _challengeService.AddChallenge(challenge);
@@ -126,7 +128,8 @@ namespace TournamentTracker.Api
                     SendingPlayerId = challenge.ReceivingPlayerId,
                     ReceivingPlayerId = challenge.SendingPlayerId,
                     Status = NotificationStatus.Unread,
-                    Message = string.Format("{0} has accepted your challenge", challenge.ReceivingPlayer.PlayerName)
+                    Message = string.Format("{0} has accepted your challenge", challenge.ReceivingPlayer.PlayerName),
+                    Subject = "Challenge Accepted"
                 };
 
                 _notifactionService.AddNotification(notification);
@@ -160,7 +163,8 @@ namespace TournamentTracker.Api
                     SendingPlayerId = challenge.ReceivingPlayerId,
                     ReceivingPlayerId = challenge.SendingPlayerId,
                     Status = NotificationStatus.Unread,
-                    Message = string.Format("{0} has declined your challenge", challenge.ReceivingPlayer.PlayerName)
+                    Message = string.Format("{0} has declined your challenge", challenge.ReceivingPlayer.PlayerName),
+                    Subject = "Challenge Declined"
                 };
 
                 _notifactionService.AddNotification(notification);
@@ -243,7 +247,10 @@ namespace TournamentTracker.Api
                     Status = NotificationStatus.Unread,
                     Message = string.Format("{0} wants to finalise the match with a score of {1}-{2} ({3} as winner)", 
                                             sendingPlayer.PlayerName, match.PlayerOneScore, match.PlayerTwoScore, 
-                                            sendingPlayer.Id==winnerId?sendingPlayer.PlayerName:receivingPlayer.PlayerName)
+                                            sendingPlayer.Id==winnerId?sendingPlayer.PlayerName:receivingPlayer.PlayerName),
+                    Subject = "Match Finalization Request",
+                    HasOptions = true
+
                 };
                 _notifactionService.AddNotification(notification);
         }
@@ -255,7 +262,8 @@ namespace TournamentTracker.Api
                     SendingPlayerId = sendingPlayer.Id,
                     ReceivingPlayerId = receivingPlayer.Id,
                     Status = NotificationStatus.Unread,
-                    Message = string.Format("{0} accepted your submited score and the match has been finalised", sendingPlayer.PlayerName)
+                    Message = string.Format("{0} accepted your submited score and the match has been finalised", sendingPlayer.PlayerName),
+                    Subject = "Match Finalization Complete"
                 };
                 _notifactionService.AddNotification(notification);
         }

@@ -12,8 +12,12 @@ namespace TournamentTracker.Models
         public string SendingPlayerId {get; set;}
         public string ReceivingPlayerId {get; set;}
         public string Message {get; set;}
+        public string Subject {get; set;}
         public ApplicationUser SendingPlayer {get; set;}
         public ApplicationUser ReceivingPlayer {get; set;}
         public NotificationStatus Status {get; set;}
+        public bool HasOptions {get; set;}
+
+        
     }
 }

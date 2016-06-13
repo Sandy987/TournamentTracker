@@ -51,7 +51,9 @@ namespace TournamentTracker.Api
                 SendingPlayer = _applicationUserService.GetUserById(model.SendingPlayerId ?? ""),
                 ReceivingPlayer = _applicationUserService.GetUserById(model.ReceivingPlayerId ?? ""),
                 Message = model.Message,
-                Status = NotificationStatus.Unread
+                Status = NotificationStatus.Unread,
+                Subject = model.Subject,
+                HasOptions = model.HasOptions
             };
 
             _notificationService.AddNotification(notification);
@@ -87,7 +89,9 @@ namespace TournamentTracker.Api
                     SendingPlayerName = n.SendingPlayer.UserName,
                     ReceivingPlayerId = n.ReceivingPlayerId,
                     ReceivingPlayerName = n.ReceivingPlayer.UserName,
-                    Message = n.Message                
+                    Message = n.Message,
+                    Subject = n.Subject,
+                    HasOptions = n.HasOptions
                 }
             );
         }
