@@ -1,6 +1,7 @@
 import * as matchActions from '../actions/match_actions';
 import * as playerActions from '../actions/player_actions';
 import * as notificationActions from '../actions/notification_actions';
+import * as challengeActions from '../actions/challenge_actions';
 
 export default store => next => action => {
     if (action.type === 'NAVIGATE'){
@@ -12,6 +13,11 @@ export default store => next => action => {
         else if(action.path.includes('/notifications/')){
             var playerId = action.path.replace('/notifications/', '');
             store.dispatch(notificationActions.initiateLoadNotifications(playerId));
+        }
+        else if (action.path.includes('/challenges')){
+            var playerId = store.getState().activeUser ? store.getState().activeUser.user.Id : null;
+            store.dispatch(challengeActions.initiateLoadChallenges(playerId));
+            store.dispatch(matchActions.initiateLoadMatchHistory(playerId));
         }
     } 
     return next(action); //This sends the action to the store after middleware is complete

@@ -10,13 +10,13 @@ export default function(state, action) {
         }; 
 
     switch (action.type) {
-        case matchActions.REQUEST_CHALLENGE_PLAYER:
+        case challengeActions.REQUEST_CHALLENGE_PLAYER:
             return Object.assign({}, state, {isRetrievingChallenges : true}); 
-        case matchActions.RECEIVE_CHALLENGE_PLAYER:
+        case challengeActions.RECEIVE_CHALLENGE_PLAYER:
             return Object.assign({}, state, receiveChallengePlayer(state, action)); 
-        case matchActions.REQUEST_CHALLENGES:
+        case challengeActions.REQUEST_CHALLENGES:
             return Object.assign({}, state, requestChallenges(action)); 
-        case matchActions.RECEIVE_CHALLENGES:
+        case challengeActions.RECEIVE_CHALLENGES:
             return Object.assign({}, state, receiveChallenges(action)); 
     }
 

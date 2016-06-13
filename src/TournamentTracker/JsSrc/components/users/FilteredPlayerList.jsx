@@ -19,7 +19,7 @@ const FilteredPlayerList = React.createClass({
             </Paper>
             <PlayerList 
                 players={this.props.filteredPlayers} 
-                handlePlayerChallenged={(p) => console.log(p)} 
+                handlePlayerChallenged={(p) => this.props.initiateChallengePlayer(activeUserId, p.Id)} 
                 handlePlayerProfiled={(p) => this.props.push(`/player/${p.Id}`)} />
         </Paper>;
     }
@@ -35,6 +35,7 @@ const mapDispatchToProps = {
 function mapStateToProps(state){
     if (state.players.players){
         return {
+            activePlayerId: state.activeUser.user.Id,
             filterText: state.players.filter,
             filteredPlayers: state.players.players.filter((p) => {
                 if (state.players.filter && state.players.filter.length > 0){
@@ -49,6 +50,7 @@ function mapStateToProps(state){
         }
     } else{
         return {
+            activePlayerId: state.activeUser.user.Id,
             filterText: state.players.filter,
             filteredPlayers: []
         }

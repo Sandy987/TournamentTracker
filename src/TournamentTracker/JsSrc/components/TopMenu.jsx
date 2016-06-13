@@ -24,6 +24,7 @@ export const TopMenu = React.createClass({
             <Menu>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/">Home</Link></MenuItem>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/account">Account</Link></MenuItem>
+                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/challenges">Challenges</Link></MenuItem>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to={notificationPath}>Notifications</Link></MenuItem>
             </Menu>
             </Drawer> 

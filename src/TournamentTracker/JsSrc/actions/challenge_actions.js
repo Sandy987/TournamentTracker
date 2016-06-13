@@ -64,16 +64,20 @@ export function initiateLoadChallenges(playerId){
         dispatch(requestChallenges());
 
         //TODO: update so it works with the real api
-        return fetch(`/api/challenge/${playerId}`,{
+        return fetch(`/api/challenge/GetAllPlayer/${playerId}`,{
             credentials: 'same-origin'
         })
             .then(checkStatus)
             .then(response => response.json())
             .then(challenges =>
-                dispatch(receiveChallenges(challenges))
+                {
+                    return dispatch(receiveChallenges(challenges));
+                }
             )
             .catch(err => 
-                dispatch(receiveChallenges(null)) //TODO: Do this better
+                {
+                    return dispatch(receiveChallenges(null));
+                } //TODO: Do this better
             );
     }
 }

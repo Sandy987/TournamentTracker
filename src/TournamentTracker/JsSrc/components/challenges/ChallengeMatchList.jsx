@@ -6,12 +6,12 @@ import ChallengeMatchCard from './ChallengeMatchCard';
 
 const ChallengeMatchList = React.createClass({
     mixins: [PureRenderMixin],
-    getListItem: function(challenge){
-        return <ChallengeMatchCard key={challenge.Id} challenge={challenge} activeUser={this.props.activeUser} />
+    getListItem: function(challengeMatch){
+        return <ChallengeMatchCard key={challengeMatch.challenge.Id} challenge={challengeMatch.challenge} match={challengeMatch.match} activeUser={this.props.activeUser} />
     },
     render: function(){
         return <div>
-           {this.props.challenges.map((challenge) => this.getListItem(challenge))}
+           {this.props.challengeMatches.map((challengeMatches) => this.getListItem(challengeMatches))}
         </div>;
     }
 });
