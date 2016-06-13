@@ -12,6 +12,8 @@ import * as NavActions from '../actions/nav_actions';
 export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
+        var notificationPath = `/notifications/${this.props.activeUser.Id}`
+
         return (<div>
             <AppBar title="T-Ts Tournament Tracker" onLeftIconButtonTouchTap={(e) => this.props.routerOpenMenu()}></AppBar>
             <Drawer
@@ -22,7 +24,7 @@ export const TopMenu = React.createClass({
             <Menu>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/">Home</Link></MenuItem>
                 <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to="/account">Account</Link></MenuItem>
-                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to={/notifications/`${this.props.activeUser.Id}`}>Notifications</Link></MenuItem>
+                <MenuItem onTouchTap={(e) => this.props.routerCloseMenu()}><Link to={notificationPath}>Notifications</Link></MenuItem>
             </Menu>
             </Drawer> 
         </div>);
