@@ -1,5 +1,5 @@
 import checkStatus from '../utils/check_http_status';
-
+import initiateLoadNotifications from './notification_actions'
 export const REQUEST_CHALLENGE_PLAYER = 'REQUEST_CHALLENGE_PLAYER';
 export const RECEIVE_CHALLENGE_PLAYER = 'RECEIVE_CHALLENGE_PLAYER';
 export const REQUEST_CHALLENGES = 'REQUEST_CHALLENGES';
@@ -89,6 +89,7 @@ export function initiateAcceptChallenge(challengeId) {
             .then(challenge =>
                 dispatch(receiveChallengeAccept(challenge))
             )
+            .then(dispatch())
             .catch(err => 
                 dispatch(receiveChallengeAccept(null)) //TODO: Do this better
             );

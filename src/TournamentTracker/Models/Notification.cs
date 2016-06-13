@@ -19,7 +19,11 @@ namespace TournamentTracker.Models
         public bool HasOptions {get; set;}
         public int? ChallengeId { get; set; }
         public Challenge Challenge { get; set; }
+        public DateTime Timestamp { get; set; }
 
-        
+        public Notification()
+        {
+            Timestamp = DateTime.UtcNow;
+        }
     }
 }

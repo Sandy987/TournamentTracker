@@ -28,6 +28,7 @@ namespace TournamentTracker.Services
             return _db.Challenges.Include(c => c.Match)
                                  .Include(c => c.SendingPlayer)
                                  .Include(c => c.ReceivingPlayer)
+                                 .Include(c => c.Notifications)
                                  .SingleOrDefault(c => c.Id == id);
         }
 

@@ -123,6 +123,14 @@ namespace TournamentTracker.Api
                 
                 challenge.ReceivingPlayerStatus = ChallengeStatus.Accepted;
 
+                //reset the options flags for this challenge so they don't show as options anymore
+                foreach (var existingNotification in challenge.Notifications)
+                {
+                    existingNotification.Message = string.Format("You accept this challenge on {0}",
+                        DateTime.UtcNow.ToString("R"));
+                    existingNotification.HasOptions = false;
+                }
+
                 var notification = new Notification
                 {
                     SendingPlayerId = challenge.ReceivingPlayerId,
@@ -158,6 +166,14 @@ namespace TournamentTracker.Api
             if (challenge.Type == ChallengeType.TableTennis)
             {               
                 challenge.ReceivingPlayerStatus = ChallengeStatus.Declined;
+
+                //reset the options flags for this challenge so they don't show as options anymore
+                foreach (var existingNotification in challenge.Notifications)
+                {
+                    existingNotification.Message = string.Format("You declined this challenge on {0}",
+                        DateTime.UtcNow.ToString("R"));
+                    existingNotification.HasOptions = false;
+                }
 
                 var notification = new Notification
                 {

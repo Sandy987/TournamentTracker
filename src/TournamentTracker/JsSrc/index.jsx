@@ -14,6 +14,7 @@ import * as navActions from './actions/nav_actions';
 import authMiddleware from './middleware/auth_middleware';
 import fetcherMiddleware from './middleware/fetcher_middleware';
 import redirectMiddleware from './middleware/redirect_middleware';
+import notificationsMiddleware from './middleware/notifications_middleware';
 
 import App from './components/App';
 import HomePageContainer from './components/HomePage';
@@ -44,6 +45,7 @@ const store = createStore(
                     fetcherMiddleware,
                     authMiddleware, //Makes sure any failed login actions exit from the app
                     redirectMiddleware,
+                    notificationsMiddleware,
                     loggerMiddleware) //Neat middleware that logs actions
 );
 

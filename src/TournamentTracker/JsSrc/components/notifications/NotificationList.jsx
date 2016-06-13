@@ -17,12 +17,12 @@ const NotificationList = React.createClass({
     },
     mixins: [PureRenderMixin],
     getListItem: function(notification){
-        const {Id, Message, SendingPlayerName, Status, Subject, HasOptions, ChallengeId} = notification;
+        const {Id, Message, SendingPlayerName, Status, Subject, HasOptions, ChallengeId, Timestamp} = notification;
         var optionButtons = [];
         if(HasOptions){
             optionButtons = [
-                <FlatButton label="Accept" onTouchTap={(e) => onOptionClick(e, "accept", ChallengeId)}/> , 
-                <FlatButton label="Decline" onTouchTap={(e) => onOptionClick(e, "decline", ChallengeId)}/>]
+                <FlatButton label="Accept" onTouchTap={(e) => this.onOptionClick(e, "accept", ChallengeId)}/> , 
+                <FlatButton label="Decline" onTouchTap={(e) => this.onOptionClick(e, "decline", ChallengeId)}/>]
         }
         var status = Status ? Status : "";
 
@@ -31,7 +31,7 @@ const NotificationList = React.createClass({
                 classname={status}>
                     <Card>
                         <CardHeader
-                            title={SendingPlayerName}
+                            title={`${SendingPlayerName} -- ${Timestamp}`}
                             subtitle={Subject}
                             actAsExpander={true}
                             showExpandableButton={true}
@@ -53,8 +53,11 @@ const NotificationList = React.createClass({
 });
 
 function mapStateToProps(state){
+    var notificationsSorted = state.notifications.notifications.slice();
+    notificationsSorted.sort(function(a, b) {return a.Timestamp - b.Timestamp});
+
     return {
-        notifications: state.notifications.notifications
+        notifications: notificationsSorted
     }
 }
 

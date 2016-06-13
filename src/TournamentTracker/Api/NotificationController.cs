@@ -92,8 +92,9 @@ namespace TournamentTracker.Api
                     Message = n.Message,
                     Subject = n.Subject,
                     HasOptions = n.HasOptions,
-                    ChallengeId = n.ChallengeId
-
+                    ChallengeId = n.ChallengeId,
+                    Timestamp = n.Timestamp,
+                    Status = n.Status
                 }
             );
         }

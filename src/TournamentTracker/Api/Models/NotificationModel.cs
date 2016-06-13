@@ -18,5 +18,6 @@ namespace TournamentTracker.Api.Models
         public NotificationStatus? Status {get; set;}
         public bool HasOptions { get; set;}
         public int? ChallengeId { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }
