@@ -52,7 +52,7 @@ namespace TournamentTracker.Api
                         PlayerElo = user.PlayerElo,
                         PlayerWins = user.PlayerWins,
                         PlayerLoses = user.PlayerLoses,
-                        Username = user.UserName,
+                        UserName = user.UserName,
                         Email = user.Email
                     });
                 }
@@ -91,7 +91,7 @@ namespace TournamentTracker.Api
                             PlayerElo = user.PlayerElo,
                             PlayerWins = user.PlayerWins,
                             PlayerLoses = user.PlayerLoses,
-                            Username = user.UserName,
+                            UserName = user.UserName,
                             Email = user.Email
                         }
                     );
@@ -127,7 +127,7 @@ namespace TournamentTracker.Api
                 PlayerElo = user.PlayerElo,
                 PlayerWins = user.PlayerWins,
                 PlayerLoses = user.PlayerLoses,
-                Username = user.UserName,
+                UserName = user.UserName,
                 Email = user.Id==currentUserId?user.Email:string.Empty
             });
         }
@@ -142,7 +142,7 @@ namespace TournamentTracker.Api
                     PlayerElo = user.PlayerElo,
                     PlayerWins = user.PlayerWins,
                     PlayerLoses = user.PlayerLoses,
-                    Username = user.UserName,
+                    UserName = user.UserName,
                 }
             ).ToList();
             
@@ -167,7 +167,7 @@ namespace TournamentTracker.Api
             // user.PlayerElo = userModel.PlayerElo ?? user.PlayerElo;
             // user.PlayerLoses = userModel.PlayerLoses ?? user.PlayerLoses;
             // user.PlayerWins = userModel.PlayerWins ?? user.PlayerWins;
-            user.UserName = userModel.Username ?? user.UserName;
+            user.UserName = userModel.UserName ?? user.UserName;
 
             await _userService.SaveAsync();
             return Ok();

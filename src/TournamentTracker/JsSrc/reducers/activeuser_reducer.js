@@ -19,7 +19,7 @@ export default function(state, action) {
         case userActions.REQUEST_SAVE_USER:
             return Object.assign({}, state, {isSavingUser: true});
         case userActions.RECEIVE_SAVE_USER: //TODO: Maybe we need to do mroe stuff if we received a failed status?
-            return Object.assign({}, state, {isSavingUser: false});
+            return Object.assign({}, state, receiveSaveUser(state, action));
     }
 
     return state;
@@ -51,5 +51,13 @@ function receiveActiveUser(action){
     return {
         user: action.user,
         isLoggingIn: false
+    }
+}
+
+function receiveSaveUser(state, action){
+    var newUser = Object.assign({}, state.user, action.newUserDetails)
+    return {
+        user: newUser,
+        isSavingUser : false
     }
 }
