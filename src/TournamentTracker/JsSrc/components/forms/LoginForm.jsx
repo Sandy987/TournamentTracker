@@ -23,27 +23,29 @@ const LoginFormComponent = React.createClass({
     render: function(){
         const { fields: {email, password, rememberMe}, handleSubmit, submitting} = this.props;
         return <MuiThemeProvider muiTheme={getMuiTheme()}>  
+        <div className="login-body">
             <Paper className="tt-login-form">
                 <form onSubmit={handleSubmit(submit)}>
-                    <div>
-                        <TextField hintText="Email Address" {...email} />
-                        {email.error && email.touched && <div>{email.error}</div>} 
-                    </div>
+                    <div className="login-form-container">
+                        <div className="login-form-component">
+                            <TextField hintText="Email Address" {...email} />
+                            {email.error && email.touched && <div>{email.error}</div>} 
+                        </div>
 
-                    <div>
-                        <TextField type="password" hintText="Password" {...password} />
-                        {password.error && password.touched && <div>{password.error}</div>} 
-                    </div>
+                        <div className="login-form-component">
+                            <TextField type="password" hintText="Password" {...password} />
+                            {password.error && password.touched && <div>{password.error}</div>} 
+                        </div>
 
-                    <div>
-                        <Checkbox label="Remember Me" {...rememberMe}/>
-                        {rememberMe.error && rememberMe.touched && <div>{rememberMe.error}</div>} 
+                        <RaisedButton className="login-form-component" onClick={handleSubmit(submit)} disabled={submitting}>Log In</RaisedButton>
+                        
+                        <div className="login-form-component">
+                            <Link to="/register">Not a member? Register here.</Link>
+                        </div>
                     </div>
-
-                    <RaisedButton onClick={handleSubmit(submit)} disabled={submitting}>Log In</RaisedButton>
-                </form>
-                <Link to="/register">Register</Link>
+                </form>          
             </Paper>
+        </div>
         </MuiThemeProvider>;
     }
 });
