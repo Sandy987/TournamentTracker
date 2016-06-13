@@ -6,6 +6,7 @@ import MatchesReducer from './reducers/matches_reducer';
 import PlayersReducer from './reducers/player_reducer';
 import NotificationsReducer from './reducers/notifications_reducer';
 import NavReducer from './reducers/nav_reducer'; 
+import ChallengesReducer from './reducers/challenges_reducer';
 
 export default combineReducers({
     form: FormReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
     matches: MatchesReducer,
     players: PlayersReducer,
     notifications: NotificationsReducer,
-    nav: NavReducer
+    nav: NavReducer,
+    challenges: ChallengesReducer
 })

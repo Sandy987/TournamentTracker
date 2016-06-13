@@ -10,7 +10,7 @@ const ChallengeMatchCard = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
         const challenge = this.props.challenge;
-        const match = challenge.match;
+        const match = this.props.match;
         const cardTitle = `${challenge.SendingPlayerName} -> ${challenge.ReceivingPlayerName}`;
         const subTitle = `${challenge.SendingPlayerName}: ${challenge.SendingPlayerStatus} - ${challenge.ReceivingPlayerName}: ${challenge.ReceivingPlayerStatus}`;
 
@@ -41,7 +41,7 @@ const ChallengeMatchCard = React.createClass({
         return <Card>
             <CardTitle title={cardTitle} subtitle={subTitle} actAsExpander={true} showExpandableButton={true} ></CardTitle>
             <CardText expandable={true}>{cardText}</CardText>
-            <CardActions></CardActions>
+            <CardActions>{buttons}</CardActions>
         </Card>;
     }
 });

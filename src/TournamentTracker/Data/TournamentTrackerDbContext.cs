@@ -32,6 +32,8 @@ namespace TournamentTracker.Data
             builder.Entity<ApplicationUser>().
             HasMany(p => p.Challenges).WithOne(m => m.ReceivingPlayer);
 
+             builder.Entity<ApplicationUser>().
+             HasMany(p => p.Matches).WithOne(m => m.PlayerTwo);
             builder.Entity<Notification>().HasOne(m => m.Challenge)
                 .WithMany(p => p.Notifications);
 

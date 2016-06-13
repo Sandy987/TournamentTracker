@@ -19,22 +19,28 @@ const ChallengesContainer = React.createClass({
                 <RaisedButton label="Refresh Challenges" onTouchTap={(e) => this.props.initiateLoadChallenges()} />
             </Paper>
             <ChallengeMatchList 
-                challenges={this.props.challenges}/>
+                challengeMatches={this.props.challengeMatches}/>
         </Paper>;
     }
 });
 
 function mapStateToProps(state){
     if (state.challenges.challenges){
-        const mappedChallenges = []; //TODO: do this mapping correctly
+        const mappedChallenges = state.challenges.challenges.map((c) => {
+            var match = state.matches.matches.find((x) => x.PlayerOneId === pId || x.PlayerTwoId === pId);
+            return {
+                challenge: c,
+                match: match
+            }
+        }); //TODO: do this mapping correctly
         return {
             isRetrievingChallenges: state.challenges.isRetrievingChallenges,
-            challenges: mappedChallenges
+            challengeMatches: mappedChallenges
         }
     } else{
         return {
             isRetrievingChallenges: state.challenges.isRetrievingChallenges,
-            challenges: []
+            challengeMatches: []
         }
     }
 }
