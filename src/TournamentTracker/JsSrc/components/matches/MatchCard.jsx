@@ -7,8 +7,8 @@ const MatchCard = React.createClass({
     getPlayerView: function(id, name, score, winnerId){
         var className = id === winnerId ? "player-winner" : "";
         return <div className={className}>
-                    <span className="player-name">{name}</span>
-                    <span className="player-score">{score}</span>
+                    <span>Name: </span><span className="player-name">{name}</span>
+                    <span>Score: </span><span className="player-score">{score}</span>
                 </div>
     },
     render: function(){
@@ -17,10 +17,12 @@ const MatchCard = React.createClass({
                 {this.getPlayerView(this.props.PlayerOneId, this.props.PlayerOneName, this.props.PlayerOneScore, this.props.MatchWinnerId)}
                 {this.getPlayerView(this.props.PlayerTwoId, this.props.PlayerTwoName, this.props.PlayerTwoScore, this.props.MatchWinnerId)}
                 <div className="match-status">
-                    {this.props.MatchStatus}
+                    <span>Match Status: </span>
+                    <span>{this.props.MatchStatus}</span>
                 </div>
                 <div className="match-completion">
-                    {this.props.MatchCompletion}
+                    <span>Match Completion: </span>
+                    <span>{this.props.MatchCompletion}</span>
                 </div>
             </div>
         </Paper>;

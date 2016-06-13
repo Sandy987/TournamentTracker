@@ -106,14 +106,18 @@ export function initiateMatchScoreUpdate(matchId, playerOneId, playerOneScore, p
         //TODO: update so it works with the real api
         return fetch(`/api/match/`,{
             method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             credentials: 'same-origin',
-            body: {
+            body: JSON.stringify({
                 Id: matchId,
                 PlayerOneId: playerOneId,
                 PlayerOneScore: playerOneScore,
                 PlayerTwoId: playerTwoId,
                 PlayerTwoScore: playerTwoScore
-            }
+            })
         })
             .then(checkStatus)
             .then(response => response.json())

@@ -4,6 +4,8 @@ using TournamentTracker.Data;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace TournamentTracker.Services 
 {
@@ -24,6 +26,14 @@ namespace TournamentTracker.Services
         public Match GetMatchById(int id)
         {
             return _db.Matches.SingleOrDefault(x => x.Id == id);
+        }
+
+        public IEnumerable<Match> GetMatchesByPlayerId(string playerId)
+        {
+            return _db.Matches
+            .Include(m => m.PlayerOne)
+            .Include(m => m.PlayerTwo)
+            .Where(m => m.PlayerOneId == playerId || m.PlayerTwoId == playerId);
         }
 
         public void Save()

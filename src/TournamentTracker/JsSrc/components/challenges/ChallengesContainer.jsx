@@ -27,7 +27,7 @@ const ChallengesContainer = React.createClass({
 function mapStateToProps(state){
     if (state.challenges.challenges){
         const mappedChallenges = state.challenges.challenges.map((c) => {
-            var match = state.matches.matches.find((x) => x.Id === c.Id);
+            var match = state.matches.matches.find((x) => x.Id === c.MatchId);
             return {
                 challenge: c,
                 match: match
