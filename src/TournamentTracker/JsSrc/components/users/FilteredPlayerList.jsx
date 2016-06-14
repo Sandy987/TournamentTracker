@@ -19,7 +19,7 @@ const FilteredPlayerList = React.createClass({
             </Paper>
             <PlayerList 
                 players={this.props.filteredPlayers} 
-                handlePlayerChallenged={(p) => this.props.initiateChallengePlayer(activeUserId, p.Id)} 
+                handlePlayerChallenged={(p) => this.props.initiateChallengePlayer(this.props.activePlayerId, p.Id)} 
                 handlePlayerProfiled={(p) => this.props.push(`/player/${p.Id}`)} />
         </Paper>;
     }

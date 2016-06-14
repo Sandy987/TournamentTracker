@@ -11,10 +11,10 @@ const ChallengeMatchList = React.createClass({
                     key={challengeMatch.challenge.Id} 
                     challenge={challengeMatch.challenge} 
                     match={challengeMatch.match} 
-                    activeUser={this.props.activeUser}
-                    onAcceptClicked={this.props.onAcceptChallenge}
-                    onDeclineClicked={this.props.onDeclineChallenge}
-                    onCompleteClicked={this.props.onCompleteChallenge}/>
+                    activePlayerId={this.props.activePlayerId}
+                    onAcceptClicked={(x) => this.props.onAcceptChallenge(x)}
+                    onDeclineClicked={(x) => this.props.onDeclineChallenge(x)}
+                    onCompleteClicked={(x) => this.props.onCompleteChallenge(x)} />
     },
     render: function(){
         return <div>

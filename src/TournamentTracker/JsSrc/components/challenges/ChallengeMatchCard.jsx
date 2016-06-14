@@ -18,7 +18,7 @@ const ChallengeMatchCard = React.createClass({
         const completeChallengeButton = <FlatButton label="Complete" onTouchTap={() => this.props.onCompleteClicked(challenge.Id)} />;
 
         var challengeStatus;
-        if (this.props.activeUser.user.Id === challenge.SendingPlayerId){
+        if (this.props.activePlayerId=== challenge.SendingPlayerId){
             challengeStatus = challenge.SendingPlayerStatus;
         } else {
             challengeStatus = challenge.ReceivingPlayerStatus;
@@ -31,11 +31,21 @@ const ChallengeMatchCard = React.createClass({
             case 0: //Pending?
             isScoreEditable = false;
             buttons = [acceptChallengeButton, declineChallengeButton];
+            break;
             case 1: //Accepted
             isScoreEditable = true;
             buttons = [completeChallengeButton];
-            case 2: //Completed
+            break;
+            case 2: //Declined
             isScoreEditable = false;
+            buttons = [];
+            break;
+            case 3: //Completed
+            isScoreEditable = false;
+            buttons = [];
+            break;
+            default:
+            isScoreEditable = false,
             buttons = [];
         }
 
@@ -55,12 +65,9 @@ const ChallengeMatchCard = React.createClass({
         } else {
             cardText = "No Match Available";
         }
-        
+    
 
-        
-        
-
-        return <Card key={this.props.challenge.Id} >
+        return <Card>
             <CardTitle title={cardTitle} subtitle={subTitle} actAsExpander={true} showExpandableButton={true} ></CardTitle>
             <CardText expandable={true}>{cardText}</CardText>
             <CardActions>{buttons}</CardActions>

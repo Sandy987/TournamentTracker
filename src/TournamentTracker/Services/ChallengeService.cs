@@ -25,7 +25,8 @@ namespace TournamentTracker.Services
 
         public Challenge GetChallengeById(int id)
         {
-            return _db.Challenges.Include(c => c.Match)
+            return _db.Challenges.Include(c => c.Match.PlayerOne)
+                                 .Include(c => c.Match.PlayerTwo)
                                  .Include(c => c.SendingPlayer)
                                  .Include(c => c.ReceivingPlayer)
                                  .Include(c => c.Notifications)

@@ -49,9 +49,10 @@ export function requestChallengeAccept(){
     }
 }
 
-export function receiveChallengeAccept(){
+export function receiveChallengeAccept(challengeId){
     return{
-        type: RECEIVE_CHALLENGE_ACCEPT
+        type: RECEIVE_CHALLENGE_ACCEPT,
+        challengeId: challengeId
     }
 }
 
@@ -62,9 +63,10 @@ export function requestChallengeDecline(){
     }
 }
 
-export function receiveChallengeDecline(){
+export function receiveChallengeDecline(challengeId){
     return{
-        type: RECEIVE_CHALLENGE_DECLINE
+        type: RECEIVE_CHALLENGE_DECLINE,
+        challengeId: challengeId
     }
 }
 
@@ -75,9 +77,10 @@ export function requestChallengeComplete(){
     }
 }
 
-export function receiveChallengeComplete(){
+export function receiveChallengeComplete(challengeId){
     return{
-        type: RECEIVE_CHALLENGE_COMPLETE
+        type: RECEIVE_CHALLENGE_COMPLETE,
+        challangeId: challengeId
     }
 }
 
@@ -92,7 +95,7 @@ export function initiateAcceptChallenge(challengeId) {
             })
             .then(checkStatus)
             .then(r =>
-                dispatch(receiveChallengeAccept())
+                dispatch(receiveChallengeAccept(challengeId))
             )
             .then(dispatch())
             .catch(err => 
@@ -111,7 +114,7 @@ export function initiateDeclineChallenge(challengeId) {
             })
             .then(checkStatus)
             .then(r =>
-                dispatch(receiveChallengeDecline())
+                dispatch(receiveChallengeDecline(challengeId))
             )
             .catch(err => 
                 dispatch(receiveChallengeDecline(null)) //TODO: Do this better
@@ -130,7 +133,7 @@ export function initiateCompleteChallenge(challengeId) {
             })
             .then(checkStatus)
             .then(r =>
-                dispatch(receiveChallengeComplete())
+                dispatch(receiveChallengeComplete(challengeId))
             )
             .catch(err => 
                 dispatch(receiveChallengeComplete(null)) //TODO: Do this better
@@ -150,7 +153,11 @@ export function initiateChallengePlayer(challengerId, challangeeId){
         return fetch(`/api/challenge/`,{
             method: 'POST',
             credentials: 'same-origin',
-            body: {ChallengerId: challengerId, ChallangeeId: challangeeId}
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({SendingPlayerId: challengerId, ReceivingPlayerId: challangeeId})
         })
             .then(checkStatus)
             .then(response => response.json())

@@ -20,9 +20,10 @@ const ChallengesContainer = React.createClass({
             </Paper>
             <ChallengeMatchList 
                 challengeMatches={this.props.challengeMatches}
+                activePlayerId={this.props.activePlayerId}
                 onAcceptChallenge={(x) => this.props.initiateAcceptChallenge(x)}
                 onDeclineChallenge={(x) => this.props.initiateDeclineChallenge(x)}
-                onCompleteChallenge={(x) => this.props.initiateCompleteChallenge(x)}/>
+                onCompleteChallenge={(x) => this.props.initiateCompleteChallenge(x)} />
         </Paper>;
     }
 });

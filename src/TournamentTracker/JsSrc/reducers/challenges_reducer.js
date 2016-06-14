@@ -20,17 +20,17 @@ export default function(state, action) {
         case challengeActions.RECEIVE_CHALLENGES:
             return Object.assign({}, state, receiveChallenges(action)); 
         case challengeActions.REQUEST_CHALLENGE_ACCEPT :
-        	return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+        	return Object.assign({}, state, {}); //TODO: Do something?
 		case challengeActions.RECEIVE_CHALLENGE_ACCEPT :
-			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+			return Object.assign({}, state, updateChallengeStatus(state, action.challengeId, 'ACCEPT')); //TODO: Make this actually update the status of the challenge in memory?
 		case challengeActions.REQUEST_CHALLENGE_DECLINE :
-			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+			return Object.assign({}, state, {}); //TODO: Do something?
 		case challengeActions.RECEIVE_CHALLENGE_DECLINE :
-			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+			return Object.assign({}, state, updateChallengeStatus(state, action.challengeId, 'DECLINE')); //TODO: Make this actually update the status of the challenge in memory?
 		case challengeActions.REQUEST_CHALLENGE_COMPLETE:
-			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+			return Object.assign({}, state, {}); //TODO: Do something?
 		case challengeActions.RECEIVE_CHALLENGE_COMPLETE:
-			return Object.assign({}, state, {}); //TODO: Make this actually update the status of the challenge in memory?
+			return Object.assign({}, state, updateChallengeStatus(state, action.challengeId, 'COMPLETE')); //TODO: Make this actually update the status of the challenge in memory?
     }
 
     return state;
@@ -67,4 +67,22 @@ function receiveChallenges(action){
         isRetrievingChallenges: false,
         challenges: action.challenges ? action.challenges : []
     }
+}
+
+//This is bad and inefficient...probably
+function updateChallengeStatus(state, challengeId, status){
+    if (!challengeId || !status){
+        return {}; //Don't change anything
+    }
+    var challengeToUpdate = state.challenges.find((x) => x.Id === challengeId);
+    
+    if (!challengeToUpdate){
+        return;
+    }
+
+    challengeToUpdate = Object.assign({}, challengeToUpdate, {}); //TODO: This is WRONG! We need to know WHO'S state we are updating!!!!
+
+    return{
+        challenges : _.unionWith(state.challenges, [challengeToUpdate], (x,y) => x.Id === y.Id) 
+    };
 }

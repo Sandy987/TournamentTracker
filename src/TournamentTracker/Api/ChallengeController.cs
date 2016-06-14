@@ -206,8 +206,8 @@ namespace TournamentTracker.Api
             
             var match = challenge.Match;
             
-            var matchWinner = match.PlayerOneScore>match.PlayerTwoScore?match.PlayerOne:match.PlayerTwo;
-            var matchLoser = match.PlayerOneScore>match.PlayerTwoScore?match.PlayerTwo:match.PlayerOne;
+            var matchWinner = match.PlayerOneScore > match.PlayerTwoScore ? match.PlayerOne : match.PlayerTwo;
+            var matchLoser = match.PlayerOneScore > match.PlayerTwoScore ? match.PlayerTwo : match.PlayerOne;
 
             if (currentUserId == challenge.SendingPlayerId)
             {
