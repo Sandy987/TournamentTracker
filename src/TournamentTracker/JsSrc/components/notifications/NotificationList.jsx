@@ -31,8 +31,8 @@ const NotificationList = React.createClass({
                 classname={status}>
                     <Card>
                         <CardHeader
-                            title={`${SendingPlayerName} -- ${Timestamp}`}
-                            subtitle={Subject}
+                            title={`${Subject}`}
+                            subtitle={`${SendingPlayerName} -- ${new Date(Timestamp).toUTCString()}`}
                             actAsExpander={true}
                             showExpandableButton={true}
                         />
@@ -54,7 +54,10 @@ const NotificationList = React.createClass({
 
 function mapStateToProps(state){
     var notificationsSorted = state.notifications.notifications.slice();
-    notificationsSorted.sort(function(a, b) {return a.Timestamp - b.Timestamp});
+    notificationsSorted.sort(function(a, b) 
+    {
+        return new Date(b.Timestamp) - new Date(a.Timestamp);
+    });
 
     return {
         notifications: notificationsSorted
