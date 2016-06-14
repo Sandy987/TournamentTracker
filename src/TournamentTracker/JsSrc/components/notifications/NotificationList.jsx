@@ -31,8 +31,8 @@ const NotificationList = React.createClass({
                 classname={status}>
                     <Card>
                         <CardHeader
-                            title={`${SendingPlayerName} -- ${Timestamp}`}
-                            subtitle={Subject}
+                            title={`${Subject}`}
+                            subtitle={`${SendingPlayerName} -- ${new Date(Timestamp).toUTCString()}`}
                             actAsExpander={true}
                             showExpandableButton={true}
                         />
