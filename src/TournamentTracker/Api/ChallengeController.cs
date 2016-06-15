@@ -237,7 +237,7 @@ namespace TournamentTracker.Api
 
                 match.MatchWinnerId = matchWinner.Id;
                 matchWinner.PlayerWins +=1;
-                matchLoser.PlayerLoses -=1;
+                matchLoser.PlayerLoses +=1;
                 if (match.MatchWinnerId != null)
                 {
                     var eloResult = _eloService.CalcElo((int)playerOne.PlayerElo, 
@@ -298,10 +298,10 @@ namespace TournamentTracker.Api
                 new ChallengeModel {
                     Id = n.Id,
                     SendingPlayerId = n.SendingPlayerId,
-                    SendingPlayerName = n.SendingPlayer.UserName,
+                    SendingPlayerName = n.SendingPlayer.PlayerName,
                     SendingPlayerStatus = n.SendingPlayerStatus,
                     ReceivingPlayerId = n.ReceivingPlayerId,
-                    ReceivingPlayerName = n.ReceivingPlayer.UserName,
+                    ReceivingPlayerName = n.ReceivingPlayer.PlayerName,
                     ReceivingPlayerStatus = n.ReceivingPlayerStatus,
                     MatchId = n.MatchId
                 }
