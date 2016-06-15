@@ -9,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.SwaggerGen.Generator;
 using TournamentTracker.Data;
 using TournamentTracker.Models;
+using TournamentTracker.Services.Interfaces;
+using TournamentTracker.Services;
+using TournamentTracker.Services.Elo;
 
 namespace TournamentTracker
 {
@@ -48,8 +52,32 @@ namespace TournamentTracker
 
             services.AddMvc();
 
+            SetupSwagger(services);
+
             // Add application services.
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IChallengeService, ChallengeService>();
+            services.AddTransient<IEloService, EloService>();
+        }
+
+        private void SetupSwagger(IServiceCollection services)
+        {
+            var pathToDoc = Configuration["Swagger:Path"];
+            services.AddSwaggerGen();
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.SingleApiVersion(new Info
+                {
+                    Version = "v1",
+                    Title = "Tournament Tracker API",
+                    Description = "API for playing 1v1 based ELO games",
+                    TermsOfService = "The MIT License (MIT)"
+                });
+                options.IncludeXmlComments(pathToDoc);
+                options.DescribeAllEnumsAsStrings();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +109,9 @@ namespace TournamentTracker
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseSwaggerGen();
+            app.UseSwaggerUi();
         }
     }
 }

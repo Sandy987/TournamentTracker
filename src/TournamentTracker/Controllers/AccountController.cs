@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using TournamentTracker.Api.Models;
 using TournamentTracker.Models;
 using TournamentTracker.Models.AccountViewModels;
 
@@ -45,7 +46,7 @@ namespace TournamentTracker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(UserLoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -77,6 +78,37 @@ namespace TournamentTracker.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ApiLogin([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(1, "User logged in.");
+
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    return Content(user.Id);
+                }
+
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "User account locked out.");
+                    return Content("Lockout");
+                }
+            } 
+            else
+            {
+                return Content("ModelState validation error");
+            }
+            return NotFound();
+        }
+
 
         //
         // GET: /Account/Register

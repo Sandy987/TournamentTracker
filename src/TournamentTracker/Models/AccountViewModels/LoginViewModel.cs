@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TournamentTracker.Models.AccountViewModels
 {
-    public class LoginViewModel
+    public class UserLoginViewModel
     {
         [Required]
         [EmailAddress]

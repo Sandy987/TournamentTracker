@@ -8,7 +8,8 @@ var gulp = require("gulp"),
     uglify = require("gulp-uglify"),
     gutil = require("gulp-util"),
     sass = require("gulp-sass"),
-    webpack = require("webpack");
+    webpack = require("webpack"),
+    concatCss = require('gulp-concat-css');
 
 var webroot = "./wwwroot/";
 
@@ -33,9 +34,11 @@ gulp.task("webpack", function (callback) {
     // run webpack
     webpack( require('./webpack.config.js'), function (err, stats) {
         if (err) throw new gutil.PluginError("webpack", err);
-        gutil.log("[webpack]", stats.toString({
-            // output options
-        }));
+        if (stats.hasWarnings()){
+            gutil.log("[webpack]", stats.toString({
+                // output options
+            }));
+        }
         callback();
     });
 });
@@ -46,7 +49,8 @@ gulp.task('webpack:watch', function () {
 
 gulp.task('sass', function () {
     return gulp.src(paths.sass)
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass().on('error', sass.logError))  
+        .pipe(concatCss("site.css"))  
         .pipe(gulp.dest(paths.concatCssDest));
 });
 

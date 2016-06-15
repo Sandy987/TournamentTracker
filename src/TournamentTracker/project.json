@@ -1,7 +1,9 @@
-﻿{
+{
   "userSecretsId": "aspnet-TournamentTracker-67ecd7e3-a70b-4497-ae94-dc2d73827a17",
 
   "dependencies": {
+    "Swashbuckle.SwaggerGen": "6.0.0-beta9",
+    "Swashbuckle.SwaggerUi": "6.0.0-beta9",
     "Microsoft.NETCore.App": {
       "version": "1.0.0-rc2-3002702",
       "type": "platform"
@@ -82,7 +84,8 @@
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
-    "debugType": "portable"
+    "debugType": "portable",
+    "xmlDoc": true
   },
 
   "runtimeOptions": {

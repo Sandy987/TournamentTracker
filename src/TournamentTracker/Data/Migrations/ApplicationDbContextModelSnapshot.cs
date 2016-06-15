@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using TournamentTracker.Data;
 
 namespace TournamentTracker.Data.Migrations
 {
@@ -15,7 +13,7 @@ namespace TournamentTracker.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc2")
+                .HasAnnotation("ProductVersion", "1.0.0-rc2-20896")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -155,6 +153,14 @@ namespace TournamentTracker.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<double>("PlayerElo");
+
+                    b.Property<int>("PlayerLoses");
+
+                    b.Property<string>("PlayerName");
+
+                    b.Property<int>("PlayerWins");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -171,6 +177,94 @@ namespace TournamentTracker.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Models.Challenge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("MatchId");
+
+                    b.Property<string>("ReceivingPlayerId");
+
+                    b.Property<int>("ReceivingPlayerStatus");
+
+                    b.Property<string>("SendingPlayerId");
+
+                    b.Property<int>("SendingPlayerStatus");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("ReceivingPlayerId");
+
+                    b.HasIndex("SendingPlayerId");
+
+                    b.ToTable("Challenges");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Models.Match", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("CompletionDate");
+
+                    b.Property<string>("MatchWinnerId");
+
+                    b.Property<string>("PlayerOneId");
+
+                    b.Property<int>("PlayerOneScore");
+
+                    b.Property<string>("PlayerTwoId");
+
+                    b.Property<int>("PlayerTwoScore");
+
+                    b.Property<int?>("Status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerOneId");
+
+                    b.HasIndex("PlayerTwoId");
+
+                    b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ChallengeId");
+
+                    b.Property<bool>("HasOptions");
+
+                    b.Property<string>("Message");
+
+                    b.Property<string>("ReceivingPlayerId");
+
+                    b.Property<string>("SendingPlayerId");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("Subject");
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.HasIndex("ReceivingPlayerId");
+
+                    b.HasIndex("SendingPlayerId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -208,6 +302,47 @@ namespace TournamentTracker.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TournamentTracker.Models.Challenge", b =>
+                {
+                    b.HasOne("TournamentTracker.Models.Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId");
+
+                    b.HasOne("TournamentTracker.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ReceivingPlayerId");
+
+                    b.HasOne("TournamentTracker.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("SendingPlayerId");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Models.Match", b =>
+                {
+                    b.HasOne("TournamentTracker.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("PlayerOneId");
+
+                    b.HasOne("TournamentTracker.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("PlayerTwoId");
+                });
+
+            modelBuilder.Entity("TournamentTracker.Models.Notification", b =>
+                {
+                    b.HasOne("TournamentTracker.Models.Challenge")
+                        .WithMany()
+                        .HasForeignKey("ChallengeId");
+
+                    b.HasOne("TournamentTracker.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ReceivingPlayerId");
+
+                    b.HasOne("TournamentTracker.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("SendingPlayerId");
                 });
         }
     }
