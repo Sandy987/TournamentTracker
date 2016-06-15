@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MatchCardEditable from '../matches/MatchCardEditable';
 import MatchCard from '../matches/MatchCard';
+import * as ChallengeStatus from '../../constants/ChallengeStatus';
 
 const ChallengeMatchCard = React.createClass({
     mixins: [PureRenderMixin],
@@ -12,7 +13,7 @@ const ChallengeMatchCard = React.createClass({
         const challenge = this.props.challenge;
         const match = this.props.match;
         const cardTitle = `${challenge.SendingPlayerName} -> ${challenge.ReceivingPlayerName}`;
-        const subTitle = `${challenge.SendingPlayerName}: ${challenge.SendingPlayerStatus} - ${challenge.ReceivingPlayerName}: ${challenge.ReceivingPlayerStatus}`;
+        const subTitle = `${challenge.SendingPlayerName}: ${ChallengeStatus.getNameFromStatus(challenge.SendingPlayerStatus)} - ${challenge.ReceivingPlayerName}: ${ChallengeStatus.getNameFromStatus(challenge.ReceivingPlayerStatus)}`;
         const acceptChallengeButton = <FlatButton label="Accept" onTouchTap={() => this.props.onAcceptClicked(challenge.Id)} />;
         const declineChallengeButton = <FlatButton label="Decline" onTouchTap={() => this.props.onDeclineClicked(challenge.Id)} />;
         const completeChallengeButton = <FlatButton label="Complete" onTouchTap={() => this.props.onCompleteClicked(challenge.Id)} />;
@@ -24,23 +25,22 @@ const ChallengeMatchCard = React.createClass({
             challengeStatus = challenge.ReceivingPlayerStatus;
         }
  
-        //TODO: Figure out what buttons we need to display based on challenge status
         var buttons = [];
         var isScoreEditable = false;
         switch (challengeStatus){
-            case 0: //Pending?
+            case ChallengeStatus.PENDING:
             isScoreEditable = false;
             buttons = [acceptChallengeButton, declineChallengeButton];
             break;
-            case 1: //Accepted
+            case ChallengeStatus.ACCEPTED:
             isScoreEditable = true;
             buttons = [completeChallengeButton];
             break;
-            case 2: //Declined
+            case ChallengeStatus.DECLINED:
             isScoreEditable = false;
             buttons = [];
             break;
-            case 3: //Completed
+            case ChallengeStatus.COMPLETED:
             isScoreEditable = false;
             buttons = [];
             break;
@@ -60,7 +60,7 @@ const ChallengeMatchCard = React.createClass({
                 playerTwoScore : match.PlayerTwoScore
             };
             cardText = isScoreEditable 
-                        ? <MatchCardEditable initialValues={initialValues} /> 
+                        ? <MatchCardEditable initialValues={initialValues} {...match}/> 
                         : <MatchCard {...match} />; 
         } else {
             cardText = "No Match Available";
