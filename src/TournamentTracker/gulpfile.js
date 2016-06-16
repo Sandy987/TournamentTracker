@@ -17,7 +17,9 @@ var paths = {
     js: "./JsSrc/**/*.js*", //TODO: Does this work?
     sass: "./SCSS/**/*.scss",
     concatJsDest: webroot + "js/",
-    concatCssDest: webroot + "css/"
+    concatCssDest: webroot + "css/",
+    imageSrc: "./Img/*",
+    imageDest: webroot + "img/"
 };
 
 gulp.task("clean:js", function (cb) {
@@ -28,7 +30,11 @@ gulp.task("clean:css", function (cb) {
     rimraf(paths.concatCssDest, cb);
 });
 
-gulp.task("clean", ["clean:js", "clean:css"]);
+gulp.task("clean:img", function(cb){
+    rimraf(paths.imageDest, cb);
+})
+
+gulp.task("clean", ["clean:js", "clean:css", "clean:img"]);
 
 gulp.task("webpack", function (callback) {
     // run webpack
@@ -54,10 +60,15 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(paths.concatCssDest));
 });
 
+gulp.task('imgpack', function(){
+    return gulp.src(paths.imageSrc)
+        .pipe(gulp.dest(paths.imageDest));
+});
+
 gulp.task('sass:watch', function () {
     gulp.watch(paths.sass, ['sass']);
 });
 
-gulp.task("build", ["webpack", "sass"]);
+gulp.task("build", ["clean", "webpack", "sass", "imgpack"]);
 
 gulp.task("watch", ["webpack:watch", "sass:watch"]);

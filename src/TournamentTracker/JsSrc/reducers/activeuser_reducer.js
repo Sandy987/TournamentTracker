@@ -20,9 +20,18 @@ export default function(state, action) {
             return Object.assign({}, state, {isSavingUser: true});
         case userActions.RECEIVE_SAVE_USER: //TODO: Maybe we need to do mroe stuff if we received a failed status?
             return Object.assign({}, state, receiveSaveUser(state, action));
+        case userActions.LOGOUT_USER:
+            return Object.assign({}, state, logoutUser(action));
     }
 
     return state;
+}
+
+function logoutUser(action){
+    return {
+        user: null,
+        isLoggingIn: false
+    }
 }
 
 function requestLogin(action){

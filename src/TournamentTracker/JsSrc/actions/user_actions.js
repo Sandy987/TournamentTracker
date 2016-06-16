@@ -8,6 +8,22 @@ export const REQUEST_SAVE_USER = 'REQUEST_SAVE_USER';
 export const RECEIVE_SAVE_USER = 'RECEIVE_SAVE_USER';
 export const RECEIVE_ACTIVE_USER_COMPLETE = 'RECEIVE_ACTIVE_USER_COMPLETE';
 
+export const LOGOUT_USER = 'LOGOUT_USER';
+
+export function initiateLogout(){
+    return function (dispatch){
+        return fetch(`/api/user/logoff`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(checkStatus)
+            .then(user =>  dispatch({type: LOGOUT_USER}))
+    }
+}
+
 export function requestLogin(){
     return{
         type: REQUEST_LOGIN
@@ -40,6 +56,21 @@ export function receiveActiveUserComplete(){
     };
 }
 
+export function initiateReceiveCurrentUser(){
+    return function (dispatch){
+        return fetch(`/api/user/getcurrentuser`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(user =>  dispatch(receiveActiveUser(user)))
+            .catch(err => {})
+    }
+}
 export function initiateLogin(email, password, rememberMe){
     return function(dispatch){
 
@@ -61,7 +92,7 @@ export function initiateLogin(email, password, rememberMe){
             .then(user =>  dispatch(receiveActiveUser(user)))
             .then(r => dispatch(receiveActiveUserComplete()))
             .catch(err => 
-                dispatch(loginFailed(err.message))
+                err.response.text().then((t) => dispatch(loginFailed(t)))
             );
     }
 }
@@ -87,7 +118,7 @@ export function initiateRegister(playername, email, password){
             .then(user =>  dispatch(receiveActiveUser(user)))
             .then(r => dispatch(receiveActiveUserComplete()))
             .catch(err => 
-                dispatch(loginFailed(err.message))
+                err.response.text().then((t) => dispatch(loginFailed(t)))
             );
     }
 }

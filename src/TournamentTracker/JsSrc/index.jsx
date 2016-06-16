@@ -10,6 +10,7 @@ import createLogger from 'redux-logger';
 import reducer from './reducer';
 
 import * as navActions from './actions/nav_actions';
+import * as userActions from './actions/user_actions';
 
 import authMiddleware from './middleware/auth_middleware';
 import fetcherMiddleware from './middleware/fetcher_middleware';
@@ -42,30 +43,36 @@ const store = createStore(
     reducer,
     applyMiddleware(routerMiddleware(hashHistory),
                     thunkMiddleware, //Lets us dispatch() functions
-                    fetcherMiddleware,
                     authMiddleware, //Makes sure any failed login actions exit from the app
+                    
                     redirectMiddleware,
+                    
                     notificationsMiddleware,
+                    fetcherMiddleware,
                     loggerMiddleware) //Neat middleware that logs actions
 );
 
-const history = syncHistoryWithStore(hashHistory, store);
-history.listen(location => store.dispatch(navActions.routerDidNavigate(location.pathname)));
+userActions.initiateReceiveCurrentUser()(store.dispatch)
+.then(() => {
+    const history = syncHistoryWithStore(hashHistory, store);
+    history.listen(location => store.dispatch(navActions.routerDidNavigate(location.pathname)));
 
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Router history={history}>
-            <Route path="/login" component={LoginForm} />
-            <Route path="/register" component={RegisterForm} />
-            <Route path="/" component ={App}>
-                <Route path="/home" component={HomePageContainer}/>
-                <Route path="/account" component={AccountForm} />
-                <Route path="/challenges" component={ChallengesContainer} />
-                <Route path="/player/:playerId" component={PlayerProfile}/>
-                <Route path="/notifications/:playerId" component={NotificationList}/>
-            </Route>
-        </Router>
-    </Provider>,
-document.getElementById('app')
-);
+    ReactDOM.render(
+        <Provider store={store}>
+            <Router history={history}>
+                <Route path="/login" component={LoginForm} />
+                <Route path="/register" component={RegisterForm} />
+                <Route path="/" component ={App}>
+                    <Route path="/home" component={HomePageContainer}/>
+                    <Route path="/account" component={AccountForm} />
+                    <Route path="/challenges" component={ChallengesContainer} />
+                    <Route path="/player/:playerId" component={PlayerProfile}/>
+                    <Route path="/notifications/:playerId" component={NotificationList}/>
+                </Route>
+            </Router>
+        </Provider>,
+    document.getElementById('app')
+    );
+});
+

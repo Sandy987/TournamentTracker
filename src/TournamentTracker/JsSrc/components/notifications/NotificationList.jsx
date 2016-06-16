@@ -11,9 +11,9 @@ import {initiateDeclineChallenge} from '../../actions/challenge_actions';
 const NotificationList = React.createClass({
     onOptionClick: function(e, option, challengeId) {
         if(option === "accept")
-            this.props.dispatch(initiateAcceptChallenge(challengeId));
+            this.props.dispatch(initiateAcceptChallenge(challengeId, this.props.activePlayerId));
         else
-             this.props.dispatch(initiateDeclineChallenge(challengeId));
+             this.props.dispatch(initiateDeclineChallenge(challengeId, this.props.activePlayerId));
     },
     mixins: [PureRenderMixin],
     getListItem: function(notification){
@@ -60,7 +60,8 @@ function mapStateToProps(state){
     });
 
     return {
-        notifications: notificationsSorted
+        notifications: notificationsSorted,
+        activePlayerId: state.activeUser.user.Id
     }
 }
 

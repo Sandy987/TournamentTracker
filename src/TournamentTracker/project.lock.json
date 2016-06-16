@@ -5168,7 +5168,7 @@
       ]
     },
     "Microsoft.Extensions.FileProviders.Embedded/1.0.0-rc2-final": {
-      "sha512": "ERbc6toGS9OSc8Pr8kJ6AYxIDBaFt2I+s3tj87d/Pi6owQhD9hvCb9nAxOkxpLwl8OdsoOekdNUBZNYjhnBsXQ==",
+      "sha512": "jeEP8Gyt3bn6Nd1BA5MklaDnF9sIJVFovw0yP8PvnPh3DwpLe+5qM6HcvoZlXxn6A/KHCezNtEJ36rfqYDnLTQ==",
       "type": "package",
       "files": [
         "Microsoft.Extensions.FileProviders.Embedded.1.0.0-rc2-final.nupkg.sha512",

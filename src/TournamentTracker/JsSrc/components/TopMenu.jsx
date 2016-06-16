@@ -9,6 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 import * as NavActions from '../actions/nav_actions';
 import { push } from 'react-router-redux';
+import {initiateLogout} from '../actions/user_actions';
 
 export const TopMenu = React.createClass({
     mixins: [PureRenderMixin],
@@ -23,17 +24,18 @@ export const TopMenu = React.createClass({
             onRequestClose={(e) => this.props.routerCloseMenu()}
             onRequestChange={(open) => open ? this.props.routerOpenMenu() : this.props.routerCloseMenu()}>
             <Menu>
-                <MenuItem onTouchTap={(e) => onMenuItemTouch('/home', this.props)}>Home</MenuItem>
-                <MenuItem onTouchTap={(e) => onMenuItemTouch('/account', this.props)} >Account</MenuItem>
-		        <MenuItem onTouchTap={(e) => onMenuItemTouch('/challenges', this.props)}>Challenges</MenuItem>	
-                <MenuItem onTouchTap={(e) => onMenuItemTouch(notificationPath, this.props)} >Notifications</MenuItem>
+                <MenuItem onTouchTap={(e) => navigateTo('/home', this.props)}>Ranking</MenuItem>
+                <MenuItem onTouchTap={(e) => navigateTo('/account', this.props)} >Profile</MenuItem>
+		        <MenuItem onTouchTap={(e) => navigateTo('/challenges', this.props)}>My Matches</MenuItem>	
+                <MenuItem onTouchTap={(e) => navigateTo(notificationPath, this.props)} >Notifications</MenuItem>
+                 <MenuItem onTouchTap={(e) => this.props.initiateLogout()} >Log Out</MenuItem>
             </Menu>
             </Drawer> 
         </div>);
     }   
 });
 
-function onMenuItemTouch(path, props){
+function navigateTo(path, props){
 
     props.routerCloseMenu();
     props.push(path);
@@ -49,6 +51,7 @@ function mapStateToProps(state){
 
 var compiledFunctions = Object.assign({}, NavActions);
 compiledFunctions.push = push
+compiledFunctions.initiateLogout = initiateLogout;
 
 //Hook up the home page container with redux connect.
 export default connect(mapStateToProps, compiledFunctions)(TopMenu);

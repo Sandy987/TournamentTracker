@@ -14,9 +14,9 @@ const ChallengeMatchCard = React.createClass({
         const match = this.props.match;
         const cardTitle = `${challenge.SendingPlayerName} -> ${challenge.ReceivingPlayerName}`;
         const subTitle = `${challenge.SendingPlayerName}: ${ChallengeStatus.getNameFromStatus(challenge.SendingPlayerStatus)} - ${challenge.ReceivingPlayerName}: ${ChallengeStatus.getNameFromStatus(challenge.ReceivingPlayerStatus)}`;
-        const acceptChallengeButton = <FlatButton label="Accept" onTouchTap={() => this.props.onAcceptClicked(challenge.Id)} />;
-        const declineChallengeButton = <FlatButton label="Decline" onTouchTap={() => this.props.onDeclineClicked(challenge.Id)} />;
-        const completeChallengeButton = <FlatButton label="Complete" onTouchTap={() => this.props.onCompleteClicked(challenge.Id)} />;
+        const acceptChallengeButton = <FlatButton label="Accept Challenge" onTouchTap={() => this.props.onAcceptClicked(challenge.Id)} />;
+        const declineChallengeButton = <FlatButton label="Decline Challenge" onTouchTap={() => this.props.onDeclineClicked(challenge.Id)} />;
+        const completeChallengeButton = <FlatButton label="Finalise" onTouchTap={() => this.props.onCompleteClicked(challenge.Id)} />;
 
         var challengeStatus;
         if (this.props.activePlayerId=== challenge.SendingPlayerId){
@@ -63,7 +63,7 @@ const ChallengeMatchCard = React.createClass({
                         ? <MatchCardEditable initialValues={initialValues} {...match}/> 
                         : <MatchCard {...match} />; 
         } else {
-            cardText = "No Match Available";
+            cardText = "Waiting for other player to accept";
         }
     
 
