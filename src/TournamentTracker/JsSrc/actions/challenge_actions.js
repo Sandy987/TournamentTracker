@@ -100,7 +100,7 @@ export function receiveChallengeComplete(challengeId){
 }
 
 
-export function initiateAcceptChallenge(challengeId) {
+export function initiateAcceptChallenge(challengeId, playerId) {
      return function(dispatch){
             dispatch(requestChallengeAccept());
             //TODO: update so it works with the real api
@@ -109,17 +109,17 @@ export function initiateAcceptChallenge(challengeId) {
                 credentials: 'same-origin'
             })
             .then(checkStatus)
-            .then(r =>
-                dispatch(receiveChallengeAccept(challengeId))
-            )
-            .then(dispatch())
+            .then(r =>{
+                dispatch(receiveChallengeAccept(challengeId));
+                dispatch(initiateLoadChallenges(playerId));
+            })
             .catch(err => 
                 dispatch(receiveChallengeAccept(null)) //TODO: Do this better
             );
      }
 }
 
-export function initiateDeclineChallenge(challengeId) {
+export function initiateDeclineChallenge(challengeId, playerId) {
      return function(dispatch){
             dispatch(requestChallengeDecline());
             //TODO: update so it works with the real api
@@ -128,9 +128,11 @@ export function initiateDeclineChallenge(challengeId) {
                 credentials: 'same-origin'
             })
             .then(checkStatus)
-            .then(r =>
-                dispatch(receiveChallengeDecline(challengeId))
-            )
+            .then(r =>{
+                dispatch(receiveChallengeDecline(challengeId));
+                dispatch(initiateLoadChallenges(playerId));
+            })
+            .then(dispatch(initiateLoadChallenges(playerId)))
             .catch(err => 
                 dispatch(receiveChallengeDecline(null)) //TODO: Do this better
             );
@@ -138,7 +140,7 @@ export function initiateDeclineChallenge(challengeId) {
 }
 
 
-export function initiateCompleteChallenge(challengeId) {
+export function initiateCompleteChallenge(challengeId, playerId) {
      return function(dispatch){
             dispatch(requestChallengeComplete());
             //TODO: update so it works with the real api
@@ -147,9 +149,11 @@ export function initiateCompleteChallenge(challengeId) {
                 credentials: 'same-origin'
             })
             .then(checkStatus)
-            .then(r =>
-                dispatch(receiveChallengeComplete(challengeId))
-            )
+            .then(r =>{
+                dispatch(receiveChallengeComplete(challengeId));
+                dispatch(initiateLoadChallenges(playerId));
+            })
+            .then(dispatch(initiateLoadChallenges(playerId)))
             .catch(err => 
                 dispatch(receiveChallengeComplete(null)) //TODO: Do this better
             );
