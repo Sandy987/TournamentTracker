@@ -11,6 +11,10 @@ export default function(state, action) {
     }
 
     switch (action.type) {
+        case challengeActions.OPEN_CHALLENGE_DIALOG:
+            return Object.assign({}, state, {isDialogOpen : true}); 
+        case challengeActions.CLOSE_CHALLENGE_DIALOG:
+            return Object.assign({}, state, {isDialogOpen : false}); 
         case challengeActions.REQUEST_CHALLENGE_PLAYER:
             return Object.assign({}, state, {isRetrievingChallenges : true}); 
         case challengeActions.RECEIVE_CHALLENGE_PLAYER:

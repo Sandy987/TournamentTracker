@@ -25,7 +25,7 @@ export const TopMenu = React.createClass({
             <Menu>
                 <MenuItem onTouchTap={(e) => onMenuItemTouch('/home', this.props)}>Home</MenuItem>
                 <MenuItem onTouchTap={(e) => onMenuItemTouch('/account', this.props)} >Account</MenuItem>
-		<MenuItem onTouchTap={(e) => onMenuItemTouch('/challenges', this.props)}>Challenges</MenuItem>	
+		        <MenuItem onTouchTap={(e) => onMenuItemTouch('/challenges', this.props)}>Challenges</MenuItem>	
                 <MenuItem onTouchTap={(e) => onMenuItemTouch(notificationPath, this.props)} >Notifications</MenuItem>
             </Menu>
             </Drawer> 

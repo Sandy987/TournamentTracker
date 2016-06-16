@@ -16,10 +16,10 @@ const PlayerProfile = React.createClass({
             const player = this.props.player;
             return <Paper zDepth={2}>
                 <div className="tt-player-profile" >
-                    <div>Player Name: </div><div>{this.props.player.PlayerName}</div>
-                    <div>Player ELO: </div><div>{this.props.player.PlayerElo}</div>
-                    <div>Wins: </div><div>{this.props.player.PlayerWins}</div>
-                    <div>Losses: </div><div>{this.props.player.PlayerLoses}</div>
+                    <div><span className="bold-text">Player Name: </span><span>{this.props.player.PlayerName}</span></div>
+                    <div><span className="bold-text">Player ELO: </span><span>{this.props.player.PlayerElo}</span></div>
+                    <div><span className="bold-text">Wins: </span><span>{this.props.player.PlayerWins}</span></div>
+                    <div><span className="bold-text">Losses: </span><span>{this.props.player.PlayerLoses}</span></div>
                 </div>
                 <MatchList matches={this.props.matches}/>
             </Paper>;

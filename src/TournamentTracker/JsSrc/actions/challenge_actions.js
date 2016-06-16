@@ -13,6 +13,21 @@ export const RECEIVE_CHALLENGE_DECLINE = 'RECEIVE_CHALLENGE_DECLINE';
 export const REQUEST_CHALLENGE_COMPLETE = 'REQUEST_CHALLENGE_COMPLETE';
 export const RECEIVE_CHALLENGE_COMPLETE = 'RECEIVE_CHALLENGE_COMPLETE';
 
+export const OPEN_CHALLENGE_DIALOG = 'OPEN_CHALLENGES_DIALOG';
+export const CLOSE_CHALLENGE_DIALOG = 'CLOSE_CHALLENGES_DIALOG';
+
+
+export function openChallengeDialog(){
+    return {
+        type: OPEN_CHALLENGE_DIALOG
+    }
+}
+
+export function closeChallengeDialog(){
+    return {
+        type: CLOSE_CHALLENGE_DIALOG
+    }
+}
 
 //request a challenge against a player
 export function requestChallengePlayer(){

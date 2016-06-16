@@ -5,13 +5,22 @@ import PlayerList from './PlayerList';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import * as playerActions from '../../actions/player_actions';
 import * as challengeActions from '../../actions/challenge_actions';
 import {push} from 'react-router-redux';
 
 const FilteredPlayerList = React.createClass({
     mixins: [PureRenderMixin],
+    handlePlayerChallenged: function(p){
+        this.props.openChallengeDialog();
+        this.props.initiateChallengePlayer(this.props.activePlayerId, p.Id);
+    },
+
     render: function(){
+        const actions = [<FlatButton label="Ok" onTouchTap={() => this.props.closeChallengeDialog()} primary={true}/>];
+
         return <Paper zDepth={1}>
             <Paper zDepth={2}>
                 <RaisedButton label="Refresh Players" onTouchTap={(e) => this.props.initiateLoadPlayers()} />
@@ -19,8 +28,17 @@ const FilteredPlayerList = React.createClass({
             </Paper>
             <PlayerList 
                 players={this.props.filteredPlayers} 
-                handlePlayerChallenged={(p) => this.props.initiateChallengePlayer(this.props.activePlayerId, p.Id)} 
+                handlePlayerChallenged={(p) => this.handlePlayerChallenged(p)} 
                 handlePlayerProfiled={(p) => this.props.push(`/player/${p.Id}`)} />
+            <Dialog
+                title="Challenge Sent"
+                actions={actions}
+                modal={false}
+                open={this.props.isDialogOpen}
+                onRequestClose={() => this.props.closeChallengeDialog()}
+                >
+                Challenge Sent
+            </Dialog>
         </Paper>;
     }
 });
@@ -29,6 +47,8 @@ const mapDispatchToProps = {
     initiateLoadPlayers: playerActions.initiateLoadPlayers,
     updatePlayerFilter: playerActions.updatePlayerFilter,
     initiateChallengePlayer: challengeActions.initiateChallengePlayer,
+    openChallengeDialog: challengeActions.openChallengeDialog,
+    closeChallengeDialog: challengeActions.closeChallengeDialog,
     push: push
 };
 
@@ -46,13 +66,15 @@ function mapStateToProps(state){
                 } else {
                     return true;
                 }
-            })
+            }),
+            isDialogOpen: state.challenges.isDialogOpen
         }
     } else{
         return {
             activePlayerId: state.activeUser.user.Id,
             filterText: state.players.filter,
-            filteredPlayers: []
+            filteredPlayers: [],
+            isDialogOpen: state.challenges.isDialogOpen
         }
     }
 }

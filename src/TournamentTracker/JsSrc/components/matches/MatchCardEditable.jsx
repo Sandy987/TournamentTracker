@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import * as matchActions from '../../actions/match_actions';
+import * as matchStatus from '../../constants/MatchStatus';
 import {reduxForm} from 'redux-form';
 
 const submit = (values, dispatch) =>{
@@ -28,18 +29,20 @@ const MatchCardEditable = React.createClass({
                         <input type="hidden" {...matchId}></input>
                         <div>
                             <input type="hidden" {...playerOneId}></input>
-                            <label>{this.props.PlayerOneName}</label>
+                            <label className="bold-text">{this.props.PlayerOneName}: </label>
                             <TextField hintText="Score" {...playerOneScore} />
                         </div>
                         <div>
                             <input type="hidden" {...playerTwoId}></input>
-                            <label>{this.props.PlayerTwoName}</label>
+                            <label className="bold-text">{this.props.PlayerTwoName}: </label>
                             <TextField hintText="Score" {...playerTwoScore} />
                         </div>
                         <div className="match-status">
-                            {this.props.MatchStatus}
+                            <label className="bold-text">Status: </label>
+                            {matchStatus.getNameFromStatus(this.props.MatchStatus)}
                         </div>
                         <div className="match-completion">
+                            <label className="bold-text">Completed Date: </label>
                             {this.props.MatchCompletion}
                         </div>
 
