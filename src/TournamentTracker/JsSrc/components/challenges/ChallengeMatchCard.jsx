@@ -63,7 +63,7 @@ const ChallengeMatchCard = React.createClass({
                         ? <MatchCardEditable initialValues={initialValues} {...match}/> 
                         : <MatchCard {...match} />; 
         } else {
-            cardText = "No Match Available";
+            cardText = "Waiting for other player to accept";
         }
     
 

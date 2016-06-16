@@ -9,11 +9,12 @@ import MenuItem from 'material-ui/MenuItem';
 
 const PlayerList = React.createClass({
     mixins: [PureRenderMixin],
-    getListItem: function(player){
+    getListItem: function(player, index){
         
         var subText = `${player.PlayerElo} - Wins: ${player.PlayerWins} - Losses: ${player.PlayerLoses}`;
         
         /*jshint ignore:start */
+        
         var challengeElement = <IconButton
                                         touch={true}
                                         tooltip="challenge"
@@ -22,6 +23,12 @@ const PlayerList = React.createClass({
                                     >
                                     <ActionGrade />
                                 </IconButton>;
+
+        //Don't show challenge button for active player
+        if (this.props.activePlayerId === player.Id){
+            challengeElement = null;
+        }
+
         var profileElement = <IconButton
                                         touch={true}
                                         tooltip="profile"
@@ -33,12 +40,12 @@ const PlayerList = React.createClass({
         
 
         
-
+        var playerPrimaryText = `${index + 1} - ${player.PlayerName} ${this.props.activePlayerId === player.Id ? ' (Me)' : ''}`;
         return <ListItem
           key={player.Id}
           leftIcon={profileElement}
           rightIconButton={challengeElement}
-          primaryText={player.PlayerName}
+          primaryText={playerPrimaryText}
           secondaryText={subText}
           secondaryTextLines={1}
         />
@@ -47,8 +54,8 @@ const PlayerList = React.createClass({
     },
     /*jshint ignore:start */
     render: function(){
-        return <List>
-           {this.props.players.map((player) => this.getListItem(player))}
+        return <List className="player-list">
+           {this.props.players.map((player, index) => this.getListItem(player, index))}
         </List>;
     }
     /*jshint ignore:end */

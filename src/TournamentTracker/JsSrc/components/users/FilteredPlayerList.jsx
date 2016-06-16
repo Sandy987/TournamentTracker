@@ -23,11 +23,12 @@ const FilteredPlayerList = React.createClass({
 
         return <Paper zDepth={1}>
             <Paper zDepth={2}>
-                <RaisedButton label="Refresh Players" onTouchTap={(e) => this.props.initiateLoadPlayers()} />
+                <RaisedButton className="refresh-player-button" label="Refresh Players" onTouchTap={(e) => this.props.initiateLoadPlayers()} />
                 <TextField hintText="Filter Players" onChange={(e) => this.props.updatePlayerFilter(e.target.value)} />
             </Paper>
             <PlayerList 
                 players={this.props.filteredPlayers} 
+                activePlayerId={this.props.activePlayerId}
                 handlePlayerChallenged={(p) => this.handlePlayerChallenged(p)} 
                 handlePlayerProfiled={(p) => this.props.push(`/player/${p.Id}`)} />
             <Dialog
