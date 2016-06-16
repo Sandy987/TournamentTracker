@@ -66,6 +66,12 @@ function mapStateToProps(state){
                 } else {
                     return true;
                 }
+            }).sort((x,y) => {
+                if (y.PlayerElo === x.PlayerElo){
+                    return y.PlayerWins - x.PlayerWins;
+                } else{
+                    return y.PlayerElo - x.PlayerElo;
+                }
             }),
             isDialogOpen: state.challenges.isDialogOpen
         }
