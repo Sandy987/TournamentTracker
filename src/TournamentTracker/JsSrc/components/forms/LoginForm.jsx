@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {connect} from 'react-redux';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -28,6 +29,13 @@ const LoginFormComponent = React.createClass({
         }
     },
     render: function(){
+        var errorComponents = [];
+
+        if (this.props.errorMessage){
+            // errorComponents = [<div className="login-form-component"><span>Invalid email address or password</span></div>];
+            errorComponents = [<div className="login-form-component"><span>{this.props.errorMessage}</span></div>];
+        }
+
         const { fields: {email, password, rememberMe}, handleSubmit, submitting} = this.props;
         return <MuiThemeProvider muiTheme={getMuiTheme()}>  
         <div className="login-body">
@@ -46,6 +54,8 @@ const LoginFormComponent = React.createClass({
 
                         <RaisedButton className="login-form-component" onClick={handleSubmit(submit)} disabled={submitting}>Log In</RaisedButton>
                         
+                        {errorComponents}
+
                         <div className="login-form-component">
                             <Link to="/register">Not a member? Register here.</Link>
                         </div>
@@ -57,9 +67,17 @@ const LoginFormComponent = React.createClass({
     }
 });
 
+function mapStateToProps(state){
+    return{
+        errorMessage: state.activeUser.errorMessage
+    };
+}
+
 //Wire up the redux form
-export default reduxForm({
+const reduxxedForm = reduxForm({
     form: 'login',
     fields: ['email', 'password', 'rememberMe'],
     validate: validateLogin
 })(LoginFormComponent);
+
+export default connect(mapStateToProps)(reduxxedForm);
