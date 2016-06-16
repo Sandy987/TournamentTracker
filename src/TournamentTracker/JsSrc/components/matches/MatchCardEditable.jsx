@@ -46,7 +46,7 @@ const MatchCardEditable = React.createClass({
                             {this.props.MatchCompletion}
                         </div>
 
-                        <FlatButton onClick={handleSubmit(submit)} disabled={submitting}>Save</FlatButton>
+                        <FlatButton onClick={handleSubmit(submit)} disabled={submitting}>Save Score</FlatButton>
                     </form>
                 </Paper>;
     }

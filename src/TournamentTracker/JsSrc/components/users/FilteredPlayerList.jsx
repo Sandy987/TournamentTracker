@@ -23,11 +23,12 @@ const FilteredPlayerList = React.createClass({
 
         return <Paper zDepth={1}>
             <Paper zDepth={2}>
-                <RaisedButton label="Refresh Players" onTouchTap={(e) => this.props.initiateLoadPlayers()} />
+                <RaisedButton className="refresh-player-button" label="Refresh Players" onTouchTap={(e) => this.props.initiateLoadPlayers()} />
                 <TextField hintText="Filter Players" onChange={(e) => this.props.updatePlayerFilter(e.target.value)} />
             </Paper>
             <PlayerList 
                 players={this.props.filteredPlayers} 
+                activePlayerId={this.props.activePlayerId}
                 handlePlayerChallenged={(p) => this.handlePlayerChallenged(p)} 
                 handlePlayerProfiled={(p) => this.props.push(`/player/${p.Id}`)} />
             <Dialog
@@ -59,12 +60,18 @@ function mapStateToProps(state){
             filterText: state.players.filter,
             filteredPlayers: state.players.players.filter((p) => {
                 if (state.players.filter && state.players.filter.length > 0){
-                    if (p.playerName)
-                        return p.playerName.includes(state.players.filter);
+                    if (p.PlayerName)
+                        return p.PlayerName.includes(state.players.filter);
                     else
                         return false;
                 } else {
                     return true;
+                }
+            }).sort((x,y) => {
+                if (y.PlayerElo === x.PlayerElo){
+                    return y.PlayerWins - x.PlayerWins;
+                } else{
+                    return y.PlayerElo - x.PlayerElo;
                 }
             }),
             isDialogOpen: state.challenges.isDialogOpen

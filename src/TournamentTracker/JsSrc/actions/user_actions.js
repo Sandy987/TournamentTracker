@@ -92,7 +92,7 @@ export function initiateLogin(email, password, rememberMe){
             .then(user =>  dispatch(receiveActiveUser(user)))
             .then(r => dispatch(receiveActiveUserComplete()))
             .catch(err => 
-                dispatch(loginFailed(err.message))
+                err.response.text().then((t) => dispatch(loginFailed(t)))
             );
     }
 }
@@ -118,7 +118,7 @@ export function initiateRegister(playername, email, password){
             .then(user =>  dispatch(receiveActiveUser(user)))
             .then(r => dispatch(receiveActiveUserComplete()))
             .catch(err => 
-                dispatch(loginFailed(err.message))
+                err.response.text().then((t) => dispatch(loginFailed(t)))
             );
     }
 }
