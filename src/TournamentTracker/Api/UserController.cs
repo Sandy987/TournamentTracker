@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TournamentTracker.Api
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -100,6 +100,27 @@ namespace TournamentTracker.Api
             }
       
             return BadRequest(ModelState);
+        }
+
+        [HttpPost("GetCurrentUser")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CurrentUser()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser == null)
+                return BadRequest("not logged on");
+
+            return Ok(new UserModel
+            {
+                Id = currentUser.Id,
+                PlayerName = currentUser.PlayerName,
+                PlayerElo = currentUser.PlayerElo,
+                PlayerWins = currentUser.PlayerWins,
+                PlayerLoses = currentUser.PlayerLoses,
+                UserName = currentUser.UserName,
+                Email = currentUser.Email
+            });
         }
 
         [HttpPost("logoff")]

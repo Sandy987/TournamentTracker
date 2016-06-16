@@ -11,6 +11,8 @@ export default store => next => action => {
     //             && action.type != userActions.REQUEST_LOGIN
     //             && action.type != userActions.REQUEST_REGISTER){ //We don't have a user, and they aren't logging in...they must be re-auth'd
     //     store.dispatch(push('/login'));
+    } else if (action.type === userActions.LOGOUT_USER){
+        store.dispatch(push('/login'));
     }
     return next(action); //This sends the action to the store after middleware is complete
 };

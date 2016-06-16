@@ -9,8 +9,9 @@ const AccountForm = React.createClass({
     mixins: [PureRenderMixin],
     
     render: function(){
-        if (this.props.playerLoading || this.props.matchesLoading){
-            return <div>Loading Spinner</div>;
+        if (this.props.isRetrievingChallenges)
+        {
+            return <div classname="loading"></div>;
         } else if(!this.props.player || !this.props.matches){
             return <div>Player or matches not found</div>;
         } else {

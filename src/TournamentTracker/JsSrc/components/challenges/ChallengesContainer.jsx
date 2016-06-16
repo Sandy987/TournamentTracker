@@ -12,8 +12,9 @@ const ChallengesContainer = React.createClass({
     mixins: [PureRenderMixin],
     render: function(){
         if (this.props.isRetrievingChallenges)
-            return <div>Loading Spinner</div>;
-        
+        {
+           return <div className="loading"></div>;
+        }
         return <Paper zDepth={1}>
             <Paper zDepth={2}>
                 <RaisedButton label="Refresh Challenges" onTouchTap={(e) => this.props.initiateLoadChallenges(this.props.activePlayerId)} />
