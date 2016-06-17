@@ -17,7 +17,7 @@ export const TopMenu = React.createClass({
         var notificationPath = `/notifications/${this.props.activeUser.Id}`;
 
         return (<div>
-            <AppBar title="T-Ts Tournament Tracker" onLeftIconButtonTouchTap={(e) => this.props.routerOpenMenu()}></AppBar>
+            <AppBar title="TT Tracker" onLeftIconButtonTouchTap={(e) => this.props.routerOpenMenu()}></AppBar>
             <Drawer
             open={this.props.isMenuOpen}
             docked={false}
