@@ -1,13 +1,13 @@
 import checkStatus from '../utils/check_http_status';
 
-export const REQUEST_MATCH = 'REQUEST_MATCH';
-export const RECEIVE_MATCH = 'RECEIVE_MATCH';
+export const REQUEST_MATCH = 'match/REQUEST_MATCH';
+export const RECEIVE_MATCH = 'match/RECEIVE_MATCH';
 
-export const REQUEST_MATCH_HISTORY = 'REQUEST_MATCH_HISTORY';
-export const RECEIVE_MATCH_HISTORY = 'RECEIVE_MATCH_HISTORY';
+export const REQUEST_MATCH_HISTORY = 'match/REQUEST_MATCH_HISTORY';
+export const RECEIVE_MATCH_HISTORY = 'match/RECEIVE_MATCH_HISTORY';
 
-export const REQUEST_MATCH_SCORE_UPDATE = 'REQUEST_MATCH_SCORE_UPDATE';
-export const RECEIVE_MATCH_SCORE_UPDATE = 'RECEIVE_MATCH_SCORE_UPDATE';
+export const REQUEST_MATCH_SCORE_UPDATE = 'match/REQUEST_MATCH_SCORE_UPDATE';
+export const RECEIVE_MATCH_SCORE_UPDATE = 'match/RECEIVE_MATCH_SCORE_UPDATE';
 
 export function requestMatch(matchId){
     return{

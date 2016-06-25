@@ -1,9 +1,9 @@
 import checkStatus from '../utils/check_http_status';
 
-export const REQUEST_PLAYERS = 'REQUEST_PLAYERS';
-export const RECEIVE_PLAYERS = 'RECEIVE_PLAYERS';
+export const REQUEST_PLAYERS = 'player/REQUEST_PLAYERS';
+export const RECEIVE_PLAYERS = 'player/RECEIVE_PLAYERS';
 
-export const UPDATE_PLAYER_FILTER = 'UPDATE_PLAYER_FILTER';
+export const UPDATE_PLAYER_FILTER = 'player/UPDATE_PLAYER_FILTER';
 
 export function requestPlayers(){
     return{

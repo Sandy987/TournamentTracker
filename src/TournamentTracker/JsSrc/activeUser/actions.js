@@ -1,14 +1,14 @@
 import checkStatus from '../utils/check_http_status';
 
-export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export const REQUEST_REGISTER = 'REQUEST_REGISTER';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
-export const RECEIVE_ACTIVE_USER = 'RECEIVE_ACTIVE_USER';
-export const REQUEST_SAVE_USER = 'REQUEST_SAVE_USER';
-export const RECEIVE_SAVE_USER = 'RECEIVE_SAVE_USER';
-export const RECEIVE_ACTIVE_USER_COMPLETE = 'RECEIVE_ACTIVE_USER_COMPLETE';
+export const REQUEST_LOGIN = 'activeUser/REQUEST_LOGIN';
+export const REQUEST_REGISTER = 'activeUser/REQUEST_REGISTER';
+export const LOGIN_FAILED = 'activeUser/LOGIN_FAILED';
+export const RECEIVE_ACTIVE_USER = 'activeUser/RECEIVE_ACTIVE_USER';
+export const REQUEST_SAVE_USER = 'activeUser/REQUEST_SAVE_USER';
+export const RECEIVE_SAVE_USER = 'activeUser/RECEIVE_SAVE_USER';
+export const RECEIVE_ACTIVE_USER_COMPLETE = 'activeUser/RECEIVE_ACTIVE_USER_COMPLETE';
 
-export const LOGOUT_USER = 'LOGOUT_USER';
+export const LOGOUT_USER = 'activeUser/LOGOUT_USER';
 
 export function initiateLogout(){
     return function (dispatch){

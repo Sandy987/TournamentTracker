@@ -1,7 +1,7 @@
 import checkStatus from '../utils/check_http_status';
 
-export const REQUEST_NOTIFICATIONS = 'REQUEST_NOTIFICATIONS';
-export const RECEIVE_NOTIFICATIONS = 'RECEIVE_NOTIFICATIONS';
+export const REQUEST_NOTIFICATIONS = 'notification/REQUEST_NOTIFICATIONS';
+export const RECEIVE_NOTIFICATIONS = 'notification/RECEIVE_NOTIFICATIONS';
 
 export function requestNotifications(){
     return{

@@ -1,6 +1,6 @@
-export const NAVIGATE = 'NAVIGATE';
-export const OPENMENU = 'OPENMENU';
-export const CLOSEMENU = 'CLOSEMENU';
+export const NAVIGATE = 'navigation/NAVIGATE';
+export const OPENMENU = 'navigation/OPENMENU';
+export const CLOSEMENU = 'navigation/CLOSEMENU';
 
 export function routerDidNavigate(path){
     return {
