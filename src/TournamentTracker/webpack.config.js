@@ -27,7 +27,5 @@ module.exports = {
     contentBase: './JsSrc',
     hot: true
   },
-  plugins: [
-    //new webpack.HotModuleReplacementPlugin()
-  ]
+  bail: true,
 };

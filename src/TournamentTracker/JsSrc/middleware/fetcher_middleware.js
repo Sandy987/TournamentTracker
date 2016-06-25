@@ -1,9 +1,10 @@
-import * as matchActions from '../actions/match_actions';
-import * as playerActions from '../actions/player_actions';
-import * as notificationActions from '../actions/notification_actions';
-import * as challengeActions from '../actions/challenge_actions';
+import * as matchActions from '../match/actions';
+import * as playerActions from '../player/actions';
+import * as notificationActions from '../notification/actions';
+import * as challengeActions from '../challenge/actions';
 
 //TODO: This is super bad. We shouldn't be loading data everytime we navigate to the page, we should be smarter about this.
+//TODO: this shouldn't be middleware, these should be dispatched on route enter.
 export default store => next => action => {
     if (action.type === 'NAVIGATE'){
         if (action.path.includes('/home')){

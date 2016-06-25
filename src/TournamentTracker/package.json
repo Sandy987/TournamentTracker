@@ -44,7 +44,8 @@
     "redux": "^3.4.0",
     "redux-form": "^5.2.5",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "reselect": "^2.5.1"
   },
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require ./JsTest/test_helper.js \"JsTest/**/*.@(js|jsx)\"",
