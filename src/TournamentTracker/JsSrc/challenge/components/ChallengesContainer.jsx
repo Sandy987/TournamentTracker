@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import * as challengeActions from '../actions';
 import ChallengeMatchList from './ChallengeMatchList';
 import {push} from 'react-router-redux';
+import {getActiveUser} from '../../activeUser/selectors';
 
 const ChallengesContainer = React.createClass({
     mixins: [PureRenderMixin],
@@ -41,13 +42,13 @@ function mapStateToProps(state){
         return {
             isRetrievingChallenges: state.challenges.isRetrievingChallenges,
             challengeMatches: mappedChallenges,
-            activePlayerId: state.activeUser.user.Id
+            activePlayerId: getActiveUser(state).Id
         }
     } else{
         return {
             isRetrievingChallenges: state.challenges.isRetrievingChallenges,
             challengeMatches: [],
-            activePlayerId: state.activeUser.user.Id
+            activePlayerId: getActiveUser(state).Id
         }
     }
 }

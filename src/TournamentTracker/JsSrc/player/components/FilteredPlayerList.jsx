@@ -10,6 +10,7 @@ import FlatButton from 'material-ui/FlatButton';
 import * as playerActions from '../actions';
 import * as challengeActions from '../../challenge/actions'; //This is pretty bad, we shouldn't have this here?
 import {push} from 'react-router-redux';
+import {getActiveUser} from '../../activeUser/selectors';
 
 const FilteredPlayerList = React.createClass({
     mixins: [PureRenderMixin],
@@ -56,7 +57,7 @@ const mapDispatchToProps = {
 function mapStateToProps(state){
     if (state.players.players){
         return {
-            activePlayerId: state.activeUser.user.Id,
+            activePlayerId: getActiveUser(state).Id,
             filterText: state.players.filter,
             filteredPlayers: state.players.players.filter((p) => {
                 if (state.players.filter && state.players.filter.length > 0){
@@ -78,7 +79,7 @@ function mapStateToProps(state){
         }
     } else{
         return {
-            activePlayerId: state.activeUser.user.Id,
+            activePlayerId: getActiveUser(state).Id,
             filterText: state.players.filter,
             filteredPlayers: [],
             isDialogOpen: state.challenges.isDialogOpen

@@ -15,8 +15,9 @@ import ChallengesContainer from './challenge/components/ChallengesContainer';
 
 import NotificationList from './notification/components/NotificationList';
 
+
 export default (history) =>  <Router history={history}>
-                <Route path="/login" component={LoginForm} />
+                <Route path="/login" component={LoginForm}/>
                 <Route path="/register" component={RegisterForm} />
                 <Route path="/" component ={App}>
                     <Route path="/home" component={HomePageContainer}/>

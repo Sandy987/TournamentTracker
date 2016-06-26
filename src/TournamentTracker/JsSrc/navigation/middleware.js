@@ -1,8 +1,9 @@
 import {push} from 'react-router-redux';
 import {initiateReceiveCurrentUser} from '../activeUser/actions'
+import * as navActions from '../navigation/actions';
 
 export default store => next => action => {
-    if (action.type === 'NAVIGATE'){
+    if (action.type === navActions.NAVIGATE){
         var isNotLoggingIn = (!store.getState().activeUser || !store.getState().activeUser.isLoggingIn);
         var isNoUser = (!store.getState().activeUser || !store.getState().activeUser.user);
         var isNotOnLoginPageOrRegister = !(action.path.includes("login") || action.path.includes('register'));

@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import {initiateAcceptChallenge, initiateDeclineChallenge} from '../../challenge/actions';
+import {getActiveUser} from '../../activeUser/selectors';
 
 const NotificationList = React.createClass({
     onOptionClick: function(e, option, challengeId) {
@@ -60,7 +61,7 @@ function mapStateToProps(state){
 
     return {
         notifications: notificationsSorted,
-        activePlayerId: state.activeUser.user.Id
+        activePlayerId: getActiveUser(state).Id
     }
 }
 
