@@ -1,0 +1,29 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "react/wrap-multilines": 0,
+    "react/display-name": [1, {
+      "ignoreTranspilerName": true
+    }],
+    "eol-last": 0,
+    "max-len": 0,
+    "new-cap": [2, {
+      "capIsNewExceptions": ["Router"]
+    }],
+    "no-shadow": 0,
+    "no-unused-expressions": 0,
+    "no-param-reassign": [2, {
+      "props": false
+    }],
+    "import/no-unresolved": [2, {
+      "ignore": [".\/styles$"]
+    }]
+  },
+  "globals": {
+    // Google Analytics
+    "ga": true,
+    // Mocha
+    "describe": true,
+    "it": true
+  }
+}
