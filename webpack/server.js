@@ -8,6 +8,17 @@ const host = 'localhost';
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const compiler = webpack(webpackConfig);
+const mongoose = require('mongoose');
+
+//mongoose db initialisation
+mongoose.connect(config.mongoUrl);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    // we're connected!
+    console.log("Connected correctly to server");
+});
+
 
 const serverOptions = {
   contentBase: `http://${host}:${port}`,

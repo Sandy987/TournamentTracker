@@ -49,13 +49,13 @@ class LoginFormComponent extends Component {
     }
   }
   submit() {
-    const { email, password, rememberMe } = this.state;
-    const errors = validateLogin({ email, password, rememberMe });
+    const { input } = this.state;
+    const errors = validateLogin(input);
     if (errors) {
       this.setState({ errors });
       return;
     }
-    this.props.dispatch(initiateLogin(email, password, rememberMe));
+    this.props.dispatch(initiateLogin(input.email, input.password, input.rememberMe));
   }
   render() {
     let errorComponents = [];
@@ -71,7 +71,6 @@ class LoginFormComponent extends Component {
               <div className={css.loginFormComponent}>
                 <TextField
                   hintText="Email Address"
-                  value={email}
                   errorText={errors.email}
                   name="email"
                   onChange={this.onChange}
@@ -83,7 +82,6 @@ class LoginFormComponent extends Component {
                   onKeyDown={this.handleKeyDown}
                   type="password"
                   hintText="Password on"
-                  value={password}
                   errorText={errors.password}
                   onChange={this.onChange}
                   name="password"
@@ -109,6 +107,5 @@ class LoginFormComponent extends Component {
 }
 
 LoginFormComponent.displayName = 'LoginForm';
-
 
 export default connect()(LoginFormComponent);
