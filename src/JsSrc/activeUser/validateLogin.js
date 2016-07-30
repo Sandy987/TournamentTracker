@@ -1,13 +1,9 @@
-export default function validateLogin(data, props) {
+export default function validateLogin(data) {
   const errors = {};
-  if(!data.playername) {
-    errors.playername = 'Required';
-  }
-
-  if(!data.email) {
+  if (!data.email) {
     errors.email = 'Required';
   }
-  if(!data.password) {
+  if (!data.password) {
     errors.password = 'Required';
   }
   return errors;

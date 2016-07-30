@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { reduxForm } from 'redux-form';
-import { validateLogin } from '../validateLogin';
+import validateLogin from '../validateLogin';
 import { initiateLogin } from '../actions';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -14,56 +13,90 @@ import css from './styles.css';
 class LoginFormComponent extends Component {
   constructor() {
     super();
-
+    this.state = {
+      input: {
+        email: '',
+        password: '',
+        rememberMe: false,
+      },
+      errors: {
+        email: '',
+        password: '',
+      },
+    };
     this.submit = this.submit.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
-  submit(values, dispatch) {
-    return new Promise((resolve, reject) => {
-      dispatch(initiateLogin(values.email, values.password, values.rememberMe));
-      resolve();
+  onChange(e) {
+    const field = e.target.name;
+    const value = e.target.value;
+    const { input } = this.state;
+    input[field] = value;
+
+    this.setState({
+      input,
     });
+
+    const errors = validateLogin(input);
+    if (errors) {
+      this.setState({ errors });
+    }
   }
   handleKeyDown(e) {
-    const { handleSubmit } = this.props;
     if (e.keyCode === 13) {
-      handleSubmit(this.submit);
+      this.submit();
     }
+  }
+  submit() {
+    const { email, password, rememberMe } = this.state;
+    const errors = validateLogin({ email, password, rememberMe });
+    if (errors) {
+      this.setState({ errors });
+      return;
+    }
+    this.props.dispatch(initiateLogin(email, password, rememberMe));
   }
   render() {
     let errorComponents = [];
-    if (this.props.errorMessage) {
-      errorComponents = [<div className={css.loginFormComponent}><span>{this.props.errorMessage}</span></div>];
+    if (this.state.errorMessage) {
+      errorComponents = [<div className={css.loginFormComponent}><span>{this.state.errorMessage}</span></div>];
     }
-    const { fields: { email, password, rememberMe }, handleSubmit, submitting } = this.props;
+    const { email, password, rememberMe, submitting, errors } = this.state;
     return <MuiThemeProvider muiTheme={getMuiTheme()}>
       <div className={css.loginBody}>
         <Paper>
-          <form onSubmit={handleSubmit(this.submit)}>
+          <form onSubmit={this.submit}>
             <div className={css.loginFormContainer}>
               <div className={css.loginFormComponent}>
-                <TextField hintText="Email Address" {...email} />
-                {email.error && email.touched && <div>{email.error}</div>}
+                <TextField
+                  hintText="Email Address"
+                  value={email}
+                  errorText={errors.email}
+                  name="email"
+                  onChange={this.onChange}
+                />
               </div>
 
               <div className={css.loginFormComponent}>
                 <TextField
-                  onKeyDown={(e) => this.handleKeyDown(e, handleSubmit(this.submit))}
-                  type="password" hintText="Password on" {...password}
+                  onKeyDown={this.handleKeyDown}
+                  type="password"
+                  hintText="Password on"
+                  value={password}
+                  errorText={errors.password}
+                  onChange={this.onChange}
+                  name="password"
                 />
-                {password.error && password.touched && <div>{password.error}</div>}
               </div>
-
               <RaisedButton
                 className={css.loginFormComponent}
-                onClick={handleSubmit(this.submit)}
+                onClick={this.submit}
                 disabled={submitting}
               >
                 Log In
               </RaisedButton>
-
               {errorComponents}
-
               <div className={css.loginFormComponent}>
                 <Link to="/register">Not a member? Register here.</Link>
               </div>
@@ -77,17 +110,5 @@ class LoginFormComponent extends Component {
 
 LoginFormComponent.displayName = 'LoginForm';
 
-function mapStateToProps(state) {
-  return {
-    errorMessage: state.activeUser.errorMessage,
-  };
-}
 
-// Wire up the redux form
-const reduxxedForm = reduxForm({
-  form: 'login',
-  fields: ['email', 'password', 'rememberMe'],
-  validate: validateLogin,
-})(LoginFormComponent);
-
-export default connect(mapStateToProps)(reduxxedForm);
+export default connect()(LoginFormComponent);
